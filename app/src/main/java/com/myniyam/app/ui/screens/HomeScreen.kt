@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import android.content.Intent
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -27,6 +29,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.myniyam.app.R
 import com.myniyam.app.permissions.PermissionChecker
+import com.myniyam.app.service.AppLockForegroundService
 
 @Composable
 fun HomeScreen() {
@@ -52,6 +55,16 @@ fun HomeScreen() {
     }
 
     val allOk = usageOk && overlayOk && accessibilityOk && batteryOk
+
+    LaunchedEffect(allOk) {
+        if (allOk) {
+            val intent = Intent(ctx, AppLockForegroundService::class.java).apply {
+                action = AppLockForegroundService.ACTION_START
+            }
+            ctx.startForegroundService(intent)
+        }
+    }
+
     val bannerLabel = if (allOk)
         stringResource(R.string.home_protection_active)
     else
