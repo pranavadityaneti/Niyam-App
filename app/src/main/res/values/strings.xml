@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Niyam</string>
+
+    <!-- Welcome screen -->
+    <string name="welcome_title">Niyam</string>
+    <string name="welcome_subtitle">A pause before the scroll.</string>
+    <string name="welcome_cta">Get started</string>
+
+    <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
+    <string name="perm_usage_title">See when you open blocked apps</string>
+    <string name="perm_usage_body">To see when you open Instagram, Facebook, or YouTube — so we can show your mantra first.</string>
+    <string name="perm_overlay_title">Draw on top of other apps</string>
+    <string name="perm_overlay_body">To show your mantra on top of the blocked app.</string>
+    <string name="perm_accessibility_title">Detect app launches instantly</string>
+    <string name="perm_accessibility_body">To detect the exact moment Instagram, Facebook, or YouTube opens — instantly, with no delay.</string>
+    <string name="perm_battery_title">Don\'t shut us off in the background</string>
+    <string name="perm_battery_body">So your phone doesn\'t kill Niyam while you\'re using it elsewhere.</string>
+    <string name="perm_oem_title">Allow background activity</string>
+    <string name="perm_oem_body">So your phone allows us to start when needed.</string>
+
+    <string name="grant">Grant</string>
+    <string name="done">Done</string>
+    <string name="next">Next</string>
+
+    <!-- Home screen -->
+    <string name="home_protection_active">Protection: Active</string>
+    <string name="home_protection_at_risk">Protection: At Risk</string>
+    <string name="home_oem_warning">Background protection may be disabled on your device.</string>
+
+    <!-- Overlay -->
+    <string name="overlay_continue">Continue</string>
+    <string name="overlay_unlocking_in">Unlocking in %1$d…</string>
+
+    <!-- Foreground service notification -->
+    <string name="notif_channel_foreground">Niyam protection</string>
+    <string name="notif_text">Standing guard against doom-scroll.</string>
+</resources>
