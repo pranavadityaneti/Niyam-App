@@ -31,7 +31,16 @@
             </intent-filter>
         </activity>
 
-        <!-- Services declared in Tasks 14 and 15 -->
+        <service
+            android:name=".service.AppLockForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="distraction blocker — must run continuously to intercept blocked apps before the user sees their feed" />
+        </service>
+
+        <!-- AccessibilityService declared in Task 16 -->
 
     </application>
 
