@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.PowerManager
 import android.provider.Settings
 import android.text.TextUtils
+import com.myniyam.app.service.AppLockAccessibilityService
 
 object PermissionChecker {
 
@@ -47,7 +48,7 @@ object PermissionChecker {
     // ---- Accessibility Service ----
 
     fun isAccessibilityServiceEnabled(ctx: Context): Boolean {
-        val expected = "${ctx.packageName}/com.myniyam.app.service.AppLockAccessibilityService"
+        val expected = "${ctx.packageName}/${AppLockAccessibilityService::class.java.canonicalName}"
         val enabled = Settings.Secure.getString(
             ctx.contentResolver,
             Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES
