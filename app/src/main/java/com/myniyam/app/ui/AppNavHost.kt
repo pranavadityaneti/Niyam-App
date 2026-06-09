@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.myniyam.app.R
 import com.myniyam.app.permissions.PermissionChecker
+import com.myniyam.app.ui.screens.OemAutostartScreen
 import com.myniyam.app.ui.screens.PermissionScreen
 import com.myniyam.app.ui.screens.WelcomeScreen
 
@@ -74,7 +75,9 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
             )
         }
 
-        composable(NiyamRoutes.PERMISSION_OEM) { Text("permission oem (Task 12)") }
+        composable(NiyamRoutes.PERMISSION_OEM) {
+            OemAutostartScreen(onDone = { navController.navigate(NiyamRoutes.HOME) })
+        }
         composable(NiyamRoutes.HOME) { Text("home (Task 13)") }
     }
 }
