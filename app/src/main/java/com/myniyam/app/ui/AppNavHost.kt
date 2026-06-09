@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.myniyam.app.ui.screens.WelcomeScreen
 
 object NiyamRoutes {
     const val WELCOME = "welcome"
@@ -20,7 +21,9 @@ object NiyamRoutes {
 @Composable
 fun AppNavHost(navController: NavHostController = rememberNavController()) {
     NavHost(navController = navController, startDestination = NiyamRoutes.WELCOME) {
-        composable(NiyamRoutes.WELCOME) { Text("welcome (Task 9)") }
+        composable(NiyamRoutes.WELCOME) {
+            WelcomeScreen(onGetStarted = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) })
+        }
         composable(NiyamRoutes.PERMISSION_USAGE) { Text("permission usage (Task 11)") }
         composable(NiyamRoutes.PERMISSION_OVERLAY) { Text("permission overlay (Task 11)") }
         composable(NiyamRoutes.PERMISSION_ACCESSIBILITY) { Text("permission accessibility (Task 11)") }
