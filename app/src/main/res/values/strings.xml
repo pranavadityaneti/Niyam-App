@@ -35,4 +35,7 @@
     <!-- Foreground service notification -->
     <string name="notif_channel_foreground">Niyam protection</string>
     <string name="notif_text">Standing guard against doom-scroll.</string>
+
+    <!-- AccessibilityService user-visible description -->
+    <string name="accessibility_service_description">Niyam uses Accessibility to detect when you open Instagram, Facebook, or YouTube so it can show your mantra first. It does NOT read any other content on your screen.</string>
 </resources>
