@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Blocking Engine — Walking Skeleton Design</title>
+<style>
+  :root {
+    --ink: #1c1c1c;
+    --muted: #5a5a5a;
+    --border: #d8d8d8;
+    --bg: #fdfdfb;
+    --accent: #7a3d12;
+    --code-bg: #f3efe9;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  main { max-width: 820px; margin: 0 auto; padding: 48px 32px 96px; }
+  header h1 { font-size: 30px; margin: 0 0 4px; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  header .meta {
+    margin-top: 18px; padding: 14px 18px;
+    background: var(--code-bg); border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  header .meta div { margin: 2px 0; }
+  h2 {
+    font-size: 22px;
+    margin: 44px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 17px; margin: 28px 0 8px; color: var(--accent); }
+  h4 { font-size: 15px; margin: 20px 0 6px; }
+  p, ul, ol, table { margin: 10px 0; }
+  ul, ol { padding-left: 26px; }
+  li { margin: 4px 0; }
+  code {
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  pre code { background: transparent; padding: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th, td { border: 1px solid var(--border); padding: 8px 10px; text-align: left; vertical-align: top; }
+  th { background: var(--code-bg); font-weight: 600; }
+  .plain-english {
+    background: #fff8ec;
+    border-left: 3px solid #d4af37;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 14.5px;
+    border-radius: 3px;
+  }
+  .plain-english strong { color: var(--accent); }
+  nav.toc {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 22px;
+    margin: 24px 0 8px;
+    font-size: 14px;
+  }
+  nav.toc ol { padding-left: 22px; margin: 0; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  .status-pill {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  @media print {
+    body { background: white; }
+    main { padding: 24px; max-width: none; }
+    nav.toc { page-break-after: always; }
+    h2 { page-break-after: avoid; }
+    pre, table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Niyam — Blocking Engine Walking Skeleton Design</h1>
+  <div class="sub">Niyam (नियम) · <a href="https://www.myniyam.com">www.myniyam.com</a> · Sub-project 1 of 7</div>
+  <div class="meta">
+    <div><strong>Date:</strong> 2026-06-09</div>
+    <div><strong>Platform:</strong> Android (native Kotlin)</div>
+    <div><strong>Status:</strong> <span class="status-pill">Design approved — moving to implementation plan</span></div>
+  </div>
+</header>
+
+<nav class="toc">
+<strong>Contents</strong>
+<ol>
+  <li><a href="#purpose">Purpose</a></li>
+  <li><a href="#scope">Scope and non-goals</a></li>
+  <li><a href="#behavior">User-visible behavior</a></li>
+  <li><a href="#arch">Architecture overview</a></li>
+  <li><a href="#components">Component design</a></li>
+  <li><a href="#permissions">Permission flow</a></li>
+  <li><a href="#oem">OEM autostart handling</a></li>
+  <li><a href="#data">Data and state</a></li>
+  <li><a href="#errors">Error modes and recovery</a></li>
+  <li><a href="#testing">Test approach</a></li>
+  <li><a href="#acceptance">Acceptance criteria</a></li>
+  <li><a href="#risks">Known risks</a></li>
+  <li><a href="#deferred">Decisions deferred</a></li>
+  <li><a href="#deps">Open dependencies on Pranav</a></li>
+</ol>
+</nav>
+
+<h2 id="purpose">1. Purpose</h2>
+<p>Prove the core mechanic of Niyam on a real Indian Android phone: when the user opens a blocked app (Instagram), our app intercepts the launch and displays a mantra overlay with a 15-second timer before allowing access.</p>
+<p>This is the de-risk sub-project. If this skeleton does not work on at least one MIUI device and one OneUI device, the product as designed cannot ship and we re-scope. If it does, every downstream sub-project (content library, onboarding, paywall, sadhana progression) attaches to a proven mechanism.</p>
+<div class="plain-english"><strong>In plain English:</strong> the magic trick is "Instagram opens → mantra appears first." This document is the design for the bare-bones version of that trick. Once it works on real budget Android phones, we build the rest of the product around it.</div>
+
+<h2 id="scope">2. Scope and non-goals</h2>
+<h3>In scope</h3>
+<ul>
+  <li>Native Kotlin Android app, single Gradle module, debug-signed APK (sideload only).</li>
+  <li>Detect when the user opens any of three hardcoded blocked apps: <strong>Instagram</strong> (<code>com.instagram.android</code>), <strong>Facebook</strong> (<code>com.facebook.katana</code> — main app only; Messenger and Lite are separate packages, not blocked), <strong>YouTube</strong> (<code>com.google.android.youtube</code> — main app only; YouTube Music is a separate package).</li>
+  <li>Render a custom overlay on top of the blocked app showing a single hardcoded mantra (<code>ॐ</code>), an English meaning, a 15-second countdown timer, and an unlock button that becomes active when the timer completes.</li>
+  <li>Walk the user through the five OS permissions required to make this work.</li>
+  <li>Detect the device manufacturer and surface a per-OEM autostart / battery-optimization walkthrough.</li>
+  <li>A home screen showing permission status (green/red per permission, re-grant buttons) and an overall "Protection: Active / At Risk" indicator.</li>
+</ul>
+
+<h3>Explicit non-goals</h3>
+<ul>
+  <li>User-pickable block list. The three blocked apps are hardcoded; no settings UI for adding/removing apps. (Multi-app blocking <em>of these three</em> is in scope; <em>user-configurable</em> block list is sub-project 7.)</li>
+  <li>Real content library or any mantra other than the hardcoded <code>ॐ</code>.</li>
+  <li>Light/dark theme, brand colors, custom fonts. Bare system defaults until UI references arrive.</li>
+  <li>Onboarding intention picker, mantra picker, language picker.</li>
+  <li>Streak counter, sadhana progress tracking, completion celebration.</li>
+  <li>Paywall, RevenueCat, AdMob, free-trial logic.</li>
+  <li>Push notifications.</li>
+  <li>Settings beyond the permission-status home screen.</li>
+  <li>Play Store upload, release signing, ProGuard rules.</li>
+  <li>iOS.</li>
+</ul>
+
+<h2 id="behavior">3. User-visible behavior</h2>
+
+<h3>First-run flow</h3>
+<ol>
+  <li>User installs APK via sideload, taps the app icon.</li>
+  <li>Welcome screen — single button, "Get started."</li>
+  <li>Permission screen 1 — "Usage access" — plain-language "why" copy, "Grant" button deep-links to Settings → Usage access → user toggles our app on → returns. We detect the grant and auto-advance.</li>
+  <li>Permission screens 2-5 — same pattern for: Display over other apps (<code>SYSTEM_ALERT_WINDOW</code>), AccessibilityService, Ignore battery optimization, OEM autostart.</li>
+  <li>Home screen — shows all five permissions green, plus a "Protection: Active" banner.</li>
+</ol>
+
+<h3>Steady-state behavior</h3>
+<ol>
+  <li>User locks phone, puts app in background.</li>
+  <li>Some time later, user opens one of the blocked apps (Instagram, Facebook, or YouTube) from the launcher.</li>
+  <li>Within ~200ms of the blocked app coming to the foreground, our overlay covers the screen with: Devanagari <code>ॐ</code> (large, centered), transliteration "Om", English meaning "The primordial sound of the universe.", a countdown "Unlocking in 15…14…13…" → "0", and a button at 0: "Continue".</li>
+  <li>User taps "Continue" → overlay dismisses → the blocked app is visible underneath.</li>
+  <li>If user presses Home or Back while the overlay is up, the overlay <strong>persists</strong> — <code>TYPE_APPLICATION_OVERLAY</code> draws on top of the launcher and other apps too. The only way out is to wait the timer and tap "Continue." (For the skeleton, we accept this; in a later sub-project we can add "user navigated to a non-blocked app → auto-dismiss overlay".)</li>
+</ol>
+
+<h3>Failure-state behavior</h3>
+<p>If any required permission is revoked, the home screen banner switches to "Protection: At Risk" with a list of which permissions need re-granting. Instagram launches in this state will NOT be intercepted — by design, since the mechanism literally cannot work without the permission.</p>
+
+<h2 id="arch">4. Architecture overview</h2>
+<pre>┌─────────────────────────────────────────────────────────────┐
+│                       Android OS                            │
+│                                                             │
+│  ┌─────────────────────┐   foreground   ┌────────────────┐  │
+│  │ AppLockAccessibility│  app changes   │ ForegroundSvc  │  │
+│  │ Service             │ ───────────────▶│ (notification) │  │
+│  │  (Android Acc API)  │   intent       │                │  │
+│  └─────────────────────┘                │  ┌──────────┐  │  │
+│                                         │  │ Overlay  │  │  │
+│                                         │  │ Manager  │  │  │
+│                                         │  │ (Window- │  │  │
+│                                         │  │ Manager  │  │  │
+│                                         │  │  + View) │  │  │
+│                                         │  └──────────┘  │  │
+│                                         └────────────────┘  │
+│                                                             │
+│  ┌─────────────────────────────────────────────────────┐    │
+│  │  Compose UI Activity (in-app screens only)          │    │
+│  │  ┌─────────┐ ┌────────────┐ ┌────────────────────┐  │    │
+│  │  │ Welcome │ │ Permission │ │ Home / status      │  │    │
+│  │  └─────────┘ │ screens 1-5│ └────────────────────┘  │    │
+│  │              └────────────┘                          │    │
+│  └─────────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────────┘</pre>
+<p>Three runtime pieces:</p>
+<ol>
+  <li><strong><code>AppLockAccessibilityService</code></strong> — Android <code>AccessibilityService</code> subclass. Listens for <code>TYPE_WINDOW_STATE_CHANGED</code> events, filters by package name, and dispatches an intent to the foreground service when Instagram comes to the front.</li>
+  <li><strong><code>AppLockForegroundService</code></strong> — Android <code>Service</code> with <code>startForeground(...)</code>. Owns the overlay lifecycle and the timer state. Receives intents from the accessibility service and instructs the OverlayManager to show/hide.</li>
+  <li><strong><code>OverlayManager</code></strong> — wraps <code>WindowManager</code> operations. Inflates the overlay layout, applies <code>TYPE_APPLICATION_OVERLAY</code> window flags, runs the 15-second timer, and removes the view on unlock.</li>
+</ol>
+<p>The in-app Compose UI lives in a single <code>MainActivity</code> with a <code>NavHost</code> that walks the user through Welcome → Permissions → Home.</p>
+
+<h2 id="components">5. Component design</h2>
+
+<h3>AppLockAccessibilityService</h3>
+<ul>
+  <li>Extends <code>AccessibilityService</code>.</li>
+  <li><code>serviceInfo</code> configured via XML resource to receive <code>TYPE_WINDOW_STATE_CHANGED</code>, <code>feedbackType = FEEDBACK_GENERIC</code>, no package filter at the service level (we filter in code so the block-list is easy to change later).</li>
+  <li>On each event:</li>
+</ul>
+<pre><code>override fun onAccessibilityEvent(event: AccessibilityEvent) {
+    val pkg = event.packageName?.toString() ?: return
+    if (pkg in BlockList.HARDCODED_PACKAGES) {
+        startService(Intent(this, AppLockForegroundService::class.java).apply {
+            action = AppLockForegroundService.ACTION_BLOCKED_APP_FOREGROUND
+            putExtra(AppLockForegroundService.EXTRA_PACKAGE, pkg)
+        })
+    }
+}</code></pre>
+<ul>
+  <li><code>BlockList.HARDCODED_PACKAGES = setOf("com.instagram.android", "com.facebook.katana", "com.google.android.youtube")</code> for the skeleton.</li>
+  <li>Debounce: ignore events from a blocked package within 2 seconds of the last overlay dismissal for the same package (prevents re-trigger loop after user taps unlock).</li>
+</ul>
+
+<h3>AppLockForegroundService</h3>
+<ul>
+  <li>Extends <code>Service</code>.</li>
+  <li><code>onStartCommand</code> handles two actions: <code>ACTION_START</code> (called from <code>MainActivity</code> once all permissions granted; calls <code>startForeground</code>) and <code>ACTION_BLOCKED_APP_FOREGROUND</code> (triggers <code>OverlayManager.show(pkg)</code>).</li>
+  <li>Notification channel: <code>LOW</code> importance, no sound, persistent. Text: "Standing guard against doom-scroll" (placeholder copy — replace when UI references arrive).</li>
+  <li><code>onDestroy</code> calls <code>OverlayManager.hide()</code>.</li>
+</ul>
+
+<h3>OverlayManager</h3>
+<ul>
+  <li>Holds a single <code>View?</code> reference for the active overlay.</li>
+  <li><code>show(packageName)</code>:
+    <ul>
+      <li>If a view is already attached, no-op (prevents double-overlay).</li>
+      <li>Inflate <code>R.layout.overlay_mantra</code> (traditional View XML).</li>
+      <li>Build <code>WindowManager.LayoutParams</code> with <code>TYPE_APPLICATION_OVERLAY</code>, <code>FLAG_NOT_FOCUSABLE | FLAG_LAYOUT_NO_LIMITS</code>, <code>MATCH_PARENT</code> width and height.</li>
+      <li>Add view to <code>WindowManager</code>.</li>
+      <li>Start a 15-second <code>CountDownTimer</code>; update countdown text every second.</li>
+      <li>Disable the "Continue" button until the timer completes.</li>
+    </ul>
+  </li>
+  <li><code>hide()</code>: cancel timer, remove view, null the reference.</li>
+  <li>"Continue to Instagram" button click handler calls <code>hide()</code>.</li>
+</ul>
+
+<h3>Layout: overlay_mantra.xml</h3>
+<p>Bare system defaults until UI references arrive:</p>
+<ul>
+  <li>Solid background (semi-transparent black <code>#CC000000</code>) over full screen.</li>
+  <li><code>TextView</code> for <code>ॐ</code> — 96sp, centered horizontally, top third.</li>
+  <li><code>TextView</code> for "Om" transliteration — 24sp, below.</li>
+  <li><code>TextView</code> for English meaning — 16sp, below, max-width 80% screen.</li>
+  <li><code>TextView</code> countdown — 20sp, below, monospace.</li>
+  <li><code>Button</code> "Continue" — bottom, full-width with margin, default Material button style.</li>
+</ul>
+<p>This is engineering placeholder, NOT a design decision. Visual pass happens when Pranav provides references.</p>
+
+<h3>In-app Compose UI (MainActivity)</h3>
+<ul>
+  <li><code>MainActivity</code> hosts a <code>NavHost</code> with destinations: <code>welcome</code>, <code>permission_usage_stats</code>, <code>permission_overlay</code>, <code>permission_accessibility</code>, <code>permission_battery</code>, <code>permission_oem_autostart</code>, <code>home</code>.</li>
+  <li>Each permission screen is a <code>@Composable</code> showing plain-language "why we need this" copy, a "Grant" button that launches the relevant <code>Intent</code> to Settings.</li>
+  <li>On resume, the screen calls a <code>PermissionChecker</code> to detect grant; on success auto-navigates to the next screen.</li>
+  <li><code>home</code> shows a list of permissions with green check / red X, and a <em>Status: Active | At Risk</em> banner.</li>
+</ul>
+
+<h3>PermissionChecker</h3>
+<p>Single file, ~150 lines. Static methods:</p>
+<ul>
+  <li><code>hasUsageStatsAccess(ctx)</code>, <code>hasOverlayPermission(ctx)</code>, <code>isAccessibilityServiceEnabled(ctx)</code>, <code>isIgnoringBatteryOptimizations(ctx)</code>, <code>isOemAutostartHandled(ctx)</code></li>
+  <li>Plus matching <code>open*Settings(ctx)</code> launchers.</li>
+</ul>
+
+<h2 id="permissions">6. Permission flow</h2>
+<p>Five sequential screens. Each shows a "why" sentence, a "Grant" button, and a "Skip for now" link warning "Skipping will prevent the app from working." Order matters — the AccessibilityService can't be enabled meaningfully until the others are set up.</p>
+<table>
+  <tr><th>#</th><th>Permission</th><th>Android API surface</th><th>User-facing "why" copy</th></tr>
+  <tr><td>1</td><td>Usage access</td><td><code>AppOpsManager.MODE_ALLOWED</code> on <code>OPSTR_GET_USAGE_STATS</code></td><td>"To see when you open Instagram, Facebook, or YouTube — so we can show your mantra first."</td></tr>
+  <tr><td>2</td><td>Display over other apps</td><td><code>Settings.canDrawOverlays(ctx)</code></td><td>"To show your mantra on top of the blocked app."</td></tr>
+  <tr><td>3</td><td>Accessibility service</td><td>check via enabled-services string</td><td>"To detect the exact moment Instagram, Facebook, or YouTube opens — instantly, with no delay."</td></tr>
+  <tr><td>4</td><td>Ignore battery optimization</td><td><code>isIgnoringBatteryOptimizations</code></td><td>"So your phone doesn't shut us off in the background."</td></tr>
+  <tr><td>5</td><td>OEM autostart</td><td>manufacturer-specific</td><td>"So your phone allows us to start when needed."</td></tr>
+</table>
+
+<h2 id="oem">7. OEM autostart handling</h2>
+<p>Background-process killing is the single biggest reason apps in this category fail in the Indian market. Different OEMs have different settings UIs; there is no Android-standard API.</p>
+
+<h3>Detection</h3>
+<p><code>Build.MANUFACTURER</code> (lowercased). Routes to one of:</p>
+<ul>
+  <li><code>xiaomi</code>, <code>redmi</code>, <code>poco</code> → MIUI flow</li>
+  <li><code>oppo</code>, <code>realme</code> → ColorOS flow</li>
+  <li><code>vivo</code>, <code>iqoo</code> → FuntouchOS / OriginOS flow</li>
+  <li><code>oneplus</code> → OxygenOS flow</li>
+  <li><code>samsung</code> → OneUI flow</li>
+  <li>anything else → generic flow</li>
+</ul>
+
+<h3>Walkthrough screen</h3>
+<ul>
+  <li>Heading: "Your phone is <em>&lt;OEM brand&gt;</em>. We need one more setting."</li>
+  <li>Numbered steps (text only — screenshots in a later UI pass).</li>
+  <li>"Take me there" button → manufacturer-specific intent. Wrapped in try/catch — falls back to generic App info page if the activity doesn't exist on this ROM version.</li>
+  <li>"Done" button lets the user mark the step complete.</li>
+</ul>
+
+<h3>Why opportunistic, not blocking</h3>
+<p>We cannot programmatically detect whether the OEM-specific autostart has actually been granted. Forcing "completion" would gate the user out forever, or accept their tap as gospel (no different from opportunistic). So we accept "Done", and surface a persistent warning on the home screen if <code>Build.MANUFACTURER</code> is a known killer-OEM AND we ever observe our service being killed.</p>
+<div class="plain-english"><strong>In plain English:</strong> there's no way to programmatically check that the user actually flipped the autostart switch on a Xiaomi phone. We trust them, and we show a persistent warning if we later notice we've been killed.</div>
+
+<h3>Library choice</h3>
+<p>Use <code>AutoStarter</code> (judemanutd/AutoStarter, MIT) for the per-OEM intents. Narrower scope than alternatives. Re-evaluate if maintenance stops.</p>
+
+<h2 id="data">8. Data and state</h2>
+<p>The walking skeleton stores almost nothing.</p>
+<ul>
+  <li>No user accounts, no remote sync.</li>
+  <li>A small <code>SharedPreferences</code> file (<code>app_lock_prefs</code>) for:
+    <ul>
+      <li><code>onboarding_complete: Boolean</code></li>
+      <li><code>oem_warning_shown: Boolean</code></li>
+      <li><code>service_kill_observed: Boolean</code> — heuristic from <code>onTaskRemoved</code>; clears on next successful start.</li>
+    </ul>
+  </li>
+  <li>No database. No content store. The hardcoded mantra is a string constant in <code>BuildConstants.kt</code>. The real content library lands in sub-project 2.</li>
+</ul>
+
+<h2 id="errors">9. Error modes and recovery</h2>
+<table>
+  <tr><th>Error mode</th><th>What happens</th><th>Recovery</th></tr>
+  <tr><td>Permission revoked at runtime</td><td>Detection stops. Instagram launches unintercepted.</td><td>Home banner switches to "At Risk." Per-permission red X with re-grant button.</td></tr>
+  <tr><td>Foreground service killed by OEM ROM</td><td>Service dies; overlay never appears.</td><td>On next <code>MainActivity.onResume</code>, we restart the service. Set <code>service_kill_observed = true</code> and surface persistent warning.</td></tr>
+  <tr><td>Overlay fails to render</td><td>Caught in try/catch. Log to logcat, let Instagram open normally.</td><td>No retry — failing silently is better UX than crash-looping. Bug visible during testing.</td></tr>
+  <tr><td>User taps back/home while overlay up</td><td>Overlay is <code>FLAG_NOT_FOCUSABLE</code> and <code>TYPE_APPLICATION_OVERLAY</code>, so back goes to the blocked app (which handles it normally), home goes to launcher — but the overlay <strong>persists on top</strong> in either case. User has to wait the timer and tap "Continue" to dismiss.</td><td>None needed at skeleton scope. Auto-dismiss on navigation-away is a future enhancement.</td></tr>
+  <tr><td>AccessibilityService fails to start after enable</td><td>Rare. Happens on some ROMs.</td><td>Home <code>onResume</code> checks <code>isAccessibilityServiceEnabled</code> AND tests that our instance is alive via a static flag set in <code>onServiceConnected</code>. If enabled-but-dead, banner says "Restart phone to activate."</td></tr>
+</table>
+
+<h2 id="testing">10. Test approach</h2>
+<h3>Two-phase testing approach</h3>
+<p>Pranav has confirmed no physical Android device on hand. The walking skeleton therefore ships against <strong>Phase 1 (emulator-only)</strong> acceptance, with <strong>Phase 2 (real OEM verification)</strong> explicitly deferred until a test device is acquired.</p>
+<h4>Phase 1 — Pixel emulator (current build target)</h4>
+<ul>
+  <li>Android Studio AVD running a stock AOSP system image (Pixel 6 / API 34 recommended).</li>
+  <li>Validates: detection mechanism, overlay rendering, permission-grant flow, timer correctness, foreground-service lifecycle.</li>
+  <li>Does <strong>NOT</strong> validate: surviving real OEM battery-killers. Emulators run AOSP, not MIUI / ColorOS / OneUI; the killer behavior lives in those vendor OS layers and is not reproducible on emulator.</li>
+</ul>
+<h4>Phase 2 — real OEM devices (deferred, gating any product launch decision)</h4>
+<ul>
+  <li>At minimum: one Xiaomi/Redmi (MIUI) and one Samsung (OneUI) device.</li>
+  <li>Stretch: one Oppo/Realme (ColorOS).</li>
+  <li>Acquiring a budget Android device (~₹6-8k for a Redmi or Realme) is a real open dependency. Until Phase 2 runs, we cannot claim the engine works in market.</li>
+</ul>
+
+<h3>Automated tests in the skeleton</h3>
+<p>Minimal. The skeleton's correctness is validated by manual on-device testing, not test code. Test code lands in sub-project 2+ when business logic gets complex.</p>
+
+<h2 id="acceptance">11. Acceptance criteria</h2>
+<p>Split into two phases because the test environment changed (no physical device on hand).</p>
+
+<h3>Phase 1 — emulator-only (current build target)</h3>
+<p>The skeleton ships Phase 1 when ALL of these are true on a Pixel emulator (Pixel 6 / API 34, stock AOSP system image):</p>
+<ol>
+  <li>APK installs and launches.</li>
+  <li>Welcome → 5 permission screens → home — completable end to end with green checks on every permission.</li>
+  <li>Phone goes to launcher. User opens <strong>Instagram</strong> — overlay covers the screen within ~200ms.</li>
+  <li>User opens <strong>Facebook</strong> — overlay covers the screen within ~200ms.</li>
+  <li>User opens <strong>YouTube</strong> — overlay covers the screen within ~200ms.</li>
+  <li>Overlay displays <code>ॐ</code>, "Om", "The primordial sound of the universe.", and a countdown starting at "15".</li>
+  <li>Countdown decrements each second.</li>
+  <li>"Continue" button is disabled until the countdown reaches 0.</li>
+  <li>At 0, the button enables.</li>
+  <li>Tapping the button dismisses the overlay; the blocked app is visible underneath.</li>
+  <li>Re-opening the same blocked app triggers the overlay again (after the 2-second debounce).</li>
+  <li>Closing the app via Recents does NOT prevent steps 3-11 (foreground service survives swipe-from-recents).</li>
+  <li>Revoking the AccessibilityService permission causes blocked-app launches to NOT be intercepted, and the home screen shows "Protection: At Risk" on next open.</li>
+  <li>Opening a NON-blocked app (e.g. Chrome, Gmail) does NOT trigger the overlay.</li>
+</ol>
+<p>Phase 1 passing means: <em>"the engine works on stock Android."</em> It does NOT mean: <em>"the engine works in market."</em></p>
+
+<h3>Phase 2 — real OEM verification (deferred, gating product launch)</h3>
+<p>Phase 2 acceptance — does not block skeleton sign-off, but DOES block any decision to move to paid launch:</p>
+<ol>
+  <li>All Phase 1 criteria hold on at least one MIUI phone (Xiaomi/Redmi/Poco).</li>
+  <li>All Phase 1 criteria hold on at least one OneUI phone (Samsung).</li>
+  <li>On both, the foreground service survives at least 30 minutes of normal phone use including screen-lock cycles. If it gets killed, the OEM autostart walkthrough was completed.</li>
+  <li>(Stretch) Same on one ColorOS phone (Oppo/Realme).</li>
+</ol>
+<p>Phase 2 gates the call: <em>"is the product mechanism real for the Indian market."</em> If Phase 2 fails on MIUI specifically — that is information about the product, not a bug to power through. We discuss what to do.</p>
+
+<h2 id="risks">12. Known risks</h2>
+<ol>
+  <li><strong>Google Play AccessibilityService policy review</strong> — at Play upload in sub-project 6 we will need to declare AccessibilityService use and justify it. Distraction-blocking is on Google's allowed-use list per my last reading, but I cannot verify current policy without checking live docs at upload time. Mitigation: skeleton is sideload-only, so no review risk at this stage.</li>
+  <li><strong>MIUI may kill the foreground service anyway</strong> — even with all permissions granted, some MIUI versions still kill foreground services aggressively. No fix from the app side; this is a vendor-OS bug. Mitigation: warn user clearly.</li>
+  <li><strong>AccessibilityService scariness</strong> — enabling AccessibilityService triggers a system warning ("This app can read everything on your screen…"). Some users will bail. Mitigation: a clear "why we need this and what we actually do with it" screen BEFORE we send them to Settings.</li>
+  <li><strong>Hardcoded <code>ॐ</code> is intentional but feels minimal</strong> — Pranav may want to see a real mantra in the skeleton. Acceptable to swap to Gayatri Mantra or similar from the 25-entry list in the original brief if preferred.</li>
+</ol>
+
+<h2 id="deferred">13. Decisions deferred</h2>
+<ul>
+  <li>Multi-app block-list management</li>
+  <li>Real content store + Sanskrit + 9-script transliterations</li>
+  <li>Theming, brand colors, custom fonts, Devanagari font</li>
+  <li>Language picker</li>
+  <li>Onboarding intention flow</li>
+  <li>Sadhana progression, streak counter, completion celebration</li>
+  <li>Paywall, RevenueCat, AdMob</li>
+  <li>Push notifications</li>
+  <li>iOS port</li>
+</ul>
+<p>Each owns its own sub-project and its own design spec.</p>
+
+<h2 id="deps">14. Open dependencies on Pranav</h2>
+<ol>
+  <li><strong>UI references</strong> — needed before any visual pass on the overlay and the in-app screens. Skeleton ships with bare system defaults; that is a stand-in, not a design.</li>
+  <li><strong>Real Android device — deferred but real.</strong> Pranav confirmed no Android device on hand. Skeleton ships against Phase 1 (emulator). Phase 2 (real OEM) gates any product launch decision — see <a href="#acceptance">Acceptance criteria</a>. A budget Redmi or Realme at ~₹6-8k is the minimum we need before that gate can be cleared.</li>
+  <li><strong>Git repository.</strong> Pranav is creating a git project and will share the link. The local working directory is currently <em>not</em> a git repo; spec is saved as files only. When the link arrives, we initialize the local repo, set the remote, and push the spec as the first commit.</li>
+  <li><strong>Review of this spec</strong> — already received once; current revision is incorporating feedback (Facebook + YouTube added, emulator-only acceptance phased).</li>
+</ol>
+
+</main>
+</body>
+</html>
