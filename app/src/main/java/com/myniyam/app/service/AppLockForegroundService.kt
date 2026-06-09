@@ -9,6 +9,7 @@ import androidx.core.app.NotificationCompat
 import com.myniyam.app.MainActivity
 import com.myniyam.app.NiyamApplication
 import com.myniyam.app.R
+import com.myniyam.app.overlay.OverlayManager
 
 class AppLockForegroundService : Service() {
 
@@ -24,14 +25,14 @@ class AppLockForegroundService : Service() {
             ACTION_START -> { /* onCreate already started foreground */ }
             ACTION_BLOCKED_APP_FOREGROUND -> {
                 val pkg = intent.getStringExtra(EXTRA_PACKAGE) ?: return START_STICKY
-                // TODO(Task 19): OverlayManager.show(applicationContext, pkg)
+                OverlayManager.show(applicationContext, pkg)
             }
         }
         return START_STICKY
     }
 
     override fun onDestroy() {
-        // TODO(Task 19): OverlayManager.hide(applicationContext)
+        OverlayManager.hide(applicationContext)
         super.onDestroy()
     }
 
