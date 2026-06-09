@@ -21,7 +21,7 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-autostarter = { group = "com.judemanutd", name = "autostarter", version.ref = "autostarter" }
+autostarter = { group = "com.github.judemanutd", name = "autostarter", version.ref = "autostarter" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
 [plugins]
