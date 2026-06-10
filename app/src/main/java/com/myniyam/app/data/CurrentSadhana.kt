@@ -1,10 +1,10 @@
 package com.myniyam.app.data
 
 /**
- * Stand-in for the user's sadhana selection until onboarding (SP-3) exists.
- * SP-3 replaces these constants with persisted user choices.
+ * The user's active sadhana selection, backed by UserPrefs (SP-3).
+ * Defaults (pre-onboarding) match the previous hardcoded values.
  */
 object CurrentSadhana {
-    const val MANTRA_ID: String = "gayatri"
-    val LANGUAGE: DisplayLanguage = DisplayLanguage.DEVANAGARI_SANSKRIT
+    val MANTRA_ID: String get() = UserPrefs.snapshot().currentMantraId
+    val LANGUAGE: DisplayLanguage get() = UserPrefs.snapshot().displayLanguage
 }

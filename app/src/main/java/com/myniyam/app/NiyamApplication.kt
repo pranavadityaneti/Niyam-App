@@ -5,13 +5,17 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import com.myniyam.app.data.MantraRepository
+import com.myniyam.app.data.UserPrefs
 
 class NiyamApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
         registerForegroundServiceChannel()
-        Thread { MantraRepository.ensureLoaded(this) }.start()
+        Thread {
+            MantraRepository.ensureLoaded(this)
+            UserPrefs.ensureLoaded(this)
+        }.start()
     }
 
     private fun registerForegroundServiceChannel() {

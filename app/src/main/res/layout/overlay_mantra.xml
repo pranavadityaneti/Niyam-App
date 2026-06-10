@@ -15,57 +15,61 @@
         android:paddingTop="64dp"
         android:paddingBottom="28dp">
 
-        <TextView
-            android:id="@+id/overlay_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:letterSpacing="0.12"
-            android:text=""
-            android:textAllCaps="true"
-            android:textColor="@color/overlay_label_muted"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/overlay_devanagari"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:fontFamily="serif"
-            android:lineSpacingMultiplier="1.6"
-            android:textColor="@color/overlay_ink"
-            android:textSize="22sp"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMinTextSize="16sp"
-            android:autoSizeMaxTextSize="24sp"
-            android:maxLines="14" />
-
-        <TextView
-            android:id="@+id/overlay_transliteration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:textStyle="italic"
-            android:lineSpacingMultiplier="1.4"
-            android:textColor="@color/overlay_roman"
-            android:textSize="12sp"
-            android:maxLines="6"
-            android:ellipsize="end" />
-
-        <TextView
-            android:id="@+id/overlay_meaning"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:lineSpacingMultiplier="1.5"
-            android:textColor="@color/overlay_ink_muted"
-            android:textSize="13sp"
-            android:maxLines="6"
-            android:ellipsize="end" />
-
-        <Space
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:fadeScrollbars="true"
+            android:fillViewport="false"
+            android:overScrollMode="never"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/overlay_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:letterSpacing="0.12"
+                    android:text=""
+                    android:textAllCaps="true"
+                    android:textColor="@color/overlay_label_muted"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/overlay_devanagari"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:fontFamily="serif"
+                    android:lineSpacingMultiplier="1.6"
+                    android:textColor="@color/overlay_ink"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/overlay_transliteration"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:textStyle="italic"
+                    android:lineSpacingMultiplier="1.4"
+                    android:textColor="@color/overlay_roman"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/overlay_meaning"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:lineSpacingMultiplier="1.5"
+                    android:textColor="@color/overlay_ink_muted"
+                    android:textSize="13sp" />
+
+            </LinearLayout>
+        </ScrollView>
 
         <TextView
             android:id="@+id/overlay_countdown"

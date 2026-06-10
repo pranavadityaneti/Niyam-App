@@ -31,6 +31,7 @@
     <!-- Overlay -->
     <string name="overlay_continue">Continue</string>
     <string name="overlay_unlocking_in">Unlocking in %1$d…</string>
+    <string name="overlay_label_fmt">Your sadhana · %1$s</string>
 
     <!-- Foreground service notification -->
     <string name="notif_channel_foreground">Niyam protection</string>

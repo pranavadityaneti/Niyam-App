@@ -37,11 +37,7 @@ object UserPrefs {
                 onboardingComplete = false,
                 currentMantraId = "gayatri",
                 displayLanguage = DisplayLanguage.DEVANAGARI_SANSKRIT,
-                blockedPackages = setOf(
-                    "com.instagram.android",
-                    "com.facebook.katana",
-                    "com.google.android.youtube"
-                )
+                blockedPackages = BlockList.DEFAULT_PACKAGES
             )
 
             fun fromRaw(

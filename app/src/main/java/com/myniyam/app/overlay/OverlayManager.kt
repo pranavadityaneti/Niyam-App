@@ -35,6 +35,8 @@ object OverlayManager {
         view.findViewById<TextView>(R.id.overlay_devanagari).text = mantra.text.forScript(lang.script)
         view.findViewById<TextView>(R.id.overlay_transliteration).text = mantra.text.forScript(Script.ROMAN)
         view.findViewById<TextView>(R.id.overlay_meaning).text = mantra.meaning.forLang(lang.meaningLang)
+        view.findViewById<TextView>(R.id.overlay_label).text =
+            ctx.getString(R.string.overlay_label_fmt, mantra.canonicalName)
 
         val countdown = view.findViewById<TextView>(R.id.overlay_countdown)
         val continueBtn = view.findViewById<Button>(R.id.overlay_continue)
