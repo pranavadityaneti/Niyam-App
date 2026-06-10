@@ -19,4 +19,7 @@ object ProgressMath {
     }
 
     fun dayN(distinctDays: Int, capM: Int): Int = distinctDays.coerceAtMost(capM)
+
+    /** Completion predicate (spec §2): the journey completes when counted days reach the threshold. */
+    fun isComplete(distinctDays: Int, threshold: Int): Boolean = distinctDays >= threshold
 }

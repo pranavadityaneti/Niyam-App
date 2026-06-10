@@ -79,6 +79,22 @@ class UserPrefsTest {
     }
 
     @Test
+    fun `setCurrentMantra semantics are representable`() {
+        UserPrefs.setSnapshotForTest(
+            UserPrefs.Snapshot.DEFAULTS.copy(
+                currentMantraId = "vakratunda",
+                sadhanaStartEpochDay = 20620L,
+                pendingCelebration = false
+            )
+        )
+        val s = UserPrefs.snapshot()
+        assertEquals("vakratunda", s.currentMantraId)
+        assertEquals(20620L, s.sadhanaStartEpochDay)
+        assertFalse(s.pendingCelebration)
+        UserPrefs.resetForTest()
+    }
+
+    @Test
     fun `intention round-trips by name`() {
         Intention.entries.forEach { intention ->
             val s = UserPrefs.Snapshot.fromRaw(null, null, null, null, intention = intention.name)

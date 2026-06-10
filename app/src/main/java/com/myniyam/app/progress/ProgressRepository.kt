@@ -57,7 +57,7 @@ object ProgressRepository {
         val mantra = MantraRepository.byId(mantraId) ?: return
         val days = NiyamDatabase.get(context).readEventDao()
             .distinctDaysFor(mantraId, snap.sadhanaStartEpochDay)
-        if (days >= mantra.completionThresholdDays) {
+        if (ProgressMath.isComplete(days, mantra.completionThresholdDays)) {
             UserPrefs.markCompleted(context, mantraId)
         }
     }

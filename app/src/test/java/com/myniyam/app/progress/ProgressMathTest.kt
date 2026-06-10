@@ -35,4 +35,11 @@ class ProgressMathTest {
         assertEquals(3, ProgressMath.dayN(distinctDays = 3, capM = 14))
         assertEquals(14, ProgressMath.dayN(distinctDays = 20, capM = 14))
     }
+
+    @Test
+    fun `completion triggers exactly at the threshold boundary`() {
+        assertEquals(false, ProgressMath.isComplete(distinctDays = 13, threshold = 14))
+        assertEquals(true, ProgressMath.isComplete(distinctDays = 14, threshold = 14))
+        assertEquals(true, ProgressMath.isComplete(distinctDays = 15, threshold = 14))
+    }
 }
