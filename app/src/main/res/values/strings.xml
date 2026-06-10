@@ -72,4 +72,12 @@
     <string name="library_empty">Nothing matches — clear a filter.</string>
     <string name="library_current_marker">Current</string>
     <string name="library_completed_marker">Completed</string>
+    <string name="detail_make_current">Make this my sadhana</string>
+    <string name="detail_is_current">Your current sadhana</string>
+    <string name="detail_practice_again">Practice again</string>
+    <string name="detail_switch_title">Switch your sadhana?</string>
+    <string name="detail_switch_body_fmt">You\'re %1$d days into %2$s. If you switch, this journey will start over when you return to it.</string>
+    <string name="detail_switch_body_nocount_fmt">You\'re partway into %1$s. If you switch, this journey will start over when you return to it.</string>
+    <string name="detail_switch_confirm">Switch</string>
+    <string name="detail_switch_cancel">Keep current</string>
 </resources>
