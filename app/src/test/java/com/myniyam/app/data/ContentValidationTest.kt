@@ -74,4 +74,47 @@ class ContentValidationTest {
     fun `asset stays within size budget`() {
         assertTrue("mantras.json must be <= 400KB", assetFile.length() <= 400 * 1024)
     }
+
+    private val scriptBlocks = mapOf(
+        Script.DEVANAGARI to 0x0900..0x097F,
+        Script.TELUGU to 0x0C00..0x0C7F,
+        Script.TAMIL to 0x0B80..0x0BFF,
+        Script.KANNADA to 0x0C80..0x0CFF,
+        Script.BENGALI to 0x0980..0x09FF,
+        Script.GUJARATI to 0x0A80..0x0AFF,
+    )
+
+    // Shared characters allowed in any script field: whitespace, ASCII
+    // punctuation/digits (danda maps to "." in most scripts), Devanagari
+    // dandas (। ॥), ZWJ/ZWNJ, and the calibrated Tamil visarga ꞉ (U+A789).
+    // ASCII letters are NOT shared — Latin text in an Indic field is a paste error.
+    private fun isSharedChar(c: Char): Boolean =
+        c.isWhitespace() || (c.code < 0x80 && !c.isLetter()) || c == '।' || c == '॥' ||
+            c.code == 0x200C || c.code == 0x200D || c.code == 0xA789
+
+    @Test
+    fun `script fields contain only their own script`() {
+        catalog.mantras.forEach { m ->
+            scriptBlocks.forEach { (script, range) ->
+                m.text.forScript(script).forEach { c ->
+                    assertTrue(
+                        "${m.id}.$script: stray char '$c' (U+${"%04X".format(c.code)})",
+                        isSharedChar(c) || c.code in range
+                    )
+                }
+            }
+        }
+    }
+
+    @Test
+    fun `meanings have plausible length`() {
+        catalog.mantras.forEach { m ->
+            MeaningLang.entries.forEach { l ->
+                assertTrue(
+                    "${m.id}: meaning $l suspiciously short (truncation?)",
+                    m.meaning.forLang(l).length >= 20
+                )
+            }
+        }
+    }
 }
