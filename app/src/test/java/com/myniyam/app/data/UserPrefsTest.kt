@@ -2,6 +2,7 @@ package com.myniyam.app.data
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class UserPrefsTest {
@@ -16,6 +17,10 @@ class UserPrefsTest {
             setOf("com.instagram.android", "com.facebook.katana", "com.google.android.youtube"),
             s.blockedPackages
         )
+        assertEquals(Intention.SADHANA, s.selectedIntention)
+        assertEquals(0L, s.sadhanaStartEpochDay)
+        assertTrue(s.completedMantraIds.isEmpty())
+        assertFalse(s.pendingCelebration)
     }
 
     @Test
@@ -24,12 +29,20 @@ class UserPrefsTest {
             onboardingComplete = true,
             mantraId = "mahamrityunjaya",
             language = "TAMIL",
-            blocked = setOf("com.instagram.android")
+            blocked = setOf("com.instagram.android"),
+            intention = "CALM",
+            sadhanaStart = 20600L,
+            completed = setOf("om"),
+            pendingCelebration = true
         )
         assertEquals(true, s.onboardingComplete)
         assertEquals("mahamrityunjaya", s.currentMantraId)
         assertEquals(DisplayLanguage.TAMIL, s.displayLanguage)
         assertEquals(setOf("com.instagram.android"), s.blockedPackages)
+        assertEquals(Intention.CALM, s.selectedIntention)
+        assertEquals(20600L, s.sadhanaStartEpochDay)
+        assertEquals(setOf("om"), s.completedMantraIds)
+        assertTrue(s.pendingCelebration)
     }
 
     @Test
@@ -38,7 +51,8 @@ class UserPrefsTest {
             onboardingComplete = null,
             mantraId = null,
             language = "KLINGON",
-            blocked = null
+            blocked = null,
+            intention = "UNKNOWN_X"
         )
         assertEquals(UserPrefs.Snapshot.DEFAULTS, s)
     }
@@ -49,5 +63,26 @@ class UserPrefsTest {
         assertEquals("om", UserPrefs.snapshot().currentMantraId)
         UserPrefs.resetForTest()
         assertEquals(UserPrefs.Snapshot.DEFAULTS, UserPrefs.snapshot())
+    }
+
+    @Test
+    fun `completion bookkeeping is representable in the snapshot`() {
+        UserPrefs.setSnapshotForTest(
+            UserPrefs.Snapshot.DEFAULTS.copy(
+                completedMantraIds = setOf("gayatri"),
+                pendingCelebration = true
+            )
+        )
+        assertTrue("gayatri" in UserPrefs.snapshot().completedMantraIds)
+        assertTrue(UserPrefs.snapshot().pendingCelebration)
+        UserPrefs.resetForTest()
+    }
+
+    @Test
+    fun `intention round-trips by name`() {
+        Intention.entries.forEach { intention ->
+            val s = UserPrefs.Snapshot.fromRaw(null, null, null, null, intention = intention.name)
+            assertEquals(intention, s.selectedIntention)
+        }
     }
 }

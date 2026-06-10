@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -25,33 +26,55 @@ object UserPrefs {
     private val KEY_CURRENT_MANTRA_ID = stringPreferencesKey("current_mantra_id")
     private val KEY_DISPLAY_LANGUAGE = stringPreferencesKey("display_language")
     private val KEY_BLOCKED_PACKAGES = stringSetPreferencesKey("blocked_packages")
+    private val KEY_SELECTED_INTENTION = stringPreferencesKey("selected_intention")
+    private val KEY_SADHANA_START = longPreferencesKey("sadhana_start_epoch_day")
+    private val KEY_COMPLETED_MANTRAS = stringSetPreferencesKey("completed_mantra_ids")
+    private val KEY_PENDING_CELEBRATION = booleanPreferencesKey("pending_celebration")
 
     data class Snapshot(
         val onboardingComplete: Boolean,
         val currentMantraId: String,
         val displayLanguage: DisplayLanguage,
-        val blockedPackages: Set<String>
+        val blockedPackages: Set<String>,
+        val selectedIntention: Intention,
+        val sadhanaStartEpochDay: Long,
+        val completedMantraIds: Set<String>,
+        val pendingCelebration: Boolean
     ) {
         companion object {
             val DEFAULTS = Snapshot(
                 onboardingComplete = false,
                 currentMantraId = "gayatri",
                 displayLanguage = DisplayLanguage.DEVANAGARI_SANSKRIT,
-                blockedPackages = BlockList.DEFAULT_PACKAGES
+                blockedPackages = BlockList.DEFAULT_PACKAGES,
+                selectedIntention = Intention.SADHANA,
+                sadhanaStartEpochDay = 0L,
+                completedMantraIds = emptySet(),
+                pendingCelebration = false
             )
 
             fun fromRaw(
                 onboardingComplete: Boolean?,
                 mantraId: String?,
                 language: String?,
-                blocked: Set<String>?
+                blocked: Set<String>?,
+                intention: String? = null,
+                sadhanaStart: Long? = null,
+                completed: Set<String>? = null,
+                pendingCelebration: Boolean? = null
             ): Snapshot = Snapshot(
                 onboardingComplete = onboardingComplete ?: DEFAULTS.onboardingComplete,
                 currentMantraId = mantraId?.takeIf { it.isNotBlank() } ?: DEFAULTS.currentMantraId,
                 displayLanguage = language?.let { raw ->
                     DisplayLanguage.entries.firstOrNull { it.name == raw }
                 } ?: DEFAULTS.displayLanguage,
-                blockedPackages = blocked?.takeIf { it.isNotEmpty() } ?: DEFAULTS.blockedPackages
+                blockedPackages = blocked?.takeIf { it.isNotEmpty() } ?: DEFAULTS.blockedPackages,
+                selectedIntention = intention?.let { raw ->
+                    Intention.entries.firstOrNull { it.name == raw }
+                } ?: DEFAULTS.selectedIntention,
+                sadhanaStartEpochDay = sadhanaStart ?: DEFAULTS.sadhanaStartEpochDay,
+                completedMantraIds = completed ?: DEFAULTS.completedMantraIds,
+                pendingCelebration = pendingCelebration ?: DEFAULTS.pendingCelebration
             )
         }
     }
@@ -73,7 +96,11 @@ object UserPrefs {
                     onboardingComplete = p[KEY_ONBOARDING_COMPLETE],
                     mantraId = p[KEY_CURRENT_MANTRA_ID],
                     language = p[KEY_DISPLAY_LANGUAGE],
-                    blocked = p[KEY_BLOCKED_PACKAGES]
+                    blocked = p[KEY_BLOCKED_PACKAGES],
+                    intention = p[KEY_SELECTED_INTENTION],
+                    sadhanaStart = p[KEY_SADHANA_START],
+                    completed = p[KEY_COMPLETED_MANTRAS],
+                    pendingCelebration = p[KEY_PENDING_CELEBRATION]
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load prefs; using defaults", e)
@@ -82,9 +109,27 @@ object UserPrefs {
         }
     }
 
-    suspend fun setCurrentMantra(context: Context, mantraId: String) {
-        context.niyamDataStore.edit { it[KEY_CURRENT_MANTRA_ID] = mantraId }
-        current = current.copy(currentMantraId = mantraId)
+    suspend fun setCurrentMantra(context: Context, mantraId: String, startEpochDay: Long = java.time.LocalDate.now().toEpochDay()) {
+        context.niyamDataStore.edit {
+            it[KEY_CURRENT_MANTRA_ID] = mantraId
+            it[KEY_SADHANA_START] = startEpochDay
+            it[KEY_PENDING_CELEBRATION] = false
+        }
+        current = current.copy(currentMantraId = mantraId, sadhanaStartEpochDay = startEpochDay, pendingCelebration = false)
+    }
+
+    suspend fun setIntention(context: Context, intention: Intention) {
+        context.niyamDataStore.edit { it[KEY_SELECTED_INTENTION] = intention.name }
+        current = current.copy(selectedIntention = intention)
+    }
+
+    suspend fun markCompleted(context: Context, mantraId: String) {
+        val newSet = current.completedMantraIds + mantraId
+        context.niyamDataStore.edit {
+            it[KEY_COMPLETED_MANTRAS] = newSet
+            it[KEY_PENDING_CELEBRATION] = true
+        }
+        current = current.copy(completedMantraIds = newSet, pendingCelebration = true)
     }
 
     suspend fun setDisplayLanguage(context: Context, language: DisplayLanguage) {
