@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Niyam — Onboarding &amp; Brand Theme Design</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#5a5a5a; --border:#d8d8d8; --bg:#fdfdfb; --accent:#7a3d12; --code-bg:#f3efe9; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; font-size:16px; line-height:1.55; }
+  main { max-width:880px; margin:0 auto; padding:48px 32px 96px; }
+  header h1 { font-size:30px; margin:0 0 4px; }
+  header .sub { color:var(--muted); font-size:14px; }
+  header .meta { margin-top:18px; padding:14px 18px; background:var(--code-bg); border-left:3px solid var(--accent); border-radius:4px; font-size:14px; }
+  h2 { font-size:22px; margin:44px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+  h3 { font-size:17px; margin:28px 0 8px; color:var(--accent); }
+  p, ul, ol, table { margin:10px 0; }
+  ul, ol { padding-left:26px; }
+  li { margin:4px 0; }
+  code { background:var(--code-bg); padding:1px 5px; border-radius:3px; font-family:"SF Mono",Menlo,Monaco,Consolas,monospace; font-size:0.92em; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th, td { border:1px solid var(--border); padding:7px 9px; text-align:left; vertical-align:top; }
+  th { background:var(--code-bg); font-weight:600; }
+  .plain-english { background:#fff8ec; border-left:3px solid #d4af37; padding:10px 14px; margin:12px 0; font-size:14.5px; border-radius:3px; }
+  .plain-english strong { color:var(--accent); }
+  nav.toc { background:#fff; border:1px solid var(--border); border-radius:6px; padding:14px 22px; margin:24px 0 8px; font-size:14px; }
+  nav.toc ol { padding-left:22px; margin:0; }
+  nav.toc a { color:var(--accent); text-decoration:none; }
+  .status-pill { display:inline-block; background:#FF6400; color:#fff; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.5px; }
+  .swatch { display:inline-block; width:14px; height:14px; border-radius:3px; border:1px solid var(--border); vertical-align:-2px; margin-right:6px; }
+  @media print { body{background:#fff;} main{padding:24px;max-width:none;} nav.toc{page-break-after:always;} h2{page-break-after:avoid;} table{page-break-inside:avoid;} }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Niyam — Onboarding &amp; Brand Theme Design</h1>
+  <div class="sub">Niyam (नियम) · <a href="https://www.myniyam.com">www.myniyam.com</a> · Sub-project 3 of 7</div>
+  <div class="meta">
+    <div><strong>Date:</strong> 2026-06-10</div>
+    <div><strong>Status:</strong> <span class="status-pill">Design approved — "Orange is a must"</span></div>
+  </div>
+</header>
+
+<nav class="toc"><strong>Contents</strong>
+<ol>
+  <li><a href="#purpose">Purpose</a></li>
+  <li><a href="#scope">Scope and non-goals</a></li>
+  <li><a href="#decisions">Decisions locked during design</a></li>
+  <li><a href="#theme">Brand theme</a></li>
+  <li><a href="#flow">Onboarding flow</a></li>
+  <li><a href="#curation">Mantra curation rule</a></li>
+  <li><a href="#persistence">Persistence architecture</a></li>
+  <li><a href="#engine">Engine touches</a></li>
+  <li><a href="#errors">Error handling</a></li>
+  <li><a href="#acceptance">Acceptance criteria</a></li>
+  <li><a href="#risks">Known risks</a></li>
+  <li><a href="#deferred">Decisions deferred</a></li>
+  <li><a href="#deps">Dependencies on Pranav</a></li>
+</ol>
+</nav>
+
+<h2 id="purpose">1. Purpose</h2>
+<p>Turn the engineering prototype into the product's first real experience: apply the founder-supplied brand direction app-wide, and build the four-step onboarding that captures intention → starter mantra → language → blocked apps, persists those choices, and feeds them to the blocking engine.</p>
+<div class="plain-english"><strong>In plain English:</strong> today the app works but looks like a lab bench, and it ignores who the user is. After this sub-project it looks like the calm reading app Pranav showed, and the overlay shows <em>your</em> mantra in <em>your</em> language over <em>your</em> chosen apps.</div>
+
+<h2 id="scope">2. Scope and non-goals</h2>
+<h3>In scope</h3>
+<ul>
+  <li><code>NiyamTheme</code> rebuilt from the brand palette + reference aesthetic (light only); applied to all Compose screens.</li>
+  <li>Bundled fonts: Playfair Display (display serif) + Inter (UI sans).</li>
+  <li>Overlay restyled — colors/typography/spacing only; identical ids, structure, timer and unlock logic.</li>
+  <li>Onboarding: Welcome → Intention → Starter mantra → Language → Apps to block → existing 5 permission screens (inherit theme) → Home.</li>
+  <li>Jetpack DataStore persistence: <code>onboardingComplete, currentMantraId, displayLanguage, blockedPackages</code>; warm-up snapshot at app start.</li>
+  <li><code>CurrentSadhana</code> and <code>BlockList</code> become snapshot-backed (defaults = today's hardcoded values).</li>
+  <li>Returning users route straight to Home.</li>
+</ul>
+<h3>Explicit non-goals</h3>
+<ul>
+  <li>Home redesign / mantra card / progress / streak (SP-4) — Home keeps its permission-status content, restyled by the theme only.</li>
+  <li>Library (SP-5) · Paywall/trial/ads (SP-6) · Dark mode, settings, notifications, re-onboarding (SP-7).</li>
+  <li>Illustrations / iconography sets / deity imagery (none; the no-AI-deity-imagery rule stands) · audio · custom animations.</li>
+</ul>
+
+<h2 id="decisions">3. Decisions locked during design</h2>
+<table>
+  <tr><th>Decision</th><th>Choice</th><th>Why / context</th></tr>
+  <tr><td>Visual direction</td><td>Founder references (editorial reading-app aesthetic) + 4-color palette</td><td>Supersedes the brief's maroon/saffron/gold. Pranav to drop ref images in <code>docs/design-refs/</code>.</td></tr>
+  <tr><td><strong>Orange</strong></td><td><strong>Non-negotiable hero accent</strong> — every primary CTA, selection state, active progress</td><td>Pranav verbatim: "Orange is a must" (2026-06-10). Fills/large elements only, never small body text.</td></tr>
+  <tr><td>Theme default</td><td>Light (eggshell)</td><td>Pranav-confirmed; dark deferred to SP-7.</td></tr>
+  <tr><td>Type</td><td>Playfair Display + Inter (bundled); Indic via system Noto</td><td>Closest free match to refs; 7-script serif bundling deferred (size).</td></tr>
+  <tr><td>Mockup</td><td>Approved 2026-06-10 (intention + overlay, two-phone widget)</td><td>The committed translation of the refs.</td></tr>
+  <tr><td>Curation</td><td>Deterministic per-intention priority lists, first 3 shown</td><td>Product-true, testable, no fake algorithm.</td></tr>
+  <tr><td>Persistence</td><td>DataStore + app-start snapshot</td><td>Engine needs synchronous reads; mirrors MantraRepository warm-up.</td></tr>
+  <tr><td>Block-list catalog</td><td>Instagram, YouTube, Facebook, X, Reddit, Snapchat, TikTok; defaults = today's 3</td><td>TikTok banned in India, kept for diaspora installs.</td></tr>
+  <tr><td>Engine touches</td><td>Approved at design stage (§8)</td><td>Snapshot-backed CurrentSadhana + BlockList; services untouched.</td></tr>
+</table>
+
+<h2 id="theme">4. Brand theme</h2>
+<h3>Color tokens</h3>
+<table>
+  <tr><th>Token</th><th>Hex</th><th>Role</th></tr>
+  <tr><td><span class="swatch" style="background:#F5EBE1"></span>Eggshell</td><td><code>#F5EBE1</code></td><td>App background; overlay background</td></tr>
+  <tr><td><span class="swatch" style="background:#FFFDF8"></span>Card</td><td><code>#FFFDF8</code></td><td>Card/surface fills</td></tr>
+  <tr><td><span class="swatch" style="background:#E8DCCD"></span>Hairline</td><td><code>#E8DCCD</code></td><td>Card borders, dividers</td></tr>
+  <tr><td><span class="swatch" style="background:#003223"></span>BottleGreen</td><td><code>#003223</code></td><td>Primary ink</td></tr>
+  <tr><td><span class="swatch" style="background:#33524A"></span>InkMuted</td><td><code>#33524A</code></td><td>Secondary text</td></tr>
+  <tr><td><span class="swatch" style="background:#8A7F72"></span>LabelMuted</td><td><code>#8A7F72</code></td><td>Small-caps labels, hints</td></tr>
+  <tr><td><span class="swatch" style="background:#FF6400"></span>PumpkinOrange</td><td><code>#FF6400</code></td><td><strong>Hero accent</strong>: CTAs, selection, active progress</td></tr>
+  <tr><td><span class="swatch" style="background:#FFF3EA"></span>OrangeTint</td><td><code>#FFF3EA</code></td><td>Selected-card fill</td></tr>
+  <tr><td><span class="swatch" style="background:#8CC850"></span>SaladGreen</td><td><code>#8CC850</code></td><td>Success/completion only</td></tr>
+  <tr><td><span class="swatch" style="background:#ECE0D2"></span>ChipFill</td><td><code>#ECE0D2</code></td><td>Understated chips</td></tr>
+</table>
+<p>Material3 mapping: <code>primary=PumpkinOrange, onPrimary=White, background=Eggshell, onBackground=BottleGreen, surface=Card, onSurface=BottleGreen, surfaceVariant=ChipFill, outline=Hairline, secondary=SaladGreen</code>. Brand hexes live ONLY in <code>ui/theme/Color.kt</code>.</p>
+<p><strong>Orange contrast rule:</strong> orange is fills (white text on orange) and thick borders/icons ≥18dp — never body-text color (fails contrast on eggshell at small sizes).</p>
+
+<h3>Typography</h3>
+<table>
+  <tr><th>Style</th><th>Font</th><th>Use</th></tr>
+  <tr><td>Display/headline</td><td>Playfair Display (SemiBold/Medium)</td><td>Screen titles, Welcome wordmark</td></tr>
+  <tr><td>Body/label</td><td>Inter (Regular/Medium)</td><td>All other UI</td></tr>
+  <tr><td>Overline</td><td>Inter Medium 11sp, +1.5sp tracking, all-caps</td><td>"STEP 1 OF 4", "YOUR SADHANA"</td></tr>
+  <tr><td>Mantra text (overlay)</td><td><code>serif</code> (system Noto per script)</td><td>Devanagari serif guaranteed; some South Indian scripts render sans — v1 limitation (§11)</td></tr>
+</table>
+<p>Fonts ship in <code>res/font/</code> (OFL, ≈600KB total).</p>
+
+<h3>Shape &amp; components</h3>
+<ul>
+  <li>Cards: 14-16dp radius, Card fill, 1.5dp Hairline border; selected: 2dp orange border + OrangeTint fill + orange check.</li>
+  <li>Buttons: full-width pills, orange fill, white Inter Medium label; disabled = 40% alpha.</li>
+  <li>Chips: ChipFill pill, 11.5sp LabelMuted. Bottom-anchored CTAs. Generous whitespace.</li>
+</ul>
+
+<h3>Overlay restyle (same ids, logic untouched)</h3>
+<p>Full-screen Eggshell (replaces the black scrim — also fixes the SP-1 "content bleeds through" note). Overline "YOUR SADHANA · {NAME}". Mantra in serif 19-24sp auto-size, BottleGreen, ~1.7 line-height. Roman in Inter italic 12sp. Meaning in Inter 12.5sp InkMuted. Countdown chip above an orange pill CTA (disabled-alpha until the 15s timer ends).</p>
+
+<h2 id="flow">5. Onboarding flow</h2>
+<p>Linear NavHost; back allowed; each step persists on Continue.</p>
+<table>
+  <tr><th>#</th><th>Route</th><th>Title</th><th>Content</th><th>CTA</th></tr>
+  <tr><td>0</td><td><code>welcome</code></td><td>"Niyam"</td><td>"A pause before the scroll."</td><td>Get started</td></tr>
+  <tr><td>1</td><td><code>onboarding_intention</code></td><td>"Why are you here?"</td><td>5 single-select cards (the brief's intentions). Overline STEP 1 OF 4.</td><td>Continue (disabled until selection)</td></tr>
+  <tr><td>2</td><td><code>onboarding_mantra</code></td><td>"Pick your starter mantra"</td><td>3 curated cards (§6): serif name, one-line gist (first sentence of meaning.en), read-time chip.</td><td>Continue (disabled until selection)</td></tr>
+  <tr><td>3</td><td><code>onboarding_language</code></td><td>"Your language"</td><td>9 rows, native-script label + English caption (हिन्दी, தமிழ், తెలుగు…). Default: English.</td><td>Continue</td></tr>
+  <tr><td>4</td><td><code>onboarding_apps</code></td><td>"What pulls you in?"</td><td>Checklist: Instagram, YouTube, Facebook, X, Reddit, Snapchat, TikTok. Pre-checked: the current 3.</td><td>Continue (disabled if none)</td></tr>
+  <tr><td>5+</td><td>existing <code>permission_*</code></td><td>(existing)</td><td>Inherit theme automatically.</td><td>existing</td></tr>
+  <tr><td>end</td><td><code>home</code></td><td>—</td><td><code>onboardingComplete=true</code>; future launches skip to Home.</td><td>—</td></tr>
+</table>
+
+<h2 id="curation">6. Mantra curation rule</h2>
+<p>Per-intention ordered lists — exactly the brief's groupings; screen shows the first 3. Unit-tested pure function <code>StarterMantras.forIntention()</code>; unknown ids dropped defensively. The same table seeds SP-4's next-sadhana recommendations.</p>
+<table>
+  <tr><th>Intention</th><th>Priority order</th></tr>
+  <tr><td>focus</td><td>gita-2-47, gita-6-5, gita-2-14, asato-ma, gita-6-6</td></tr>
+  <tr><td>calm</td><td>mahamrityunjaya, om-sahanavavatu, om-namah-shivaya, gita-2-70, twameva-mata</td></tr>
+  <tr><td>sadhana</td><td>gayatri, vakratunda, saraswati-vandana, guru-brahma, hare-krishna</td></tr>
+  <tr><td>dharma</td><td>gita-4-7-8, gita-18-66, gita-3-35, purusha-suktam, nasadiya-suktam</td></tr>
+  <tr><td>devotion</td><td>hanuman-chalisa-opening, vishnu-sahasranama-opening, lalita-sahasranama-opening, krishna-ashtakam, ram-raksha-opening</td></tr>
+</table>
+
+<h2 id="persistence">7. Persistence architecture</h2>
+<ul>
+  <li>New dependency: <code>androidx.datastore:datastore-preferences</code> (latest stable 1.1.x, pinned in the version catalog at implementation).</li>
+  <li><code>UserPrefs</code>: suspend writers + a <code>@Volatile</code> immutable <code>Snapshot(onboardingComplete, currentMantraId, displayLanguage, blockedPackages)</code>, loaded at app start, refreshed on every write. Defaults: <code>false / "gayatri" / DEVANAGARI_SANSKRIT / {instagram, facebook, youtube}</code>.</li>
+  <li><code>NiyamApplication</code> warm-up: <code>MantraRepository.ensureLoaded(this); UserPrefs.ensureLoaded(this)</code>.</li>
+  <li><code>CurrentSadhana</code> keeps its API but reads the snapshot. <code>BlockList.matches()</code> reads the snapshot; <code>HARDCODED_PACKAGES</code> → <code>DEFAULT_PACKAGES</code>.</li>
+  <li>Onboarding writes via <code>OnboardingViewModel</code> (the project's first ViewModel — flow state across 5 screens justifies it).</li>
+</ul>
+
+<h2 id="engine">8. Engine touches (founder-approved at design stage)</h2>
+<table>
+  <tr><th>Touch</th><th>Why</th><th>What could break / mitigation</th></tr>
+  <tr><td>CurrentSadhana → snapshot-backed</td><td>Overlay must honor onboarding</td><td>Same API; defaults = today's values; unread-prefs edge = defaults once</td></tr>
+  <tr><td>BlockList → snapshot-backed</td><td>Apps screen must take effect</td><td>Same contract; AccessibilityService untouched; first-launch race falls back to 3 defaults once</td></tr>
+  <tr><td>NiyamApplication +1 warm-up line</td><td>Synchronous engine reads</td><td>None beyond the above</td></tr>
+  <tr><td>overlay_mantra.xml restyle</td><td>Brand</td><td>Same ids/structure; logic untouched; emulator-verified</td></tr>
+</table>
+<p><strong>Zero changes:</strong> AppLockAccessibilityService, AppLockForegroundService, manifest, permissions.</p>
+
+<h2 id="errors">9. Error handling</h2>
+<table>
+  <tr><th>Failure</th><th>Behavior</th></tr>
+  <tr><td>DataStore read fails at warm-up</td><td>Snapshot = defaults; app behaves as today; logged</td></tr>
+  <tr><td>Persisted mantra id missing from catalog</td><td>displayMantra falls back (om); curation drops unknown ids</td></tr>
+  <tr><td>Process death mid-onboarding</td><td>Confirmed steps persisted; relaunch at Welcome with selections pre-filled; complete-flag only at end</td></tr>
+  <tr><td>No apps checked</td><td>CTA disabled</td></tr>
+</table>
+
+<h2 id="acceptance">10. Acceptance criteria</h2>
+<ol>
+  <li>Fresh-install walkthrough on emulator: Welcome → 4 steps → 5 permission screens → Home, all themed, all CTAs orange, permission deep-links unregressed.</li>
+  <li>Choices take effect: intention filters the 3 cards; chosen mantra + தமிழ் (Tamil) + Instagram-only → Instagram overlay in Tamil, YouTube launches clean.</li>
+  <li>Persistence across force-stop: straight to Home; overlay choices intact.</li>
+  <li>Returning-user routing skips onboarding.</li>
+  <li>Unit tests: curation (5 intentions + unknown-id drop), UserPrefs mapping + defaults, BlockList default/overridden, language labels. Suite grows from 43; all green.</li>
+  <li>Engine regression: detect→overlay→15s timer→unlock→debounce unchanged.</li>
+  <li><strong>Visual sign-off by Pranav</strong> — built screens match the approved mockup's feel.</li>
+  <li>APK growth ≤ 1MB (fonts ≈ 600KB).</li>
+</ol>
+
+<h2 id="risks">11. Known risks</h2>
+<ol>
+  <li><strong>Indic serif inconsistency (accepted v1):</strong> Devanagari serif guaranteed; Tamil/Telugu/Kannada may render sans in the overlay. Subsetted-font bundling deferred.</li>
+  <li><strong>First-launch race:</strong> blocked-app launch before warm-up completes → defaults once.</li>
+  <li><strong>Orange contrast:</strong> enforced by the fills-only rule.</li>
+  <li><strong>Playfair has no Devanagari</strong> — Latin wordmark only; Devanagari wordmark deferred.</li>
+  <li><strong>First ViewModel</strong> — adds lifecycle-viewmodel-compose; conventional.</li>
+</ol>
+
+<h2 id="deferred">12. Decisions deferred</h2>
+<p>Dark mode + toggle (SP-7) · settings re-edit of choices (SP-7) · app icons in block-list rows · permission-screen copy polish (forlater #2 rides with this theme era but isn't blocking) · Devanagari wordmark · custom motion · South-Indian serif bundling.</p>
+
+<h2 id="deps">13. Dependencies on Pranav</h2>
+<ol>
+  <li><strong>Spec review</strong> — gate to the implementation plan.</li>
+  <li><strong>Drop the two reference images</strong> into <code>docs/design-refs/</code>.</li>
+  <li><strong>Visual sign-off</strong> at acceptance (criterion 7) — the pending SP-2 emulator check rides along in the same session.</li>
+</ol>
+
+</main>
+</body>
+</html>
