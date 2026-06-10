@@ -8,6 +8,9 @@ from each entry's `text.devanagari` master, via Aksharamukha.
 - Regenerate: `.venv/bin/python generate_scripts.py`
 - Verify no drift: `.venv/bin/python generate_scripts.py --check`
 
+The target file `app/src/main/assets/content/mantras.json` is created in plan
+Task 6 — running the tool before that exits with a clear error (code 2).
+
 > **Python version:** the venv MUST be built with Python **3.9–3.11**, not 3.12+.
 > Aksharamukha 2.x (all published releases, incl. 2.2.1 and 2.3) ships a dead
 > `from ast import Str` import in `PreProcess.py`; `ast.Str` was removed in

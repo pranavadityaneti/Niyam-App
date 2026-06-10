@@ -49,10 +49,18 @@ def main() -> int:
     parser.add_argument("--check", action="store_true")
     args = parser.parse_args()
 
+    if not MANTRAS_JSON.exists():
+        print(f"error: {MANTRAS_JSON} not found (create it in plan Task 6 first)", file=sys.stderr)
+        return 2
+
     data = json.loads(MANTRAS_JSON.read_text(encoding="utf-8"))
     drift = []
     for m in data["mantras"]:
-        derived = derive(m["text"]["devanagari"])
+        try:
+            derived = derive(m["text"]["devanagari"])
+        except KeyError as e:
+            print(f"error: entry {m.get('id', '<no id>')} missing key {e}", file=sys.stderr)
+            return 2
         for field, value in derived.items():
             if m["text"].get(field) != value:
                 drift.append(f'{m["id"]}.text.{field}')
