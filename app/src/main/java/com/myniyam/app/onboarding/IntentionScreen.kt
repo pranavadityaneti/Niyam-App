@@ -1,12 +1,14 @@
 package com.myniyam.app.onboarding
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.myniyam.app.R
 import com.myniyam.app.data.Intention
 
 @Composable
 fun IntentionScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
+    val ctx = LocalContext.current
     val options = listOf(
         Intention.FOCUS to stringResource(R.string.onb_intention_focus),
         Intention.CALM to stringResource(R.string.onb_intention_calm),
@@ -18,7 +20,10 @@ fun IntentionScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
         step = 1,
         title = stringResource(R.string.onb_intention_title),
         ctaEnabled = vm.canContinueFromIntention(),
-        onContinue = onContinue
+        onContinue = {
+            vm.persistIntention(ctx)
+            onContinue()
+        }
     ) {
         options.forEach { (intention, label) ->
             SelectableCard(

@@ -35,6 +35,11 @@ class OnboardingViewModel : ViewModel() {
     fun canContinueFromMantra() = selectedMantraId != null
     fun canContinueFromApps() = selectedPackages.isNotEmpty()
 
+    fun persistIntention(context: Context) {
+        val intention = selectedIntention ?: return
+        viewModelScope.launch { UserPrefs.setIntention(context, intention) }
+    }
+
     fun persistMantra(context: Context) {
         val id = selectedMantraId ?: return
         viewModelScope.launch { UserPrefs.setCurrentMantra(context, id) }

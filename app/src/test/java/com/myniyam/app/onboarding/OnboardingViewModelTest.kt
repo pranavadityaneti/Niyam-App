@@ -19,6 +19,13 @@ class OnboardingViewModelTest {
     }
 
     @Test
+    fun `intention selection is exposed for persistence`() {
+        val vm = OnboardingViewModel()
+        vm.selectIntention(Intention.DHARMA)
+        assertEquals(Intention.DHARMA, vm.selectedIntention)
+    }
+
+    @Test
     fun `mantra continue gating`() {
         val vm = OnboardingViewModel()
         assertFalse(vm.canContinueFromMantra())
