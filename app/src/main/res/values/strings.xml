@@ -7,6 +7,16 @@
     <string name="welcome_subtitle">A pause before the scroll.</string>
     <string name="welcome_cta">Get started</string>
 
+    <!-- Onboarding -->
+    <string name="onb_step_fmt">Step %1$d of 4</string>
+    <string name="onb_continue">Continue</string>
+    <string name="onb_intention_title">Why are you here?</string>
+    <string name="onb_intention_focus">Focus better, scroll less</string>
+    <string name="onb_intention_calm">Calm a busy mind</string>
+    <string name="onb_intention_sadhana">Start a daily sadhana</string>
+    <string name="onb_intention_dharma">Feel more connected to dharma</string>
+    <string name="onb_intention_devotion">Deepen my devotion</string>
+
     <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
     <string name="perm_usage_title">See when you open blocked apps</string>
     <string name="perm_usage_body">To see when you open Instagram, Facebook, or YouTube — so we can show your mantra first.</string>
