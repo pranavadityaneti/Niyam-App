@@ -1,5 +1,18 @@
 # Niyam — Session Log
 
+## 2026-06-10 — SP-4 EXECUTED — home + sadhana progress + streak code-complete
+
+**Sub-project 4 of 7 shipped as code** under the full-control grant. Range `0f4da3f..b734bf6`.
+
+- **Test suite 55 → 69** (all green): ProgressMath 7 (streak/dayN/isComplete boundary), UserPrefs 7 (4 new progress fields), OnboardingViewModel 5, NextSadhana 3.
+- **What shipped:** Room `read_events` + `ProgressRepository` (fire-and-forget recordRead from the overlay Continue tap + completion detection); `ProgressMath` pure date math; UserPrefs += selectedIntention / sadhanaStartEpochDay / completedMantraIds / pendingCelebration (`setCurrentMantra` re-stamps journeys atomically); onboarding persists intention; **Home rebuilt to brand** (mantra card, orange Day-N-of-14 bar, streak/today chips, compact protection row — old green/red hex banner gone); Celebration → NextSadhana picker (curated, excludes completed/current, backfills).
+- **Engine touch verified to bytecode-level standards:** OverlayManager diff = 1 import + 2-line listener; unlock path provably non-blocking.
+- **Session-interruption recovery:** per-task review records for T4-T9 were lost mid-execution (model switches); recovered via one integrated final review (verdict: code-complete, no Critical/Important). T10 recovered from working tree, verified, committed. Two optional test gaps closed (`b734bf6`).
+- **OPEN (manual, one emulator session closes all):** SP-4 criteria 3/4-spot/6 + SP-3 criteria 1-4,6,7 + SP-2 criteria 4-5. Acceptance report: `docs/superpowers/test-reports/2026-06-10-sp4-acceptance.md`.
+- **Next:** SP-5 (library + filters + sadhana switching) → SP-7 (settings/notifications/dark) → SP-6 (paywall code) → landing page. Monetization questionnaire still awaiting Pranav's answers (gates SP-6 live billing only).
+
+---
+
 ## 2026-06-10 — SP-3 EXECUTED — onboarding + brand theme code-complete
 
 **Sub-project 3 of 7 shipped as code.** Plan tasks 1–14 all executed; Task 14 = integrated verification + acceptance report.
