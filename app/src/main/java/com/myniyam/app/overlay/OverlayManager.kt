@@ -10,10 +10,15 @@ import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import com.myniyam.app.R
-import com.myniyam.app.data.PlaceholderMantra
+import com.myniyam.app.data.CurrentSadhana
+import com.myniyam.app.data.MantraRepository
+import com.myniyam.app.data.Script
 import com.myniyam.app.service.AppLockAccessibilityService
 
 object OverlayManager {
+
+    // The timer is the engine's rule, not the content's — spec keeps it fixed at 15s.
+    private const val UNLOCK_TIMER_SECONDS = 15
 
     private var overlayView: View? = null
     private var attachedPkg: String? = null
@@ -24,14 +29,17 @@ object OverlayManager {
 
         val view = LayoutInflater.from(ctx).inflate(R.layout.overlay_mantra, null, false)
 
-        view.findViewById<TextView>(R.id.overlay_devanagari).text = PlaceholderMantra.DEVANAGARI
-        view.findViewById<TextView>(R.id.overlay_transliteration).text = PlaceholderMantra.TRANSLITERATION
-        view.findViewById<TextView>(R.id.overlay_meaning).text = PlaceholderMantra.ENGLISH_MEANING
+        MantraRepository.ensureLoaded(ctx)
+        val mantra = MantraRepository.displayMantra(CurrentSadhana.MANTRA_ID)
+        val lang = CurrentSadhana.LANGUAGE
+        view.findViewById<TextView>(R.id.overlay_devanagari).text = mantra.text.forScript(lang.script)
+        view.findViewById<TextView>(R.id.overlay_transliteration).text = mantra.text.forScript(Script.ROMAN)
+        view.findViewById<TextView>(R.id.overlay_meaning).text = mantra.meaning.forLang(lang.meaningLang)
 
         val countdown = view.findViewById<TextView>(R.id.overlay_countdown)
         val continueBtn = view.findViewById<Button>(R.id.overlay_continue)
 
-        countdown.text = ctx.getString(R.string.overlay_unlocking_in, PlaceholderMantra.UNLOCK_TIMER_SECONDS)
+        countdown.text = ctx.getString(R.string.overlay_unlocking_in, UNLOCK_TIMER_SECONDS)
         continueBtn.isEnabled = false
         continueBtn.setOnClickListener { hide(ctx) }
 
@@ -81,7 +89,7 @@ object OverlayManager {
     }
 
     private fun startTimer(ctx: Context, countdown: TextView, continueBtn: Button) {
-        val totalMs = PlaceholderMantra.UNLOCK_TIMER_SECONDS * 1000L
+        val totalMs = UNLOCK_TIMER_SECONDS * 1000L
         timer = object : CountDownTimer(totalMs, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsLeft = (millisUntilFinished / 1000L).toInt().coerceAtLeast(0)
