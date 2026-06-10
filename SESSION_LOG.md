@@ -1,6 +1,30 @@
 # Niyam — Session Log
 
-## 2026-06-10 — Session 3: SP-2 Task 10 — Content Batch D (Dharma, 5 entries)
+## 2026-06-10 — Session 2 (cont.): SP-2 EXECUTED END-TO-END — sub-project 2 code-complete
+
+### What happened
+
+Pranav approved the SP-2 plan and chose **subagent-driven execution** (implementer + spec reviewer + quality reviewer per task, all on `model: opus`; main loop Fable 5 — see memory `niyam-model-policy`). All 14 plan tasks executed and reviewed. **42 subagent dispatches total** across implementation, two-stage reviews, surgical fixes, and the final whole-implementation review.
+
+### Headline results
+
+- **Catalog complete: 26 entries** in `app/src/main/assets/content/mantras.json` (158.9KB) — 7 scripts + 8 meaning languages each, every Devanagari master verified char-by-char against ≥2 independent sources by implementers AND re-verified against different sources by scripture reviewers.
+- **Test suite 20 → 43** (model 4, display-language 2, repository 7, content-validation 10 incl. per-script Unicode-block + meaning-length gates).
+- **Overlay now serves Gayatri from the repository** (`CurrentSadhana.MANTRA_ID = "gayatri"`); repository pre-warmed off-main-thread in NiyamApplication; PlaceholderMantra demoted to airbag-source, marked for deletion pending Pranav.
+- **Tooling:** `tools/generate_scripts.py` (Aksharamukha 2.2.1, **Python 3.11 venv** — 3.12+ breaks aksharamukha; RomanColloquial scheme; Tamil+Grantha) + `--check` drift gate. Spot-check log committed: 0 errors, 7 named convention differences, Bengali/Gujarati calibration gap closed.
+- **Review-driven fixes along the way:** gayatri meaning strengthened (default overlay line, `0824c71`); gita-3-35 death-clause restored (`834f847` + hi `मर मिटना` `7027cdb`); om mr danda fix; tool error-UX (`2547cce`); Lalita vocalic-ḷ Unicode defect caught & fixed at source.
+- **Final whole-implementation review: SP-2 code-complete = YES.** Acceptance criteria 1-3, 6-7 PASS (independently re-run); **4-5 OPEN** (emulator Gayatri render + font sanity — no emulator was connected; needs a booted emulator or Pranav's phone).
+
+### Open threads
+
+1. **Acceptance 4+5:** install on emulator/phone, open a blocked app, confirm 3-line Gayatri + roman + en meaning, no tofu in Devanagari/Telugu/Tamil (flip CurrentSadhana.LANGUAGE temporarily for the latter two, or wait for SP-3's picker).
+2. **PlaceholderMantra.kt deletion** — awaiting Pranav's explicit confirmation.
+3. forlater.md now has 4 items (native review enriched with reviewer flags; OEM copy; Phase 2 device test; FALLBACK om alignment).
+4. UI references still pending from Pranav.
+
+---
+
+## 2026-06-10 — Session 3 (subagent log): SP-2 Task 10 — Content Batch D (Dharma, 5 entries)
 
 ### Timeline
 
