@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Niyam — Content Data Model &amp; Seed Library Design</title>
+<style>
+  :root {
+    --ink: #1c1c1c;
+    --muted: #5a5a5a;
+    --border: #d8d8d8;
+    --bg: #fdfdfb;
+    --accent: #7a3d12;
+    --code-bg: #f3efe9;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  main { max-width: 880px; margin: 0 auto; padding: 48px 32px 96px; }
+  header h1 { font-size: 30px; margin: 0 0 4px; }
+  header .sub { color: var(--muted); font-size: 14px; }
+  header .meta {
+    margin-top: 18px; padding: 14px 18px;
+    background: var(--code-bg); border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  header .meta div { margin: 2px 0; }
+  h2 {
+    font-size: 22px;
+    margin: 44px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  h3 { font-size: 17px; margin: 28px 0 8px; color: var(--accent); }
+  p, ul, ol, table { margin: 10px 0; }
+  ul, ol { padding-left: 26px; }
+  li { margin: 4px 0; }
+  code {
+    background: var(--code-bg);
+    padding: 1px 5px;
+    border-radius: 3px;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 0.92em;
+  }
+  pre {
+    background: var(--code-bg);
+    padding: 14px 18px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    overflow-x: auto;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    font-size: 13px;
+    line-height: 1.4;
+  }
+  pre code { background: transparent; padding: 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th, td { border: 1px solid var(--border); padding: 7px 9px; text-align: left; vertical-align: top; }
+  th { background: var(--code-bg); font-weight: 600; }
+  .plain-english {
+    background: #fff8ec;
+    border-left: 3px solid #d4af37;
+    padding: 10px 14px;
+    margin: 12px 0;
+    font-size: 14.5px;
+    border-radius: 3px;
+  }
+  .plain-english strong { color: var(--accent); }
+  nav.toc {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 22px;
+    margin: 24px 0 8px;
+    font-size: 14px;
+  }
+  nav.toc ol { padding-left: 22px; margin: 0; }
+  nav.toc a { color: var(--accent); text-decoration: none; }
+  nav.toc a:hover { text-decoration: underline; }
+  .status-pill {
+    display: inline-block;
+    background: #2E7D32;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  @media print {
+    body { background: white; }
+    main { padding: 24px; max-width: none; }
+    nav.toc { page-break-after: always; }
+    h2 { page-break-after: avoid; }
+    pre, table { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Niyam — Content Data Model &amp; Seed Library Design</h1>
+  <div class="sub">Niyam (नियम) · <a href="https://www.myniyam.com">www.myniyam.com</a> · Sub-project 2 of 7</div>
+  <div class="meta">
+    <div><strong>Date:</strong> 2026-06-10</div>
+    <div><strong>Status:</strong> <span class="status-pill">Design approved — moving to implementation plan</span></div>
+  </div>
+</header>
+
+<nav class="toc">
+<strong>Contents</strong>
+<ol>
+  <li><a href="#purpose">Purpose</a></li>
+  <li><a href="#scope">Scope and non-goals</a></li>
+  <li><a href="#decisions">Decisions locked during design</a></li>
+  <li><a href="#schema">Schema</a></li>
+  <li><a href="#seed">Seed library — the 26 entries</a></li>
+  <li><a href="#pipeline">Content production pipeline</a></li>
+  <li><a href="#storage">Storage and loading architecture</a></li>
+  <li><a href="#verification">Verification strategy and error handling</a></li>
+  <li><a href="#integration">Integration scope</a></li>
+  <li><a href="#acceptance">Acceptance criteria</a></li>
+  <li><a href="#risks">Known risks</a></li>
+  <li><a href="#deferred">Decisions deferred</a></li>
+  <li><a href="#deps">Dependencies on Pranav</a></li>
+</ol>
+</nav>
+
+<h2 id="purpose">1. Purpose</h2>
+<p>Build the content store every future Niyam feature reads from: the schema for a mantra entry, the storage/loading mechanism inside the app, and 26 fully populated seed entries. Prove the pipe end-to-end by making the unlock overlay read its mantra from the store instead of the hardcoded <code>PlaceholderMantra</code> constants.</p>
+<div class="plain-english"><strong>In plain English:</strong> right now the mantra is a sticker glued onto the engine. This sub-project builds the bookshelf, fills it with 26 properly sourced mantras in all supported scripts and languages, and teaches the engine to pick its mantra off the shelf.</div>
+<p>Downstream consumers: onboarding mantra picker (SP-3), home/progress (SP-4), library + filters (SP-5). They all read this schema; none of them are built here.</p>
+
+<h2 id="scope">2. Scope and non-goals</h2>
+<h3>In scope</h3>
+<ul>
+  <li>JSON schema for mantra entries (versioned).</li>
+  <li><code>MantraRepository</code> in the app: parse-once, in-memory, immutable, with a hard fallback.</li>
+  <li>26 seed entries fully populated: Devanagari master, 6 generated scripts + readable roman, 8 meaning languages, source attribution, deity tag, intention tags, read-time estimate, completion threshold.</li>
+  <li>Offline content-production tooling (<code>tools/generate_scripts.py</code> using Aksharamukha) — runs on Pranav's Mac at authoring time, never ships in the APK.</li>
+  <li>Build-time validation test that fails the build on malformed/incomplete content.</li>
+  <li>Overlay integration: display Gayatri (Devanagari + roman + English meaning) served from the repository.</li>
+</ul>
+<h3>Explicit non-goals</h3>
+<ul>
+  <li>Library/browse UI, filters, mantra selection UI (SP-5).</li>
+  <li>Onboarding language picker UI (SP-3) — a <code>CURRENT_LANGUAGE</code> constant stands in.</li>
+  <li>Progress tracking, Room database, streaks (SP-4).</li>
+  <li>Timer changes — stays fixed at 15s even for long entries (tension noted in §12).</li>
+  <li>Audio recitations.</li>
+  <li>Remote content delivery / CMS — content ships in the APK; updates ship as app updates.</li>
+  <li>Native-speaker review — queued in <code>forlater.md</code>, gates public launch, not this sub-project.</li>
+  <li>Any visual/theming change to the overlay beyond swapping its text source.</li>
+</ul>
+
+<h2 id="decisions">3. Decisions locked during design</h2>
+<table>
+  <tr><th>Decision</th><th>Choice</th><th>Why / context</th></tr>
+  <tr><td>Meaning languages</td><td><strong>All 8</strong> (en, hi, te, ta, kn, mr, bn, gu)</td><td>Pranav's call 2026-06-10. Picker becomes meaningful for every option.</td></tr>
+  <tr><td>"Devanagari (Sanskrit)" meaning language</td><td>English</td><td>Purist option pairs original script with the audience's default explanation language; Hindi-meaning users have the dedicated Hindi option. Confirmed by Pranav.</td></tr>
+  <tr><td>Review gate</td><td><strong>None for this sub-project</strong></td><td>Pranav confirmed no reviewers available. Verification is mechanical (§8); native review queued in forlater.md as a pre-launch item.</td></tr>
+  <tr><td>Content sourcing</td><td>Original Devanagari masters cross-checked against ≥2 authoritative sources; scripts machine-generated; meanings written original</td><td>Avoids site-to-site convention inconsistency and copy-paste errors; vignanam.org / stotranidhi.com used read-only as verification corpus.</td></tr>
+  <tr><td>Copyright stance on meanings</td><td>Pranav assessed copyright as a non-issue; pipeline writes original meanings anyway for single-voice tone consistency</td><td>Recorded 2026-06-10.</td></tr>
+  <tr><td>Tamil convention</td><td>Tamil script with Grantha consonants (ஜ ஷ ஸ ஹ)</td><td>Standard in Tamil devotional publishing; Aksharamukha's supported mode.</td></tr>
+  <tr><td>Roman convention</td><td>Simplified readable roman, no diacritics ("Karmanyevadhikaraste")</td><td>Matches the product brief's own examples; IAST toggle is a possible future setting.</td></tr>
+  <tr><td>Vedic svara (accent) marks</td><td>Omitted in v1</td><td>Standard app practice; svaras don't carry across scripts.</td></tr>
+  <tr><td>Deity tag</td><td>Single value per entry</td><td>Keeps the SP-5 filter simple. Gita verses tagged <code>krishna</code>.</td></tr>
+  <tr><td>Completion thresholds</td><td>All 26 entries at 14 days for v1</td><td>Brief allows per-mantra override; tuning deferred until real usage data exists (SP-4+).</td></tr>
+  <tr><td>26th entry</td><td><code>om</code> added to the brief's 25</td><td>Already the skeleton's mantra; doubles as the runtime fallback entry.</td></tr>
+</table>
+
+<h2 id="schema">4. Schema</h2>
+<p>One JSON file: <code>app/src/main/assets/content/mantras.json</code>.</p>
+<pre><code>{
+  "schemaVersion": 1,
+  "contentVersion": "2026-06-10.1",
+  "mantras": [
+    {
+      "id": "gayatri",
+      "canonicalName": "Gayatri Mantra",
+      "originalLanguage": "sanskrit",
+      "text": {
+        "devanagari": "ॐ भूर्भुवः स्वः । तत्सवितुर्वरेण्यं …",
+        "telugu": "…", "tamil": "…", "kannada": "…",
+        "bengali": "…", "gujarati": "…",
+        "roman": "Om Bhur Bhuvah Svah | Tat Savitur Varenyam …"
+      },
+      "meaning": {
+        "en": "…", "hi": "…", "te": "…", "ta": "…",
+        "kn": "…", "mr": "…", "bn": "…", "gu": "…"
+      },
+      "source": "Rig Veda 3.62.10",
+      "sourceRefs": ["https://sanskritdocuments.org/…", "https://www.vignanam.org/…"],
+      "deity": "universal",
+      "intentions": ["sadhana", "focus"],
+      "estimatedReadSeconds": 30,
+      "completionThresholdDays": 14
+    }
+  ]
+}</code></pre>
+
+<h3>Field semantics</h3>
+<table>
+  <tr><th>Field</th><th>Type</th><th>Rules</th></tr>
+  <tr><td><code>schemaVersion</code></td><td>int</td><td>Bumped only on breaking schema change; parser rejects unknown major versions.</td></tr>
+  <tr><td><code>contentVersion</code></td><td>string</td><td><code>YYYY-MM-DD.n</code>; bumped on any content edit. Displayed nowhere; used in bug reports.</td></tr>
+  <tr><td><code>id</code></td><td>string</td><td>Stable slug, lowercase-kebab, never changes once shipped (progress tracking joins on it in SP-4).</td></tr>
+  <tr><td><code>canonicalName</code></td><td>string</td><td>English display name.</td></tr>
+  <tr><td><code>originalLanguage</code></td><td>enum</td><td><code>sanskrit</code> | <code>awadhi</code>. Exists because Hanuman Chalisa is Awadhi — the schema must not claim everything is Sanskrit.</td></tr>
+  <tr><td><code>text</code></td><td>object</td><td>Exactly 7 keys: <code>devanagari</code> (master), <code>telugu</code>, <code>tamil</code>, <code>kannada</code>, <code>bengali</code>, <code>gujarati</code> (generated), <code>roman</code> (generated, readable). All non-empty.</td></tr>
+  <tr><td><code>meaning</code></td><td>object</td><td>Exactly 8 keys: <code>en, hi, te, ta, kn, mr, bn, gu</code>. All non-empty, 2-3 accessible lines, single authorial voice.</td></tr>
+  <tr><td><code>source</code></td><td>string</td><td>User-facing attribution (e.g., "Bhagavad Gita 2.47").</td></tr>
+  <tr><td><code>sourceRefs</code></td><td>string[]</td><td>≥1 verification URLs. Internal only — never rendered in UI.</td></tr>
+  <tr><td><code>deity</code></td><td>enum</td><td><code>shiva, vishnu, devi, ganesha, hanuman, krishna, rama, saraswati, lakshmi, universal</code>.</td></tr>
+  <tr><td><code>intentions</code></td><td>enum[]</td><td>≥1 of <code>focus, calm, sadhana, dharma, devotion</code>. Drives onboarding recommendations (SP-3) and library filters (SP-5).</td></tr>
+  <tr><td><code>estimatedReadSeconds</code></td><td>int</td><td>Hand-set display estimate; length filter buckets derive at runtime (&lt;30 / 30-60 / &gt;60).</td></tr>
+  <tr><td><code>completionThresholdDays</code></td><td>int</td><td>Positive; 14 for all v1 entries.</td></tr>
+</table>
+
+<h3>Language picker mapping</h3>
+<p>The 9-option picker resolves to a (script, meaning-language) pair — <strong>7 scripts + 8 meaning languages</strong>, not 9×9:</p>
+<table>
+  <tr><th>Picker choice</th><th>Script</th><th>Meaning</th></tr>
+  <tr><td>Devanagari (Sanskrit)</td><td><code>devanagari</code></td><td><code>en</code></td></tr>
+  <tr><td>Hindi</td><td><code>devanagari</code></td><td><code>hi</code></td></tr>
+  <tr><td>Marathi</td><td><code>devanagari</code></td><td><code>mr</code></td></tr>
+  <tr><td>English</td><td><code>roman</code></td><td><code>en</code></td></tr>
+  <tr><td>Telugu</td><td><code>telugu</code></td><td><code>te</code></td></tr>
+  <tr><td>Tamil</td><td><code>tamil</code></td><td><code>ta</code></td></tr>
+  <tr><td>Kannada</td><td><code>kannada</code></td><td><code>kn</code></td></tr>
+  <tr><td>Bengali</td><td><code>bengali</code></td><td><code>bn</code></td></tr>
+  <tr><td>Gujarati</td><td><code>gujarati</code></td><td><code>gu</code></td></tr>
+</table>
+<p>This mapping lives in one Kotlin function (<code>DisplayLanguage.resolve()</code>), unit-tested, used by every future screen.</p>
+<p>Content volume: 26 entries × 7 scripts = 182 text blocks; 26 × 8 = <strong>208 meaning blocks</strong>.</p>
+
+<h2 id="seed">5. Seed library — the 26 entries</h2>
+<p>All thresholds 14 days. Read-times are hand-set estimates.</p>
+<table>
+  <tr><th>#</th><th>id</th><th>Name</th><th>Source</th><th>Orig. lang</th><th>Deity</th><th>Intentions</th><th>~Read s</th></tr>
+  <tr><td>1</td><td><code>gita-2-47</code></td><td>Karmanyevadhikaraste</td><td>Bhagavad Gita 2.47</td><td>sanskrit</td><td>krishna</td><td>focus, dharma</td><td>20</td></tr>
+  <tr><td>2</td><td><code>gita-6-5</code></td><td>Uddhared Atmanatmanam</td><td>Bhagavad Gita 6.5</td><td>sanskrit</td><td>krishna</td><td>focus</td><td>20</td></tr>
+  <tr><td>3</td><td><code>gita-2-14</code></td><td>Matra-sparshas Tu</td><td>Bhagavad Gita 2.14</td><td>sanskrit</td><td>krishna</td><td>focus, calm</td><td>20</td></tr>
+  <tr><td>4</td><td><code>asato-ma</code></td><td>Asato Ma Sadgamaya</td><td>Brihadaranyaka Upanishad 1.3.28</td><td>sanskrit</td><td>universal</td><td>focus, sadhana</td><td>15</td></tr>
+  <tr><td>5</td><td><code>gita-6-6</code></td><td>Bandhur Atmatmanas</td><td>Bhagavad Gita 6.6</td><td>sanskrit</td><td>krishna</td><td>focus</td><td>20</td></tr>
+  <tr><td>6</td><td><code>mahamrityunjaya</code></td><td>Mahamrityunjaya Mantra</td><td>Rig Veda 7.59.12</td><td>sanskrit</td><td>shiva</td><td>calm, devotion</td><td>25</td></tr>
+  <tr><td>7</td><td><code>om-sahanavavatu</code></td><td>Om Sahanavavatu (Shanti Mantra)</td><td>Taittiriya Upanishad (invocation)</td><td>sanskrit</td><td>universal</td><td>calm, sadhana</td><td>20</td></tr>
+  <tr><td>8</td><td><code>om-namah-shivaya</code></td><td>Om Namah Shivaya</td><td>Panchakshara — Sri Rudram (Yajur Veda)</td><td>sanskrit</td><td>shiva</td><td>calm, devotion</td><td>10</td></tr>
+  <tr><td>9</td><td><code>gita-2-70</code></td><td>Apuryamanam</td><td>Bhagavad Gita 2.70</td><td>sanskrit</td><td>krishna</td><td>calm</td><td>20</td></tr>
+  <tr><td>10</td><td><code>twameva-mata</code></td><td>Twameva Mata</td><td>Traditional prayer (Pandava Gita)</td><td>sanskrit</td><td>universal</td><td>calm, devotion</td><td>15</td></tr>
+  <tr><td>11</td><td><code>gayatri</code></td><td>Gayatri Mantra</td><td>Rig Veda 3.62.10</td><td>sanskrit</td><td>universal</td><td>sadhana, focus</td><td>30</td></tr>
+  <tr><td>12</td><td><code>vakratunda</code></td><td>Vakratunda Mahakaya</td><td>Traditional Ganesha Vandana</td><td>sanskrit</td><td>ganesha</td><td>sadhana, focus</td><td>15</td></tr>
+  <tr><td>13</td><td><code>saraswati-vandana</code></td><td>Ya Kundendu Tushara Hara Dhavala</td><td>Saraswati Stotram (traditional)</td><td>sanskrit</td><td>saraswati</td><td>sadhana, focus</td><td>30</td></tr>
+  <tr><td>14</td><td><code>guru-brahma</code></td><td>Guru Brahma Guru Vishnu</td><td>Guru Stotram (traditional)</td><td>sanskrit</td><td>universal</td><td>sadhana, devotion</td><td>15</td></tr>
+  <tr><td>15</td><td><code>hare-krishna</code></td><td>Hare Krishna Mahamantra</td><td>Kali-Santarana Upanishad</td><td>sanskrit</td><td>krishna</td><td>sadhana, devotion</td><td>20</td></tr>
+  <tr><td>16</td><td><code>gita-4-7-8</code></td><td>Yada Yada Hi Dharmasya</td><td>Bhagavad Gita 4.7-8</td><td>sanskrit</td><td>krishna</td><td>dharma</td><td>35</td></tr>
+  <tr><td>17</td><td><code>gita-18-66</code></td><td>Sarva-dharman Parityajya</td><td>Bhagavad Gita 18.66</td><td>sanskrit</td><td>krishna</td><td>dharma, devotion</td><td>20</td></tr>
+  <tr><td>18</td><td><code>gita-3-35</code></td><td>Shreyan Svadharmo</td><td>Bhagavad Gita 3.35</td><td>sanskrit</td><td>krishna</td><td>dharma, focus</td><td>20</td></tr>
+  <tr><td>19</td><td><code>purusha-suktam</code></td><td>Purusha Suktam (opening verse)</td><td>Rig Veda 10.90.1</td><td>sanskrit</td><td>universal</td><td>dharma, sadhana</td><td>25</td></tr>
+  <tr><td>20</td><td><code>nasadiya-suktam</code></td><td>Nasadiya Suktam (opening verse)</td><td>Rig Veda 10.129.1</td><td>sanskrit</td><td>universal</td><td>dharma</td><td>25</td></tr>
+  <tr><td>21</td><td><code>hanuman-chalisa-opening</code></td><td>Hanuman Chalisa (Doha + chaupais 1-5)</td><td>Hanuman Chalisa — Tulsidas</td><td><strong>awadhi</strong></td><td>hanuman</td><td>devotion</td><td>90</td></tr>
+  <tr><td>22</td><td><code>vishnu-sahasranama-opening</code></td><td>Vishnu Sahasranama (verses 1-8)</td><td>Mahabharata, Anushasana Parva</td><td>sanskrit</td><td>vishnu</td><td>devotion</td><td>120</td></tr>
+  <tr><td>23</td><td><code>lalita-sahasranama-opening</code></td><td>Lalita Sahasranama (verses 1-8)</td><td>Brahmanda Purana</td><td>sanskrit</td><td>devi</td><td>devotion</td><td>120</td></tr>
+  <tr><td>24</td><td><code>krishna-ashtakam</code></td><td>Krishna Ashtakam (verse 1)</td><td>Traditional (attr. Adi Shankaracharya)</td><td>sanskrit</td><td>krishna</td><td>devotion</td><td>20</td></tr>
+  <tr><td>25</td><td><code>ram-raksha-opening</code></td><td>Ram Raksha Stotra (opening)</td><td>Budha Kaushika</td><td>sanskrit</td><td>rama</td><td>devotion, calm</td><td>30</td></tr>
+  <tr><td>26</td><td><code>om</code></td><td>Om (Pranava)</td><td>Mandukya Upanishad</td><td>sanskrit</td><td>universal</td><td>calm, sadhana</td><td>5</td></tr>
+</table>
+<p>Notes: entry 21 is the schema's reason for <code>originalLanguage</code> — Chalisa is Awadhi, and claiming otherwise would be the kind of error this product cannot afford. Entries 22-23 (120s reads) far exceed the fixed 15s unlock timer — recorded in §12. <code>om</code> doubles as the runtime fallback entry (§8).</p>
+
+<h2 id="pipeline">6. Content production pipeline</h2>
+<pre>[Claude writes Devanagari master]──cross-checked vs ≥2 sources, URLs recorded──► mantras.json (master fields)
+        │
+        ▼
+[tools/generate_scripts.py — Aksharamukha, offline on Pranav's Mac]
+        │   one tool, one frozen config → identical conventions across all 26
+        ▼
+telugu · tamil(+Grantha) · kannada · bengali · gujarati · roman   (written back into mantras.json)
+        │
+        ▼
+[Claude writes meaning.en]──► [Claude translates into hi, te, ta, kn, mr, bn, gu — tone-matched]
+        │
+        ▼
+[build-time validation test] ──► [spot-check: 3 entries/script vs vignanam.org / stotranidhi.com, log committed]</pre>
+<ul>
+  <li><strong>No copy-paste anywhere.</strong> Master → scripts is mechanical; meanings are authored once in one voice.</li>
+  <li><strong>Convention consistency by construction:</strong> one tool, one config, frozen in the repo. Tamil mode: Grantha consonants. Roman mode: readable, no diacritics.</li>
+  <li><strong>Deterministic regeneration:</strong> edit a master, re-run the tool, derived fields update identically. Tool committed at <code>tools/generate_scripts.py</code>; <code>aksharamukha</code> version pinned in <code>tools/requirements.txt</code>.</li>
+  <li><strong>Licensing:</strong> Aksharamukha (AGPL) runs offline at authoring time only; nothing of it ships in the APK. Its output — script renderings of public-domain texts — carries no license burden into the app.</li>
+</ul>
+<div class="plain-english"><strong>In plain English:</strong> we keep one carefully verified original per mantra, and a machine derives every script version the same way every time. Websites are only used to double-check samples — like proofreading against a reference book, never photocopying from it.</div>
+
+<h2 id="storage">7. Storage and loading architecture</h2>
+<ul>
+  <li><code>assets/content/mantras.json</code> — single file, target ≤400KB (estimate ~250KB).</li>
+  <li><code>MantraRepository</code> (new, <code>data/</code> package): lazy parse-once off the main thread via kotlinx-serialization (<code>ignoreUnknownKeys = true</code>). Exposes <code>all()</code>, <code>byId(id)</code>. Immutable after load.</li>
+  <li><code>Mantra</code> Kotlin data class mirrors the schema; enums for deity/intentions with <code>@SerialName</code>.</li>
+  <li><code>DisplayLanguage</code> enum (9 picker values) with <code>resolve(): Pair&lt;Script, MeaningLang&gt;</code> implementing the mapping table.</li>
+  <li>New dependency: <code>kotlinx-serialization-json</code> + the Kotlin serialization Gradle plugin (matches Kotlin 2.0.21).</li>
+  <li><strong>No database.</strong> Room arrives in SP-4 for user progress and joins content by <code>id</code>. Content updates ship as app updates with a <code>contentVersion</code> bump; git history is the audit trail.</li>
+</ul>
+<div class="plain-english"><strong>In plain English:</strong> the mantras live in one bundled file the app reads at startup into memory. No internet needed, ever. Updating content = shipping an app update, and every change is a reviewable line in git.</div>
+
+<h2 id="verification">8. Verification strategy and error handling</h2>
+<p>Adapted for the no-reviewer constraint (Pranav, 2026-06-10):</p>
+<table>
+  <tr><th>Layer</th><th>Risk</th><th>Mitigation</th></tr>
+  <tr><td>Devanagari masters</td><td>Typo in source text</td><td>Cross-checked against ≥2 independent authoritative sources (sanskritdocuments.org, Gita Press editions, GRETIL where applicable); <code>sourceRefs</code> recorded per entry</td></tr>
+  <tr><td>Generated scripts</td><td>Wrong tool configuration</td><td>Deterministic generation makes errors systematic, not random — spot-checking 3 entries per script against native devotional sites catches config-level mistakes; spot-check log committed</td></tr>
+  <tr><td>Meanings (8 languages)</td><td>Stiff or non-native phrasing</td><td>Short simple sentences; single authorial voice; <strong>residual risk accepted</strong> — easiest layer to hot-fix via content update; native review queued in forlater.md as launch gate</td></tr>
+  <tr><td>File integrity</td><td>Missing/malformed fields</td><td>Build-time validation test — the APK cannot build with broken content</td></tr>
+  <tr><td>Runtime parse failure</td><td>Corrupt asset on-device</td><td><code>MantraRepository</code> falls back to a built-in <code>om</code> entry (today's <code>PlaceholderMantra</code>, demoted from "the content" to "the airbag"); the overlay can never crash from bad content; failure logged</td></tr>
+</table>
+
+<h2 id="integration">9. Integration scope</h2>
+<ol>
+  <li><code>OverlayManager.show()</code> reads <code>MantraRepository.byId(CurrentSadhana.MANTRA_ID)</code> instead of <code>PlaceholderMantra</code> constants. <code>CurrentSadhana.MANTRA_ID = "gayatri"</code> — hardcoded stand-in for SP-3's onboarding choice. Gayatri chosen because a real three-line entry exercises Devanagari rendering harder than single-glyph ॐ.</li>
+  <li>Overlay fills the same three slots as today: script text (devanagari), transliteration (roman), meaning (en) — per <code>CurrentSadhana.LANGUAGE = DisplayLanguage.DEVANAGARI_SANSKRIT</code>, also a stand-in constant.</li>
+  <li>Fallback path wired: repository failure → <code>om</code> fallback entry → overlay renders normally.</li>
+  <li>Nothing else changes — no timer, layout, or service changes.</li>
+</ol>
+
+<h2 id="acceptance">10. Acceptance criteria</h2>
+<p>All verifiable on the emulator / JVM — no human reviewer in the loop:</p>
+<ol>
+  <li><strong>Validation test passes:</strong> 26 entries; unique ids; every entry has all 7 scripts and all 8 meanings non-empty; legal enum values; positive read-times and thresholds; ≥1 sourceRef each.</li>
+  <li><strong>Repository unit tests pass:</strong> load-and-parse, <code>byId</code> hit and miss, <code>DisplayLanguage.resolve()</code> for all 9 picker values, fallback path on a deliberately corrupt test asset.</li>
+  <li><strong>Spot-check log committed:</strong> 3 entries per generated script compared against external native-script sources; every discrepancy explained (convention vs error).</li>
+  <li><strong>Emulator:</strong> blocked-app launch shows Gayatri — Devanagari text, roman transliteration, English meaning — served from the repository.</li>
+  <li><strong>Font sanity:</strong> Devanagari, Telugu, and Tamil render on the emulator without tofu boxes.</li>
+  <li><strong>Size:</strong> <code>mantras.json</code> ≤ 400KB; no new permissions.</li>
+  <li><strong>Regression:</strong> all 20 existing unit tests still pass; Phase-1 overlay behavior unchanged apart from displayed text.</li>
+</ol>
+
+<h2 id="risks">11. Known risks</h2>
+<ol>
+  <li><strong>Vernacular meaning quality (highest residual risk).</strong> Claude-authored translations into 7 Indian languages without native review may read slightly stiff. Accepted by Pranav for this phase; queued for native review pre-launch; hot-fixable by content update.</li>
+  <li><strong>Long-text rendering.</strong> Sahasranama 8-verse blocks are large for the overlay's fixed layout — may overflow small screens. Skeleton displays only Gayatri, so this bites in SP-5; flagged for the UI pass (scrollable text region is the likely fix).</li>
+  <li><strong>Aksharamukha edge cases.</strong> Rare conjuncts or Vedic characters may transliterate imperfectly into Tamil/Bengali. Spot-checks target the likeliest entries (Sahasranamas, Vedic suktas).</li>
+  <li><strong>Attribution disputes.</strong> Some entries use traditional attributions ("attr. Adi Shankaracharya", "Pandava Gita") where scholarship is uncertain — wording stays at "traditional" to remain honest.</li>
+</ol>
+
+<h2 id="deferred">12. Decisions deferred</h2>
+<ul>
+  <li><strong>Timer vs read-time:</strong> 120s entries behind a 15s unlock timer — should the timer scale with <code>estimatedReadSeconds</code>? SP-4's call.</li>
+  <li><strong>Native-speaker review</strong> — forlater.md, pre-launch gate.</li>
+  <li><strong>Per-mantra threshold tuning</strong> — needs real usage data (SP-4+).</li>
+  <li><strong>IAST diacritics toggle</strong> for roman — future settings candidate.</li>
+  <li><strong>Malayalam (or any 10th language)</strong> — schema makes it additive; not in v1.</li>
+  <li><strong>Audio recitations</strong> — not designed.</li>
+  <li><strong>Library UI, selection, recommendation graph</strong> — SP-3/SP-5 consume <code>intentions</code> + <code>deity</code>; nothing here blocks them.</li>
+</ul>
+
+<h2 id="deps">13. Dependencies on Pranav</h2>
+<ol>
+  <li><strong>Review this spec</strong> — confirm before the implementation plan is written.</li>
+  <li><strong>Python on the Mac</strong> — the generation tool needs Python 3.9+ (<code>pip install aksharamukha</code>); availability checked during implementation.</li>
+  <li>Nothing else. No reviewers required for this sub-project's definition of done.</li>
+</ol>
+
+</main>
+</body>
+</html>

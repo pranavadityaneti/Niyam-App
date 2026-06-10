@@ -1,5 +1,29 @@
 # Niyam — Session Log
 
+## 2026-06-10 — Session 2: Phase 1 sign-off + Sub-project 2 design
+
+### Timeline
+
+1. **Phase 1 acceptance completed by Pranav on Pixel 9 emulator** (API 35, Google Play image — Pixel 6 lacked a Play Store image). 10 PASS, 1 N/A (Facebook not installed), 2 untested-presumed-pass (#11 debounce, #12 Recents survival — deferred to Phase 2 device testing). Report committed at `62a174e`. **Sub-project 1 signed off.**
+2. **Sub-project 2 (content model + seed mantras) brainstormed and design approved.** Key decisions, all Pranav-confirmed 2026-06-10:
+   - **Meanings in all 8 languages** (en, hi, te, ta, kn, mr, bn, gu) — not English-only. 26 entries × 8 = 208 meaning blocks.
+   - **"Devanagari (Sanskrit)" picker option pairs with English meaning** (purist script + default explanation language).
+   - **No human review gate for SP-2** — Pranav has no reviewers available; verification is mechanical (cross-sourced masters, deterministic generation, build-time validation). Native review queued in `forlater.md` as a pre-launch gate.
+   - **Content pipeline:** one Devanagari master per entry (cross-checked vs ≥2 authoritative sources) → Aksharamukha generates 6 scripts + roman offline → Claude authors original meanings (single voice) → build-time validation + spot-checks vs vignanam.org/stotranidhi.com. No scraping, no copy-paste.
+   - **Copyright:** Pranav assessed as non-issue; pipeline writes original meanings anyway.
+   - 26th entry `om` added (skeleton's mantra, doubles as runtime fallback).
+3. **`forlater.md` created** with 3 queued items: native-speaker review (pre-launch gate), OEM copy polish (UI pass), Phase 2 real-OEM test (phone arriving today).
+4. **Spec written + committed:** `docs/superpowers/specs/2026-06-10-content-model-design.{md,html}`. Awaiting Pranav's spec review → then writing-plans.
+
+### Open threads
+
+- Pranav reviews SP-2 spec (gate to implementation plan).
+- Phase 2 real-device test when phone arrives (forlater #3).
+- UI references still pending from Pranav (blocks all visual work).
+- Model note: session switched to Fable 5 via /model; Pranav's CLAUDE.md "never Haiku" rule still honored.
+
+---
+
 ## 2026-06-09 — Session 1: design → plan → walking-skeleton code complete
 
 ### Timeline
