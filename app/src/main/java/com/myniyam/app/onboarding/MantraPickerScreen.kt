@@ -8,6 +8,20 @@ import com.myniyam.app.data.Intention
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.StarterMantras
 
+private const val GIST_MAX_CHARS = 90
+
+/**
+ * One-line gist of a meaning: the first sentence, or a word-boundary
+ * truncation for single-sentence meanings with no ". " delimiter
+ * (the two Sahasranama entries).
+ */
+internal fun mantraGist(meaningEn: String): String {
+    val first = meaningEn.substringBefore(". ", meaningEn).removeSuffix(".")
+    if (first.length <= GIST_MAX_CHARS) return "$first."
+    val atWord = first.take(GIST_MAX_CHARS).substringBeforeLast(' ').trimEnd(',', ';', ':', '—', '-')
+    return "$atWord…"
+}
+
 @Composable
 fun MantraPickerScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
     val ctx = LocalContext.current
@@ -27,7 +41,7 @@ fun MantraPickerScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
         options.forEach { mantra ->
             SelectableCard(
                 text = mantra.canonicalName,
-                supportingText = mantra.meaning.en.substringBefore(". ") + ".",
+                supportingText = mantraGist(mantra.meaning.en),
                 trailingChip = stringResource(R.string.onb_read_time_fmt, mantra.estimatedReadSeconds),
                 selected = vm.selectedMantraId == mantra.id,
                 onClick = { vm.selectMantra(mantra.id) }
