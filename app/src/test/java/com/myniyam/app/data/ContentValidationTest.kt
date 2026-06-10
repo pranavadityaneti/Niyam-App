@@ -1,6 +1,9 @@
 package com.myniyam.app.data
 
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
@@ -112,6 +115,42 @@ class ContentValidationTest {
                     )
                 }
             }
+        }
+    }
+
+    @Test
+    fun `every entry declares sourceCategory explicitly in the asset`() {
+        val root = Json.parseToJsonElement(assetFile.readText()).jsonObject
+        val entries = root.getValue("mantras").jsonArray
+        entries.forEach { e ->
+            val obj = e.jsonObject
+            val id = obj.getValue("id").jsonPrimitive.content
+            assertTrue("$id: missing explicit sourceCategory", obj.containsKey("sourceCategory"))
+        }
+    }
+
+    @Test
+    fun `sourceCategory tags match the spec table`() {
+        val expected = mapOf(
+            "gayatri" to SourceCategory.VEDIC, "mahamrityunjaya" to SourceCategory.VEDIC,
+            "om-namah-shivaya" to SourceCategory.VEDIC, "purusha-suktam" to SourceCategory.VEDIC,
+            "nasadiya-suktam" to SourceCategory.VEDIC,
+            "om" to SourceCategory.UPANISHAD, "asato-ma" to SourceCategory.UPANISHAD,
+            "om-sahanavavatu" to SourceCategory.UPANISHAD, "hare-krishna" to SourceCategory.UPANISHAD,
+            "gita-2-47" to SourceCategory.GITA, "gita-6-5" to SourceCategory.GITA,
+            "gita-2-14" to SourceCategory.GITA, "gita-6-6" to SourceCategory.GITA,
+            "gita-2-70" to SourceCategory.GITA, "gita-4-7-8" to SourceCategory.GITA,
+            "gita-18-66" to SourceCategory.GITA, "gita-3-35" to SourceCategory.GITA,
+            "twameva-mata" to SourceCategory.STOTRA, "vakratunda" to SourceCategory.STOTRA,
+            "saraswati-vandana" to SourceCategory.STOTRA, "guru-brahma" to SourceCategory.STOTRA,
+            "hanuman-chalisa-opening" to SourceCategory.STOTRA,
+            "vishnu-sahasranama-opening" to SourceCategory.STOTRA,
+            "lalita-sahasranama-opening" to SourceCategory.STOTRA,
+            "krishna-ashtakam" to SourceCategory.STOTRA, "ram-raksha-opening" to SourceCategory.STOTRA
+        )
+        assertEquals(26, expected.size)
+        catalog.mantras.forEach { m ->
+            assertEquals("${m.id}: wrong category", expected.getValue(m.id), m.sourceCategory)
         }
     }
 

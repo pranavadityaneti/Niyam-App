@@ -20,6 +20,7 @@ data class Mantra(
     val source: String,
     val sourceRefs: List<String>,
     val deity: Deity,
+    val sourceCategory: SourceCategory = SourceCategory.STOTRA,
     val intentions: List<Intention>,
     val estimatedReadSeconds: Int,
     val completionThresholdDays: Int
@@ -87,6 +88,14 @@ enum class Deity {
     @SerialName("saraswati") SARASWATI,
     @SerialName("lakshmi") LAKSHMI,
     @SerialName("universal") UNIVERSAL
+}
+
+@Serializable
+enum class SourceCategory {
+    @SerialName("vedic") VEDIC,
+    @SerialName("upanishad") UPANISHAD,
+    @SerialName("gita") GITA,
+    @SerialName("stotra") STOTRA
 }
 
 @Serializable

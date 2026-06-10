@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "2026-06-10.1",
+  "contentVersion": "2026-06-10.2",
   "mantras": [
     {
       "id": "om",
@@ -30,6 +30,7 @@
         "https://sanskritdocuments.org/doc_upanishhat/mandukya.html"
       ],
       "deity": "universal",
+      "sourceCategory": "upanishad",
       "intentions": [
         "calm",
         "sadhana"
@@ -66,6 +67,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/2/verse/47/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "focus",
         "dharma"
@@ -102,6 +104,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/6/verse/5/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "focus"
       ],
@@ -137,6 +140,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/2/verse/14/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "focus",
         "calm"
@@ -173,6 +177,7 @@
         "https://www.amritapuri.org/3731/asatoma.aum"
       ],
       "deity": "universal",
+      "sourceCategory": "upanishad",
       "intentions": [
         "focus",
         "sadhana"
@@ -209,6 +214,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/6/verse/6/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "focus"
       ],
@@ -245,6 +251,7 @@
         "https://www.bhaktibharat.com/mantra/mahamrityunjay-mantra"
       ],
       "deity": "shiva",
+      "sourceCategory": "vedic",
       "intentions": [
         "calm",
         "devotion"
@@ -281,6 +288,7 @@
         "https://interfaithprayers.com/index.php/2023/08/11/shanti-mantra-om-sahana-vavatu/"
       ],
       "deity": "universal",
+      "sourceCategory": "upanishad",
       "intentions": [
         "calm",
         "sadhana"
@@ -317,6 +325,7 @@
         "https://sanskritdocuments.org/doc_shiva/panch.html"
       ],
       "deity": "shiva",
+      "sourceCategory": "vedic",
       "intentions": [
         "calm",
         "devotion"
@@ -353,6 +362,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/2/verse/70/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "calm"
       ],
@@ -388,6 +398,7 @@
         "https://hindunidhi.com/tvamev-mata-cha-pita-tvameva-shloka-hindi/"
       ],
       "deity": "universal",
+      "sourceCategory": "stotra",
       "intentions": [
         "calm",
         "devotion"
@@ -425,6 +436,7 @@
         "https://en.wikipedia.org/wiki/Gayatri_Mantra"
       ],
       "deity": "universal",
+      "sourceCategory": "vedic",
       "intentions": [
         "sadhana",
         "focus"
@@ -461,6 +473,7 @@
         "https://www.vedaboys.com/vakratunda-mahakaya-sanskrit-with-meaning/"
       ],
       "deity": "ganesha",
+      "sourceCategory": "stotra",
       "intentions": [
         "sadhana",
         "focus"
@@ -497,6 +510,7 @@
         "https://www.drikpanchang.com/lyrics/vandana/goddesses/saraswati/saraswati-ya-kundendu-vandana.html"
       ],
       "deity": "saraswati",
+      "sourceCategory": "stotra",
       "intentions": [
         "sadhana",
         "focus"
@@ -533,6 +547,7 @@
         "https://shlokam.org/gurubrahma/"
       ],
       "deity": "universal",
+      "sourceCategory": "stotra",
       "intentions": [
         "sadhana",
         "devotion"
@@ -569,6 +584,7 @@
         "https://harigopinathdas.com/hare-krishna-mahamantra/"
       ],
       "deity": "krishna",
+      "sourceCategory": "upanishad",
       "intentions": [
         "sadhana",
         "devotion"
@@ -606,6 +622,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/4/verse/8/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "dharma"
       ],
@@ -641,6 +658,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/18/verse/66/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "dharma",
         "devotion"
@@ -677,6 +695,7 @@
         "https://www.holy-bhagavad-gita.org/chapter/3/verse/35/"
       ],
       "deity": "krishna",
+      "sourceCategory": "gita",
       "intentions": [
         "dharma",
         "focus"
@@ -714,6 +733,7 @@
         "https://indiaphilosophy.wordpress.com/2016/02/25/purusha-suktam-rig-veda-10-90/"
       ],
       "deity": "universal",
+      "sourceCategory": "vedic",
       "intentions": [
         "dharma",
         "sadhana"
@@ -750,6 +770,7 @@
         "https://sanskritdocuments.org/doc_veda/naasadiiya.html"
       ],
       "deity": "universal",
+      "sourceCategory": "vedic",
       "intentions": [
         "dharma"
       ],
@@ -786,6 +807,7 @@
         "https://hi.quora.com/श्रीगुरु-चरन-सरोज-रज-निजमनु"
       ],
       "deity": "hanuman",
+      "sourceCategory": "stotra",
       "intentions": [
         "devotion"
       ],
@@ -821,6 +843,7 @@
         "https://sanskritdocuments.org/doc_vishhnu/vsahasranew.itx"
       ],
       "deity": "vishnu",
+      "sourceCategory": "stotra",
       "intentions": [
         "devotion"
       ],
@@ -856,6 +879,7 @@
         "https://www.siva.sh/shri-lalita-sahasranama-stotra"
       ],
       "deity": "devi",
+      "sourceCategory": "stotra",
       "intentions": [
         "devotion"
       ],
@@ -891,6 +915,7 @@
         "https://shlokam.org/vasudevasutamdevam/"
       ],
       "deity": "krishna",
+      "sourceCategory": "stotra",
       "intentions": [
         "devotion"
       ],
@@ -926,6 +951,7 @@
         "https://www.bhaktibharat.com/mantra/shri-ram-raksha-stotram"
       ],
       "deity": "rama",
+      "sourceCategory": "stotra",
       "intentions": [
         "devotion",
         "calm"
