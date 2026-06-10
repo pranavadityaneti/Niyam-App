@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "2026-06-10.1",
+  "mantras": [
+    {
+      "id": "om",
+      "canonicalName": "Om (Pranava)",
+      "originalLanguage": "sanskrit",
+      "text": {
+        "devanagari": "ॐ",
+        "telugu": "ఓం",
+        "tamil": "ௐ",
+        "kannada": "ಓಂ",
+        "bengali": "ওঁ",
+        "gujarati": "ૐ",
+        "roman": "Om"
+      },
+      "meaning": {
+        "en": "The primordial sound of the universe. One syllable holding creation, preservation, and dissolution — a single breath that settles the mind.",
+        "hi": "ब्रह्मांड की आदि ध्वनि। एक अक्षर में सृष्टि, स्थिति और लय समाए हैं — एक सांस जो मन को शांत कर देती है।",
+        "te": "విశ్వపు ఆది నాదం. సృష్టి, స్థితి, లయలను తనలో ఇముడ్చుకున్న ఏకాక్షరం — మనసును నిలిపే ఒక్క శ్వాస.",
+        "ta": "பிரபஞ்சத்தின் ஆதி ஒலி. படைத்தல், காத்தல், ஒடுக்கம் அனைத்தையும் உள்ளடக்கிய ஓர் எழுத்து — மனதை அமைதிப்படுத்தும் ஒரு மூச்சு.",
+        "kn": "ವಿಶ್ವದ ಆದಿ ನಾದ. ಸೃಷ್ಟಿ, ಸ್ಥಿತಿ, ಲಯಗಳನ್ನು ಒಳಗೊಂಡ ಏಕಾಕ್ಷರ — ಮನಸ್ಸನ್ನು ನೆಲೆಗೊಳಿಸುವ ಒಂದು ಉಸಿರು.",
+        "mr": "विश्वाचा आदिनाद. उत्पत्ती, स्थिती आणि लय सामावणारे एकाक्षर — मनाला स्थिर करणारा एक श्वास.",
+        "bn": "বিশ্বের আদি ধ্বনি। সৃষ্টি, স্থিতি ও লয় ধারণ করা এক অক্ষর — এক নিঃশ্বাসে মনকে স্থির করে।",
+        "gu": "બ્રહ્માંડનો આદિ નાદ. સર્જન, સ્થિતિ અને લયને સમાવતો એક અક્ષર — મનને સ્થિર કરતો એક શ્વાસ."
+      },
+      "source": "Mandukya Upanishad",
+      "sourceRefs": [
+        "https://sanskritdocuments.org/doc_upanishhat/mandukya.html"
+      ],
+      "deity": "universal",
+      "intentions": [
+        "calm",
+        "sadhana"
+      ],
+      "estimatedReadSeconds": 5,
+      "completionThresholdDays": 14
+    }
+  ]
+}
