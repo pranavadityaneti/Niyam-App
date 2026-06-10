@@ -1,5 +1,19 @@
 # Niyam — Session Log
 
+## 2026-06-10 — SP-3 EXECUTED — onboarding + brand theme code-complete
+
+**Sub-project 3 of 7 shipped as code.** Plan tasks 1–14 all executed; Task 14 = integrated verification + acceptance report.
+
+### Headline facts
+- **Test suite 43 → 55** (all green, 0 fail/0 err, `--rerun-tasks`): new `StarterMantrasTest` (2, curation), `UserPrefsTest` (4, snapshot/defaults), `OnboardingViewModelTest` (4, gating); `BlockListTest` expanded to 10 (default/overridden snapshot).
+- **APK:** 11,393,847 bytes — total growth **+1.27 MB** vs pre-SP3 baseline (10,063,583 B). Honest split: fonts ≈ +0.57 MB (within ≈600KB budget); non-font ≈ +0.70 MB = DataStore + lifecycle-viewmodel-compose deps (baseline predates them). Criterion 8 flagged: PASS on font budget, total over the 1 MB line — Pranav to accept.
+- **What shipped:** `NiyamTheme` (eggshell/bottle-green/orange in `Color.kt`), bundled Playfair Display + Inter fonts, overlay restyle (same ids/timer/unlock), `UserPrefs` DataStore + sync snapshot, `CurrentSadhana`/`BlockList` snapshot-backed (services untouched), `StarterMantras` curation, first ViewModel (`OnboardingViewModel`), 5 onboarding screens, NavHost flow (returning users skip to Home).
+- **Two review-driven fixes:** gist word-boundary fallback (`1bcf5bd`); overlay ScrollView + sadhana label for long mantras (`31edba0`).
+- **Acceptance:** criteria 5 (tests) + 8 (size, with caveat) automatable → PASS; criteria 1–4, 6 (emulator) + 7 (Pranav visual sign-off) **OPEN** — `adb devices` empty, no emulator at verification time, deferred to Pranav (rides with the pending SP-2 emulator check).
+- **Commit range:** `1d887c9..HEAD` (`486e447`), 12 commits. Acceptance report: `docs/superpowers/test-reports/2026-06-10-sp3-acceptance.md`.
+
+---
+
 ## 2026-06-10 — Session 2 (cont.): SP-2 EXECUTED END-TO-END — sub-project 2 code-complete
 
 ### What happened
