@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Niyam — Home &amp; Sadhana Progress Design</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#5a5a5a; --border:#d8d8d8; --bg:#fdfdfb; --accent:#7a3d12; --code-bg:#f3efe9; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; font-size:16px; line-height:1.55; }
+  main { max-width:880px; margin:0 auto; padding:48px 32px 96px; }
+  h1 { font-size:30px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:14px; }
+  .meta { margin-top:18px; padding:14px 18px; background:var(--code-bg); border-left:3px solid var(--accent); border-radius:4px; font-size:14px; }
+  h2 { font-size:22px; margin:44px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+  p, ul, ol, table { margin:10px 0; }
+  ul, ol { padding-left:26px; }
+  code { background:var(--code-bg); padding:1px 5px; border-radius:3px; font-family:Menlo,Consolas,monospace; font-size:.92em; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th, td { border:1px solid var(--border); padding:7px 9px; text-align:left; vertical-align:top; }
+  th { background:var(--code-bg); }
+  .plain-english { background:#fff8ec; border-left:3px solid #d4af37; padding:10px 14px; margin:12px 0; font-size:14.5px; border-radius:3px; }
+  .status-pill { display:inline-block; background:#FF6400; color:#fff; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; text-transform:uppercase; }
+  @media print { body{background:#fff;} main{padding:24px;max-width:none;} h2{page-break-after:avoid;} table{page-break-inside:avoid;} }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Niyam — Home &amp; Sadhana Progress Design</h1>
+  <div class="sub">Niyam (नियम) · Sub-project 4 of 7</div>
+  <div class="meta"><div><strong>Date:</strong> 2026-06-10</div>
+  <div><strong>Status:</strong> <span class="status-pill">Full-control grant — spec is the async review gate</span></div></div>
+</header>
+
+<h2>1. Purpose</h2>
+<p>Give Niyam its retention mechanic: every completed unlock-read counts toward the current mantra's 14-day journey, visible on a real home screen (mantra card, Day N of 14, streak, today's reads). Completing a journey triggers a celebration and a curated next-sadhana picker.</p>
+<div class="plain-english"><strong>In plain English:</strong> until now the app blocks and shows; after SP-4 it <em>remembers</em> — every read builds a visible streak and a journey, and finishing a journey hands you the next one.</div>
+
+<h2>2. Product rules (locked)</h2>
+<table>
+<tr><th>Term</th><th>Rule</th></tr>
+<tr><td>Read</td><td>User tapped Continue after the 15s timer. Any other dismissal ≠ read.</td></tr>
+<tr><td>Counted day</td><td>Device-local calendar day with ≥1 read of the current mantra.</td></tr>
+<tr><td>Progress</td><td>"Day N of M" — N = distinct counted days since the sadhana started; M = <code>completionThresholdDays</code> (14 in v1). Days are the unit (matches schema + the brief's "Day 8 of 14").</td></tr>
+<tr><td>Streak</td><td>Consecutive days ending today (or yesterday if today is empty) each with ≥1 read of ANY mantra.</td></tr>
+<tr><td>Today's reads</td><td>Read events today (any mantra).</td></tr>
+<tr><td>Completion</td><td>N ≥ M → completed list + celebration + next-sadhana picker (3 curated cards, completed/current excluded, backfilled).</td></tr>
+<tr><td>Sadhana start</td><td>EpochDay when the mantra became current.</td></tr>
+</table>
+
+<h2>3. Scope</h2>
+<p><strong>In:</strong> Room (<code>read_events</code>) + DAO; <code>ProgressRepository</code> + pure <code>ProgressMath</code> (JVM-tested); read recording from the overlay Continue tap (fire-and-forget); UserPrefs += <code>selectedIntention</code>, <code>sadhanaStartEpochDay</code>, <code>completedMantraIds</code>, <code>pendingCelebration</code>; onboarding persists intention + stamps start day; Home rebuilt to brand (mantra card, orange progress bar, streak/today chips, compact protection row); Celebration + next-sadhana picker.</p>
+<p><strong>Out:</strong> notifications (SP-7) · library + switching + Browse button (SP-5) · threshold tuning UI · timer scaling · stats history · cloud sync.</p>
+
+<h2>4. Architecture</h2>
+<ul>
+<li><strong>Room</strong> via KSP: one entity <code>ReadEventEntity(id, mantraId, epochDay, timestampMs)</code>, indexed.</li>
+<li><strong>ProgressRepository</strong> (object): <code>recordRead()</code> inserts on a background executor then runs the completion check; suspend queries; <code>HomeStats</code> loader.</li>
+<li><strong>ProgressMath</strong> (pure): streak + dayN over epochDay sets — fully unit-tested.</li>
+<li><strong>The one engine touch:</strong> overlay Continue handler records the read (try/catch; unlock can never block or crash on it).</li>
+<li><strong>Completion:</strong> <code>pendingCelebration</code> persisted flag → celebration route → picker (SelectableCard reuse, <code>StarterMantras</code> seeding by stored intention) → new mantra + new start day. "Keep this mantra" restarts the journey.</li>
+<li><strong>Home:</strong> overline "YOUR SADHANA", serif name, script preview, orange progress bar + "Day N of M", streak/today chips, compact protection row (replaces the 4-row panel; tap → permission flow).</li>
+</ul>
+
+<h2>5. Error handling</h2>
+<p>Insert failure → logged, unlock unaffected. Stats failure → zeros, never crash. Set-semantics tolerate clock weirdness. Process death pre-celebration → persisted flag shows it next launch. Unknown ids dropped by curation.</p>
+
+<h2>6. Acceptance</h2>
+<ol>
+<li>Unit tests: ProgressMath (streak gaps/today-empty/single-day; dayN cap), UserPrefs new fields, picker exclusion. Suite grows from 55; all green.</li>
+<li>Build green; KSP/Room compiles; no new permissions.</li>
+<li>Emulator: Continue tap → home shows 1 read today, Day 1 of 14, streak 1 (manual; rides the standing session).</li>
+<li>Completion predicate unit-tested; celebration→picker→switch spot-checked on emulator.</li>
+<li>55 pre-existing tests green; overlay timer/unlock untouched apart from recordRead.</li>
+<li>Visual: brand match (Pranav's async eyeball).</li>
+</ol>
+
+<h2>7. Engine touches (flagged)</h2>
+<table>
+<tr><th>Touch</th><th>Why</th><th>Risk/mitigation</th></tr>
+<tr><td>Overlay Continue += recordRead</td><td>Reads ARE the mechanic</td><td>try/catch + background; unlock never blocks</td></tr>
+<tr><td>App warm-up += lazy Room init</td><td>First-insert latency</td><td>Lazy build on executor; no main-thread I/O</td></tr>
+<tr><td>Onboarding persists intention + start day</td><td>Picker seeding + Day-N anchor</td><td>Additive; safe defaults</td></tr>
+</table>
+</main>
+</body>
+</html>
