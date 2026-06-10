@@ -9,51 +9,89 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:orientation="vertical"
-        android:padding="32dp">
+        android:paddingStart="28dp"
+        android:paddingEnd="28dp"
+        android:paddingTop="64dp"
+        android:paddingBottom="28dp">
+
+        <TextView
+            android:id="@+id/overlay_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:letterSpacing="0.12"
+            android:text=""
+            android:textAllCaps="true"
+            android:textColor="@color/overlay_label_muted"
+            android:textSize="11sp" />
 
         <TextView
             android:id="@+id/overlay_devanagari"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="96sp" />
+            android:layout_marginTop="24dp"
+            android:fontFamily="serif"
+            android:lineSpacingMultiplier="1.6"
+            android:textColor="@color/overlay_ink"
+            android:textSize="22sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMinTextSize="16sp"
+            android:autoSizeMaxTextSize="24sp"
+            android:maxLines="14" />
 
         <TextView
             android:id="@+id/overlay_transliteration"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:layout_marginTop="14dp"
+            android:textStyle="italic"
+            android:lineSpacingMultiplier="1.4"
+            android:textColor="@color/overlay_roman"
+            android:textSize="12sp"
+            android:maxLines="6"
+            android:ellipsize="end" />
 
         <TextView
             android:id="@+id/overlay_meaning"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:gravity="center"
-            android:maxWidth="320dp"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:layout_marginTop="14dp"
+            android:lineSpacingMultiplier="1.5"
+            android:textColor="@color/overlay_ink_muted"
+            android:textSize="13sp"
+            android:maxLines="6"
+            android:ellipsize="end" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/overlay_countdown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:fontFamily="monospace"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_overlay_chip"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textColor="@color/overlay_chip_text"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/overlay_continue"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_height="52dp"
+            android:background="@drawable/bg_overlay_cta"
             android:enabled="false"
-            android:text="@string/overlay_continue" />
+            android:stateListAnimator="@null"
+            android:text="@string/overlay_continue"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
     </LinearLayout>
 

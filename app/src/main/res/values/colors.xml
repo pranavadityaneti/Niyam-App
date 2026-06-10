@@ -2,5 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="overlay_scrim">#CC000000</color>
+    <color name="overlay_scrim">#FFF5EBE1</color>
+    <color name="overlay_ink">#FF003223</color>
+    <color name="overlay_ink_muted">#FF33524A</color>
+    <color name="overlay_label_muted">#FF8A7F72</color>
+    <color name="overlay_roman">#FF6B8377</color>
+    <color name="overlay_chip_fill">#FFECE0D2</color>
+    <color name="overlay_chip_text">#FF5F5648</color>
+    <color name="overlay_cta">#FFFF6400</color>
 </resources>
