@@ -21,9 +21,18 @@ class ContentValidationTest {
     }
 
     @Test
-    fun `entry count`() {
-        // Flipped to assertEquals(26, ...) in Task 12 once all batches land.
-        assertTrue("at least one entry", catalog.mantras.isNotEmpty())
+    fun `exactly the 26 spec entries exist`() {
+        val expectedIds = setOf(
+            "om",
+            "gita-2-47", "gita-6-5", "gita-2-14", "asato-ma", "gita-6-6",
+            "mahamrityunjaya", "om-sahanavavatu", "om-namah-shivaya", "gita-2-70", "twameva-mata",
+            "gayatri", "vakratunda", "saraswati-vandana", "guru-brahma", "hare-krishna",
+            "gita-4-7-8", "gita-18-66", "gita-3-35", "purusha-suktam", "nasadiya-suktam",
+            "hanuman-chalisa-opening", "vishnu-sahasranama-opening", "lalita-sahasranama-opening",
+            "krishna-ashtakam", "ram-raksha-opening"
+        )
+        assertEquals(26, catalog.mantras.size)
+        assertEquals(expectedIds, catalog.mantras.map { it.id }.toSet())
     }
 
     @Test
