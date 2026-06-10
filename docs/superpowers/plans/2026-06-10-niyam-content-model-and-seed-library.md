@@ -1112,6 +1112,8 @@ git push origin main
 
 For each (entry, script) pair fetch the corresponding page on either site and compare character-by-character against our generated field. Classify every difference as **convention** (site chose a different valid rendering — explain which convention) or **error** (our output is wrong — fix the master or the tool config, regenerate, re-validate).
 
+**Task-5 carry-forward (calibration findings, 2026-06-10):** (a) Both sites 403 direct automated fetch — use web search to surface the native-script text, or browser-based fetching; (b) **Bengali and Gujarati are the priority scripts** — they could NOT be cross-checked at calibration (no clean reference text found), while Telugu/Tamil/Kannada/roman verified clean against community sources; (c) two accepted convention choices to re-confirm on long texts: Tamil visarga rendered as `꞉` (U+A789) and om as the `ௐ` glyph; (d) roman scheme is `RomanColloquial` (not `RomanReadable` — produced apostrophes/doubled vowels).
+
 - [ ] **Step 13.3: Write the log**
 
 ```markdown
@@ -1152,6 +1154,7 @@ git push origin main
 **Files:**
 - Create: `app/src/main/java/com/myniyam/app/data/CurrentSadhana.kt`
 - Modify: `app/src/main/java/com/myniyam/app/overlay/OverlayManager.kt`
+- Modify: `app/src/main/java/com/myniyam/app/NiyamApplication.kt`
 
 - [ ] **Step 14.1: Create `CurrentSadhana.kt`**
 
@@ -1205,6 +1208,20 @@ In `startTimer(...)` and the countdown seed, replace both uses of `PlaceholderMa
 ```kotlin
 // Superseded by MantraRepository.FALLBACK (SP-2). Safe to delete after Pranav confirms.
 ```
+
+- [ ] **Step 14.2b: Warm the repository off the main thread (Task-4 quality-review carry-forward)**
+
+`OverlayManager.show()` runs on the main thread (Service.onStartCommand dispatch), so the first parse must be pre-warmed. In `NiyamApplication.kt`, add the import `com.myniyam.app.data.MantraRepository` and change `onCreate()` to:
+
+```kotlin
+override fun onCreate() {
+    super.onCreate()
+    registerForegroundServiceChannel()
+    Thread { MantraRepository.ensureLoaded(this) }.start()
+}
+```
+
+The `ensureLoaded` call inside `OverlayManager.show()` stays — it's idempotent and free once loaded (belt-and-suspenders if the warm-up thread hasn't finished on a cold start; worst case is the designed fallback for one overlay).
 
 - [ ] **Step 14.3: Full regression + build**
 
