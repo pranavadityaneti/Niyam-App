@@ -2,8 +2,12 @@ package com.myniyam.app.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -22,7 +26,7 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(32.dp),
+                .padding(horizontal = 32.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -30,13 +34,21 @@ fun WelcomeScreen(onGetStarted: () -> Unit) {
                 text = stringResource(R.string.welcome_title),
                 style = MaterialTheme.typography.displayMedium
             )
+            Spacer(Modifier.height(12.dp))
             Text(
                 text = stringResource(R.string.welcome_subtitle),
                 style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.padding(top = 16.dp, bottom = 48.dp)
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-            Button(onClick = onGetStarted) {
-                Text(stringResource(R.string.welcome_cta))
+            Spacer(Modifier.height(48.dp))
+            Button(
+                onClick = onGetStarted,
+                shape = RoundedCornerShape(999.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+            ) {
+                Text(stringResource(R.string.welcome_cta), style = MaterialTheme.typography.labelLarge)
             }
         }
     }

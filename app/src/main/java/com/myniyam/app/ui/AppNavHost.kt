@@ -1,13 +1,18 @@
 package com.myniyam.app.ui
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.myniyam.app.R
+import com.myniyam.app.onboarding.AppsScreen
+import com.myniyam.app.onboarding.IntentionScreen
+import com.myniyam.app.onboarding.LanguageScreen
+import com.myniyam.app.onboarding.MantraPickerScreen
+import com.myniyam.app.onboarding.OnboardingViewModel
 import com.myniyam.app.permissions.PermissionChecker
 import com.myniyam.app.ui.screens.HomeScreen
 import com.myniyam.app.ui.screens.OemAutostartScreen
@@ -16,6 +21,10 @@ import com.myniyam.app.ui.screens.WelcomeScreen
 
 object NiyamRoutes {
     const val WELCOME = "welcome"
+    const val ONB_INTENTION = "onboarding_intention"
+    const val ONB_MANTRA = "onboarding_mantra"
+    const val ONB_LANGUAGE = "onboarding_language"
+    const val ONB_APPS = "onboarding_apps"
     const val PERMISSION_USAGE = "permission_usage_stats"
     const val PERMISSION_OVERLAY = "permission_overlay"
     const val PERMISSION_ACCESSIBILITY = "permission_accessibility"
@@ -25,11 +34,29 @@ object NiyamRoutes {
 }
 
 @Composable
-fun AppNavHost(navController: NavHostController = rememberNavController()) {
-    NavHost(navController = navController, startDestination = NiyamRoutes.WELCOME) {
+fun AppNavHost(
+    startDestination: String,
+    navController: NavHostController = rememberNavController()
+) {
+    val onboardingVm: OnboardingViewModel = viewModel()
+
+    NavHost(navController = navController, startDestination = startDestination) {
 
         composable(NiyamRoutes.WELCOME) {
-            WelcomeScreen(onGetStarted = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) })
+            WelcomeScreen(onGetStarted = { navController.navigate(NiyamRoutes.ONB_INTENTION) })
+        }
+
+        composable(NiyamRoutes.ONB_INTENTION) {
+            IntentionScreen(onboardingVm) { navController.navigate(NiyamRoutes.ONB_MANTRA) }
+        }
+        composable(NiyamRoutes.ONB_MANTRA) {
+            MantraPickerScreen(onboardingVm) { navController.navigate(NiyamRoutes.ONB_LANGUAGE) }
+        }
+        composable(NiyamRoutes.ONB_LANGUAGE) {
+            LanguageScreen(onboardingVm) { navController.navigate(NiyamRoutes.ONB_APPS) }
+        }
+        composable(NiyamRoutes.ONB_APPS) {
+            AppsScreen(onboardingVm) { navController.navigate(NiyamRoutes.PERMISSION_USAGE) }
         }
 
         composable(NiyamRoutes.PERMISSION_USAGE) {
@@ -77,8 +104,15 @@ fun AppNavHost(navController: NavHostController = rememberNavController()) {
         }
 
         composable(NiyamRoutes.PERMISSION_OEM) {
-            OemAutostartScreen(onDone = { navController.navigate(NiyamRoutes.HOME) })
+            val ctx = LocalContext.current
+            OemAutostartScreen(onDone = {
+                onboardingVm.persistOnboardingComplete(ctx)
+                navController.navigate(NiyamRoutes.HOME) {
+                    popUpTo(NiyamRoutes.WELCOME) { inclusive = true }
+                }
+            })
         }
+
         composable(NiyamRoutes.HOME) { HomeScreen() }
     }
 }
