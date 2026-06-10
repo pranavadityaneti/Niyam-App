@@ -52,3 +52,7 @@ captures/
 
 # Plan output files (left for human review)
 ERRORS.md.bak
+
+# Python content tooling (authoring-time only — never ships in APK)
+tools/.venv/
+tools/__pycache__/
