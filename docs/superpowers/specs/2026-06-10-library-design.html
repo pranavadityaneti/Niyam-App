@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Niyam — Library Design</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#5a5a5a; --border:#d8d8d8; --bg:#fdfdfb; --accent:#7a3d12; --code-bg:#f3efe9; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; font-size:16px; line-height:1.55; }
+  main { max-width:880px; margin:0 auto; padding:48px 32px 96px; }
+  h1 { font-size:30px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:14px; }
+  .meta { margin-top:18px; padding:14px 18px; background:var(--code-bg); border-left:3px solid var(--accent); border-radius:4px; font-size:14px; }
+  h2 { font-size:22px; margin:44px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+  p, ul, ol, table { margin:10px 0; }
+  ul, ol { padding-left:26px; }
+  code { background:var(--code-bg); padding:1px 5px; border-radius:3px; font-family:Menlo,Consolas,monospace; font-size:.92em; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th, td { border:1px solid var(--border); padding:7px 9px; text-align:left; vertical-align:top; }
+  th { background:var(--code-bg); }
+  .plain-english { background:#fff8ec; border-left:3px solid #d4af37; padding:10px 14px; margin:12px 0; font-size:14.5px; border-radius:3px; }
+  .status-pill { display:inline-block; background:#FF6400; color:#fff; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; text-transform:uppercase; }
+  @media print { body{background:#fff;} main{padding:24px;max-width:none;} h2{page-break-after:avoid;} table{page-break-inside:avoid;} }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Niyam — Library Design</h1>
+  <div class="sub">Niyam (नियम) · Sub-project 5 of 7</div>
+  <div class="meta"><div><strong>Date:</strong> 2026-06-10</div>
+  <div><strong>Status:</strong> <span class="status-pill">Full-control grant — spec is the async review gate</span></div></div>
+</header>
+
+<h2>1. Purpose</h2>
+<p>Browse all 26 mantras, filter by source/length/intention/deity, read any entry in full, and switch the current sadhana with an honest warning. The Browse Library button lands on Home.</p>
+<div class="plain-english"><strong>In plain English:</strong> users can now wander the whole shelf, read anything in their language, and change their practice — with a clear heads-up that a journey starts over if abandoned mid-way.</div>
+
+<h2>2. Product rules (locked)</h2>
+<table>
+<tr><th>Rule</th><th>Decision</th></tr>
+<tr><td>Source filter backing</td><td>New <code>sourceCategory</code> enum on every entry — vedic | upanishad | gita | stotra — hand-tagged (§5), validation-enforced. Additive with a Kotlin default; <code>contentVersion → 2026-06-10.2</code>. "Mahavakyas" omitted: zero entries (YAGNI).</td></tr>
+<tr><td>Length filter</td><td>Runtime buckets from read-seconds: &lt;30 / 30-60 / &gt;60.</td></tr>
+<tr><td>Filter semantics</td><td>Single-select per dimension (or All); dimensions AND-combine. Pure function, unit-tested.</td></tr>
+<tr><td>Switch warning</td><td>Honest copy (the brief said "pause"; our model restarts): <em>"You're N days into {name}. If you switch, this journey will start over when you return to it."</em> Shown only when current has ≥1 counted day and isn't completed.</td></tr>
+<tr><td>Detail screen</td><td>Full text in chosen script (scrollable) + roman + meaning + attribution + chips. CTA: "Make this my sadhana" / disabled "Your current sadhana" / completed → "Practice again" + green Completed chip.</td></tr>
+<tr><td>Switching</td><td>Existing <code>UserPrefs.setCurrentMantra</code> (re-stamps start, clears celebration). No new persistence.</td></tr>
+</table>
+
+<h2>3. Scope</h2>
+<p><strong>In:</strong> SourceCategory (model + content + validation); LibraryFilters pure function (TDD); LibraryScreen (chip rows + list); MantraDetailScreen + switch dialog (live day count); routes; Home "Browse library" secondary button.</p>
+<p><strong>Out:</strong> search · favorites · multi-select filters · audio · notifications (SP-7) · paywall gating (SP-6 decides).</p>
+
+<h2>4. Architecture</h2>
+<ul>
+<li><code>SourceCategory</code> enum, lowercase SerialNames; <code>Mantra.sourceCategory</code> with STOTRA default (parser safety net — the asset must still declare it on every entry, test-enforced).</li>
+<li><code>LibraryFilters</code>: <code>Selection(category?, length?, intention?, deity?)</code> + <code>LengthBucket.of(seconds)</code> + <code>apply()</code> — AND across non-null dimensions, catalog order preserved.</li>
+<li>LibraryScreen: four single-select chip rows + LazyColumn rows (serif name, gist, read-time chip, category/deity caption; orange dot = current, green check = completed).</li>
+<li>MantraDetailScreen(id): byId (unknown → pop); full render; day count via homeStats for the dialog; switch → setCurrentMantra → pop to Home.</li>
+<li>Routes <code>library</code>, <code>mantra_detail/{mantraId}</code>; Home button navigates.</li>
+</ul>
+
+<h2>5. Source-category tagging</h2>
+<table>
+<tr><th>Category</th><th>Entries</th></tr>
+<tr><td>vedic</td><td>gayatri, mahamrityunjaya, om-namah-shivaya, purusha-suktam, nasadiya-suktam</td></tr>
+<tr><td>upanishad</td><td>om, asato-ma, om-sahanavavatu, hare-krishna</td></tr>
+<tr><td>gita</td><td>gita-2-47, gita-6-5, gita-2-14, gita-6-6, gita-2-70, gita-4-7-8, gita-18-66, gita-3-35</td></tr>
+<tr><td>stotra</td><td>twameva-mata, vakratunda, saraswati-vandana, guru-brahma, hanuman-chalisa-opening, vishnu-sahasranama-opening, lalita-sahasranama-opening, krishna-ashtakam, ram-raksha-opening</td></tr>
+</table>
+<p>5+4+8+9 = 26 ✓. Notes: om-namah-shivaya (Sri Rudram, Yajur Veda) → vedic; hare-krishna (Kali-Santarana Upanishad) → upanishad; Vishnu Sahasranama functions as a stotra in practice; Hanuman Chalisa (Awadhi devotional) → stotra.</p>
+
+<h2>6. Error handling</h2>
+<p>Unknown id → pop back. Zero filter results → friendly empty state. homeStats failure → dialog without day count. Switch persistence failure → logged, UI proceeds (snapshot already updated).</p>
+
+<h2>7. Acceptance</h2>
+<ol>
+<li>Unit tests: LengthBucket boundaries, filter AND/All/order, category completeness. Suite grows from 69; all green.</li>
+<li>Build green; <code>--check</code> exit 0; asset ≤400KB.</li>
+<li>Emulator walkthrough (manual, rides the standing session): browse → filter Gita (8 rows) → detail → switch with warning → Home shows new mantra.</li>
+<li><strong>Zero engine-file changes</strong>; 69 pre-existing tests green.</li>
+<li>Visual brand match (async eyeball).</li>
+</ol>
+</main>
+</body>
+</html>
