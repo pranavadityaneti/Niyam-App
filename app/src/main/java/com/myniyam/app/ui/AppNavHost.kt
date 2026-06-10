@@ -1,6 +1,8 @@
 package com.myniyam.app.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -8,16 +10,20 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.myniyam.app.R
+import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.onboarding.AppsScreen
 import com.myniyam.app.onboarding.IntentionScreen
 import com.myniyam.app.onboarding.LanguageScreen
 import com.myniyam.app.onboarding.MantraPickerScreen
 import com.myniyam.app.onboarding.OnboardingViewModel
 import com.myniyam.app.permissions.PermissionChecker
+import com.myniyam.app.ui.screens.CelebrationScreen
 import com.myniyam.app.ui.screens.HomeScreen
+import com.myniyam.app.ui.screens.NextSadhanaScreen
 import com.myniyam.app.ui.screens.OemAutostartScreen
 import com.myniyam.app.ui.screens.PermissionScreen
 import com.myniyam.app.ui.screens.WelcomeScreen
+import kotlinx.coroutines.launch
 
 object NiyamRoutes {
     const val WELCOME = "welcome"
@@ -31,6 +37,8 @@ object NiyamRoutes {
     const val PERMISSION_BATTERY = "permission_battery"
     const val PERMISSION_OEM = "permission_oem_autostart"
     const val HOME = "home"
+    const val CELEBRATION = "celebration"
+    const val NEXT_SADHANA = "next_sadhana"
 }
 
 @Composable
@@ -114,7 +122,30 @@ fun AppNavHost(
         }
 
         composable(NiyamRoutes.HOME) {
+            LaunchedEffect(Unit) {
+                if (UserPrefs.snapshot().pendingCelebration) {
+                    navController.navigate(NiyamRoutes.CELEBRATION)
+                }
+            }
             HomeScreen(onFixProtection = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) })
+        }
+
+        composable(NiyamRoutes.CELEBRATION) {
+            val ctx = LocalContext.current
+            val scope = rememberCoroutineScope()
+            CelebrationScreen(
+                onChooseNext = { navController.navigate(NiyamRoutes.NEXT_SADHANA) },
+                onKeepCurrent = {
+                    scope.launch {
+                        UserPrefs.setCurrentMantra(ctx, UserPrefs.snapshot().currentMantraId)
+                        navController.popBackStack(NiyamRoutes.HOME, inclusive = false)
+                    }
+                }
+            )
+        }
+
+        composable(NiyamRoutes.NEXT_SADHANA) {
+            NextSadhanaScreen(onDone = { navController.popBackStack(NiyamRoutes.HOME, inclusive = false) })
         }
     }
 }

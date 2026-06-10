@@ -45,6 +45,14 @@
     <string name="home_protection_ok">Protection active</string>
     <string name="home_protection_fix">Needs attention — tap to fix</string>
 
+    <!-- Celebration / next sadhana -->
+    <string name="celebration_overline">Journey complete</string>
+    <string name="celebration_title_fmt">%1$d days of %2$s</string>
+    <string name="celebration_body">You stayed with it. That discipline is the practice.</string>
+    <string name="celebration_next">Choose your next sadhana</string>
+    <string name="celebration_keep">Keep going with this mantra</string>
+    <string name="next_title">Your next sadhana</string>
+
     <!-- Overlay -->
     <string name="overlay_continue">Continue</string>
     <string name="overlay_unlocking_in">Unlocking in %1$d…</string>
