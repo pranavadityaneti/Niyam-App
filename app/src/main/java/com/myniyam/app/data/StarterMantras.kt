@@ -20,4 +20,7 @@ object StarterMantras {
 
     fun forIntention(intention: Intention): List<Mantra> =
         PRIORITY.getValue(intention).mapNotNull { MantraRepository.byId(it) }.take(3)
+
+    /** Full 5-id priority list for an intention (SP-4 next-sadhana seeding). */
+    fun priorityIds(intention: Intention): List<String> = PRIORITY.getValue(intention)
 }
