@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.UserPrefs
+import com.myniyam.app.progress.ProgressRepository
 
 class NiyamApplication : Application() {
 
@@ -15,6 +16,7 @@ class NiyamApplication : Application() {
         Thread {
             MantraRepository.ensureLoaded(this)
             UserPrefs.ensureLoaded(this)
+            ProgressRepository.warmUp(this)
         }.start()
     }
 

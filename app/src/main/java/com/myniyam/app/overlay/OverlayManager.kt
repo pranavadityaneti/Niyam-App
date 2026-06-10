@@ -13,6 +13,7 @@ import com.myniyam.app.R
 import com.myniyam.app.data.CurrentSadhana
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.Script
+import com.myniyam.app.progress.ProgressRepository
 import com.myniyam.app.service.AppLockAccessibilityService
 
 object OverlayManager {
@@ -43,7 +44,10 @@ object OverlayManager {
 
         countdown.text = ctx.getString(R.string.overlay_unlocking_in, UNLOCK_TIMER_SECONDS)
         continueBtn.isEnabled = false
-        continueBtn.setOnClickListener { hide(ctx) }
+        continueBtn.setOnClickListener {
+            ProgressRepository.recordRead(ctx, mantra.id)
+            hide(ctx)
+        }
 
         val params = WindowManager.LayoutParams(
             WindowManager.LayoutParams.MATCH_PARENT,
