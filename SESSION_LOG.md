@@ -1,5 +1,24 @@
 # Niyam — Session Log
 
+## 2026-06-10 — Session 3: SP-2 Task 10 — Content Batch D (Dharma, 5 entries)
+
+### Timeline
+
+1. **Authored Dharma batch (5 entries)** → catalog 16 → 21. Entries: `gita-4-7-8` (Yada Yada Hi Dharmasya, both 4.7+4.8 shlokas as one unit), `gita-18-66` (Sarva-dharman Parityajya), `gita-3-35` (Shreyan Svadharmo), `purusha-suktam` (RV 10.90.1), `nasadiya-suktam` (RV 10.129.1). Two archaic-Vedic hymns = highest textual difficulty in project.
+2. **Devanagari masters cross-verified ≥2 independent sources each** before generation. Three Gita verses: holy-bhagavad-gita.org + sanskritdocuments.org. Purusha: wisdomlib (RV 10.90.1, svara-marked) + indiaphilosophy + search corroboration of दशाङ्गुलम्. Nasadiya: Wikipedia (svara-marked) + sanskritdocuments.org.
+3. **Two textual variants found & resolved (scholarly form chosen, noted):**
+   - `gita-18-66`: `अहं त्वा` (sanskritdocuments / Shankara tradition — used) vs popular `अहं त्वां` (holy-bhagavad-gita, vivekavani, wisdomlib). Followed FINAL metadata + tie-breaker → `त्वा`.
+   - `purusha-suktam`: joined `वृत्वात्यतिष्ठद्दशाङ्गुलम्` (continuous scholarly form, wisdomlib — used) vs spaced `वृत्वा अत्यतिष्ठत्` in some popular editions. Followed plan → joined. Caught an indiaphilosophy typo (`दशाङुलम्` missing ग); correct conjunct is ङ्गु → `दशाङ्गुलम्`.
+4. **Generated 30 derived fields** via frozen `tools/generate_scripts.py` (aksharamukha). Eyeballed long Vedic compounds in all scripts — no mojibake/truncation; te/kn use anusvara-for-final-म्/ṅ, consistent with existing `mahamrityunjaya` convention.
+5. **Gates:** ContentValidationTest 10/10 · full suite 43/43 (0 fail, 0 err) · `--check` exit 0.
+6. **Committed + pushed to origin/main** (direct push authorized for this task).
+
+### Notes
+- Meanings: original writing, en→7 translations. Deity-gloss used for both Krishna promises (4.7-8 "Krishna promises to return"; 18.66 "Krishna's final word"). 18.66 handled as "let go of every other refuge," NOT abandoning duty. Vedic hymns kept third-person plain awe; nasadiya honors the open question ("The hymn only asks"). en lengths 150–163 chars, em-dash used as main pivot in only 2/5.
+- Entry-count test still `assertTrue(isNotEmpty)` — flips to `assertEquals(26)` in Task 12 once all batches land. No change needed here.
+
+---
+
 ## 2026-06-10 — Session 2: Phase 1 sign-off + Sub-project 2 design
 
 ### Timeline
