@@ -64,4 +64,12 @@
 
     <!-- AccessibilityService user-visible description -->
     <string name="accessibility_service_description">Niyam uses Accessibility to detect when you open Instagram, Facebook, or YouTube so it can show your mantra first. It does NOT read any other content on your screen.</string>
+
+    <!-- Library -->
+    <string name="library_overline">Library</string>
+    <string name="library_title">All mantras</string>
+    <string name="library_filter_all">All</string>
+    <string name="library_empty">Nothing matches — clear a filter.</string>
+    <string name="library_current_marker">Current</string>
+    <string name="library_completed_marker">Completed</string>
 </resources>
