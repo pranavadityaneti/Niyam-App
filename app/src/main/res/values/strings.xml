@@ -16,6 +16,10 @@
     <string name="onb_intention_sadhana">Start a daily sadhana</string>
     <string name="onb_intention_dharma">Feel more connected to dharma</string>
     <string name="onb_intention_devotion">Deepen my devotion</string>
+    <string name="onb_mantra_title">Pick your starter mantra</string>
+    <string name="onb_read_time_fmt">~%1$d sec</string>
+    <string name="onb_language_title">Your language</string>
+    <string name="onb_apps_title">What pulls you in?</string>
 
     <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
     <string name="perm_usage_title">See when you open blocked apps</string>
