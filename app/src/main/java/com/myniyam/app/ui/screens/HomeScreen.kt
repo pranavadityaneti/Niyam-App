@@ -1,117 +1,216 @@
 package com.myniyam.app.ui.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import android.content.Intent
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.myniyam.app.R
+import com.myniyam.app.data.CurrentSadhana
+import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.permissions.PermissionChecker
-import com.myniyam.app.service.AppLockForegroundService
+import com.myniyam.app.progress.ProgressRepository
+import com.myniyam.app.R
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onFixProtection: () -> Unit) {
     val ctx = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    var usageOk by remember { mutableStateOf(PermissionChecker.hasUsageStatsAccess(ctx)) }
-    var overlayOk by remember { mutableStateOf(PermissionChecker.hasOverlayPermission(ctx)) }
-    var accessibilityOk by remember { mutableStateOf(PermissionChecker.isAccessibilityServiceEnabled(ctx)) }
-    var batteryOk by remember { mutableStateOf(PermissionChecker.isIgnoringBatteryOptimizations(ctx)) }
+    var refreshKey by remember { mutableIntStateOf(0) }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
-                usageOk = PermissionChecker.hasUsageStatsAccess(ctx)
-                overlayOk = PermissionChecker.hasOverlayPermission(ctx)
-                accessibilityOk = PermissionChecker.isAccessibilityServiceEnabled(ctx)
-                batteryOk = PermissionChecker.isIgnoringBatteryOptimizations(ctx)
+                refreshKey++
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    val allOk = usageOk && overlayOk && accessibilityOk && batteryOk
-
-    LaunchedEffect(allOk) {
-        if (allOk) {
-            val intent = Intent(ctx, AppLockForegroundService::class.java).apply {
-                action = AppLockForegroundService.ACTION_START
-            }
-            ctx.startForegroundService(intent)
-        }
+    val stats by produceState(
+        initialValue = ProgressRepository.HomeStats(0, 14, 0, 0),
+        key1 = refreshKey
+    ) {
+        MantraRepository.ensureLoaded(ctx)
+        value = ProgressRepository.homeStats(ctx)
     }
 
-    val bannerLabel = if (allOk)
-        stringResource(R.string.home_protection_active)
-    else
-        stringResource(R.string.home_protection_at_risk)
-    val bannerColor = if (allOk) Color(0xFF2E7D32) else Color(0xFFC62828)
+    val protectionOk = remember(refreshKey) { PermissionChecker.allPermissionsGranted(ctx) }
+    val mantra = MantraRepository.displayMantra(CurrentSadhana.MANTRA_ID)
+    val firstLine = mantra.text.forScript(CurrentSadhana.LANGUAGE.script).lineSequence().first()
 
     Scaffold { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(24.dp)
+                .padding(horizontal = 24.dp)
         ) {
+            Spacer(modifier = Modifier.height(24.dp))
+
             Text(
-                text = bannerLabel,
-                color = Color.White,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(bannerColor)
-                    .padding(16.dp)
+                text = stringResource(R.string.home_overline).uppercase(),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
-            Spacer(modifier = Modifier.padding(top = 24.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-            PermissionRow("Usage access", usageOk)
-            PermissionRow("Display over other apps", overlayOk)
-            PermissionRow("Accessibility service", accessibilityOk)
-            PermissionRow("Ignore battery optimization", batteryOk)
+            // Mantra card
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.5.dp,
+                        color = MaterialTheme.colorScheme.outline,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .background(
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .padding(20.dp)
+            ) {
+                Text(
+                    text = mantra.canonicalName,
+                    style = MaterialTheme.typography.headlineMedium,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = firstLine,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                LinearProgressIndicator(
+                    progress = {
+                        if (stats.dayM == 0) 0f else stats.dayN.toFloat() / stats.dayM
+                    },
+                    color = MaterialTheme.colorScheme.primary,
+                    trackColor = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(8.dp)
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = stringResource(R.string.home_day_fmt, stats.dayN, stats.dayM),
+                    style = MaterialTheme.typography.labelLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                StatChip(
+                    text = stringResource(R.string.home_streak_fmt, stats.streak),
+                    highlight = stats.streak >= 2
+                )
+                StatChip(
+                    text = stringResource(R.string.home_today_fmt, stats.todayReads),
+                    highlight = false
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // Protection row
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable(enabled = !protectionOk) { onFixProtection() }
+                    .padding(vertical = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .background(
+                            color = if (protectionOk) {
+                                MaterialTheme.colorScheme.secondary
+                            } else {
+                                MaterialTheme.colorScheme.primary
+                            },
+                            shape = CircleShape
+                        )
+                )
+                Spacer(modifier = Modifier.size(10.dp))
+                Text(
+                    text = if (protectionOk) {
+                        stringResource(R.string.home_protection_ok)
+                    } else {
+                        stringResource(R.string.home_protection_fix)
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+
+            Spacer(modifier = Modifier.height(8.dp))
         }
     }
 }
 
 @Composable
-private fun PermissionRow(label: String, isOk: Boolean) {
-    Row(
+private fun StatChip(text: String, highlight: Boolean) {
+    Text(
+        text = text,
+        style = MaterialTheme.typography.labelLarge,
+        color = if (highlight) {
+            MaterialTheme.colorScheme.onSecondary
+        } else {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        },
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = label, style = MaterialTheme.typography.bodyLarge)
-        Text(
-            text = if (isOk) "✓" else "✗",
-            color = if (isOk) Color(0xFF2E7D32) else Color(0xFFC62828),
-            style = MaterialTheme.typography.titleLarge
-        )
-    }
+            .background(
+                color = if (highlight) {
+                    MaterialTheme.colorScheme.secondary
+                } else {
+                    MaterialTheme.colorScheme.surfaceVariant
+                },
+                shape = RoundedCornerShape(999.dp)
+            )
+            .padding(horizontal = 14.dp, vertical = 8.dp)
+    )
 }

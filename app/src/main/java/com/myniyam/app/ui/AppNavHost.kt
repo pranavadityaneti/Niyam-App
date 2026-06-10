@@ -113,6 +113,8 @@ fun AppNavHost(
             })
         }
 
-        composable(NiyamRoutes.HOME) { HomeScreen() }
+        composable(NiyamRoutes.HOME) {
+            HomeScreen(onFixProtection = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) })
+        }
     }
 }

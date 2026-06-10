@@ -37,10 +37,13 @@
     <string name="done">Done</string>
     <string name="next">Next</string>
 
-    <!-- Home screen -->
-    <string name="home_protection_active">Protection: Active</string>
-    <string name="home_protection_at_risk">Protection: At Risk</string>
-    <string name="home_oem_warning">Background protection may be disabled on your device.</string>
+    <!-- Home -->
+    <string name="home_overline">Your sadhana</string>
+    <string name="home_day_fmt">Day %1$d of %2$d</string>
+    <string name="home_streak_fmt">%1$d-day streak</string>
+    <string name="home_today_fmt">%1$d reads today</string>
+    <string name="home_protection_ok">Protection active</string>
+    <string name="home_protection_fix">Needs attention — tap to fix</string>
 
     <!-- Overlay -->
     <string name="overlay_continue">Continue</string>
