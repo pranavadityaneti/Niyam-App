@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -42,7 +43,7 @@ import com.myniyam.app.progress.ProgressRepository
 import com.myniyam.app.R
 
 @Composable
-fun HomeScreen(onFixProtection: () -> Unit) {
+fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit) {
     val ctx = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -150,6 +151,21 @@ fun HomeScreen(onFixProtection: () -> Unit) {
                 StatChip(
                     text = stringResource(R.string.home_today_fmt, stats.todayReads),
                     highlight = false
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedButton(
+                onClick = onBrowseLibrary,
+                shape = RoundedCornerShape(999.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.home_browse_library),
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
 

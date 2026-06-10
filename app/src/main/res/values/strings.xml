@@ -44,6 +44,7 @@
     <string name="home_today_fmt">%1$d reads today</string>
     <string name="home_protection_ok">Protection active</string>
     <string name="home_protection_fix">Needs attention — tap to fix</string>
+    <string name="home_browse_library">Browse library</string>
 
     <!-- Celebration / next sadhana -->
     <string name="celebration_overline">Journey complete</string>

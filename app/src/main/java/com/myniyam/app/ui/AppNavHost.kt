@@ -6,10 +6,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.myniyam.app.R
+import com.myniyam.app.library.LibraryScreen
+import com.myniyam.app.library.MantraDetailScreen
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.onboarding.AppsScreen
 import com.myniyam.app.onboarding.IntentionScreen
@@ -39,6 +43,8 @@ object NiyamRoutes {
     const val HOME = "home"
     const val CELEBRATION = "celebration"
     const val NEXT_SADHANA = "next_sadhana"
+    const val LIBRARY = "library"
+    const val MANTRA_DETAIL = "mantra_detail/{mantraId}"
 }
 
 @Composable
@@ -127,7 +133,10 @@ fun AppNavHost(
                     navController.navigate(NiyamRoutes.CELEBRATION)
                 }
             }
-            HomeScreen(onFixProtection = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) })
+            HomeScreen(
+                onFixProtection = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) },
+                onBrowseLibrary = { navController.navigate(NiyamRoutes.LIBRARY) }
+            )
         }
 
         composable(NiyamRoutes.CELEBRATION) {
@@ -146,6 +155,21 @@ fun AppNavHost(
 
         composable(NiyamRoutes.NEXT_SADHANA) {
             NextSadhanaScreen(onDone = { navController.popBackStack(NiyamRoutes.HOME, inclusive = false) })
+        }
+
+        composable(NiyamRoutes.LIBRARY) {
+            LibraryScreen(onOpenDetail = { id -> navController.navigate("mantra_detail/$id") })
+        }
+
+        composable(
+            NiyamRoutes.MANTRA_DETAIL,
+            arguments = listOf(navArgument("mantraId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            MantraDetailScreen(
+                mantraId = backStackEntry.arguments?.getString("mantraId") ?: "",
+                onSwitched = { navController.popBackStack(NiyamRoutes.HOME, inclusive = false) },
+                onMissing = { navController.popBackStack() }
+            )
         }
     }
 }
