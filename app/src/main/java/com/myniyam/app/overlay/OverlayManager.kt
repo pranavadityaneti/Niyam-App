@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.CountDownTimer
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -15,6 +16,7 @@ import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.Script
 import com.myniyam.app.progress.ProgressRepository
 import com.myniyam.app.service.AppLockAccessibilityService
+import com.myniyam.app.service.UnlockGrace
 
 object OverlayManager {
 
@@ -46,6 +48,8 @@ object OverlayManager {
         continueBtn.isEnabled = false
         continueBtn.setOnClickListener {
             ProgressRepository.recordRead(ctx, mantra.id)
+            // A completed read earns this package its grace window (hide-on-leave does not).
+            UnlockGrace.grant(pkg, SystemClock.elapsedRealtime())
             hide(ctx)
         }
 
@@ -72,6 +76,8 @@ object OverlayManager {
             android.util.Log.e("OverlayManager", "Failed to attach overlay", e)
         }
     }
+
+    fun isShowing(): Boolean = overlayView != null
 
     fun hide(ctx: Context) {
         timer?.cancel()

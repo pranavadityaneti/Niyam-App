@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.SystemClock
 import android.view.accessibility.AccessibilityEvent
 import com.myniyam.app.data.BlockList
+import com.myniyam.app.overlay.OverlayManager
 
 class AppLockAccessibilityService : AccessibilityService() {
 
@@ -14,10 +15,27 @@ class AppLockAccessibilityService : AccessibilityService() {
     override fun onAccessibilityEvent(event: AccessibilityEvent?) {
         if (event?.eventType != AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED) return
         val pkg = event.packageName?.toString() ?: return
-        if (!BlockList.matches(pkg)) return
+        if (!BlockList.matches(pkg)) {
+            // Foreground moved to a non-blocked app — drop the overlay if it's still up.
+            if (OverlayHideDecision.shouldHide(
+                    overlayShowing = OverlayManager.isShowing(),
+                    foregroundPkg = pkg,
+                    foregroundClass = event.className?.toString(),
+                    isBlocked = false,
+                    ownPkg = packageName
+                )
+            ) {
+                OverlayManager.hide(applicationContext)
+            }
+            return
+        }
+
+        val now = SystemClock.elapsedRealtime()
+
+        // Grace: a completed read (Continue) buys this package a re-block-free window.
+        if (UnlockGrace.isActive(pkg, now)) return
 
         // Debounce: ignore re-triggers within 2 seconds of last dismissal for the same package.
-        val now = SystemClock.elapsedRealtime()
         if (pkg == lastDismissedPkg && (now - lastDismissedAtMs) < DEBOUNCE_MS) return
 
         val intent = Intent(this, AppLockForegroundService::class.java).apply {
