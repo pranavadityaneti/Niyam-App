@@ -117,4 +117,23 @@
     <string name="settings_intention_title">Intention</string>
     <!-- Settings entry -->
     <string name="settings_content_desc">Settings</string>
+
+    <!-- Paywall -->
+    <string name="paywall_overline">Niyam Premium</string>
+    <string name="paywall_close_desc">Close</string>
+    <string name="paywall_hero">Every mantra.\nEvery language.</string>
+    <plurals name="paywall_trial_left">
+        <item quantity="one">%1$d day of free trial left</item>
+        <item quantity="other">%1$d days of free trial left</item>
+    </plurals>
+    <string name="paywall_benefit_mantras">All 26 mantras</string>
+    <string name="paywall_benefit_languages">All 9 languages &amp; scripts</string>
+    <string name="paywall_benefit_switching">Unlimited sadhana switching</string>
+    <string name="paywall_benefit_no_ads">No ads</string>
+    <string name="paywall_period_week">week</string>
+    <string name="paywall_period_month">month</string>
+    <string name="paywall_period_year">year</string>
+    <string name="paywall_best_value">Best value</string>
+    <string name="paywall_cta">Unlock Niyam</string>
+    <string name="paywall_footnote">Sandbox build — no real payment is charged.</string>
 </resources>

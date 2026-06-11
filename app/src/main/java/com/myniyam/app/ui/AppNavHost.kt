@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.myniyam.app.R
+import com.myniyam.app.billing.PaywallScreen
 import com.myniyam.app.library.LibraryScreen
 import com.myniyam.app.library.MantraDetailScreen
 import com.myniyam.app.data.UserPrefs
@@ -56,6 +57,7 @@ object NiyamRoutes {
     const val SETTINGS_LANGUAGE = "settings_language"
     const val SETTINGS_APPS = "settings_apps"
     const val SETTINGS_INTENTION = "settings_intention"
+    const val PAYWALL = "paywall"
 }
 
 @Composable
@@ -211,6 +213,12 @@ fun AppNavHost(
         }
         composable(NiyamRoutes.SETTINGS_INTENTION) {
             IntentionSettingScreen(onSaved = { navController.popBackStack() })
+        }
+        composable(NiyamRoutes.PAYWALL) {
+            PaywallScreen(
+                onUnlocked = { navController.popBackStack() },
+                onClose = { navController.popBackStack() }
+            )
         }
     }
 }
