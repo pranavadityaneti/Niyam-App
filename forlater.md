@@ -31,7 +31,8 @@
 - **What:** Pranav (2026-06-11, SP-12 approval): "We will remind the customer, we can automate an SMS and email." Automate trial-ending reminders over SMS and email in addition to the on-device notification that SP-12 ships.
 - **Why blocked:** The app collects no phone number or email (privacy feature: zero personal data) and has no backend. Needs: a contact-collection step (likely with sign-in), a server, an SMS provider (e.g. MSG91/Twilio) + email provider (e.g. SES/Resend), and a privacy-policy update.
 - **Scope:** Backend phase work — pairs naturally with whatever server work real-billing analytics eventually needs.
-- **Status:** Queued — revisit when accounts/backend phase opens (Play Console arrival is the natural trigger).
+- **Stack decision (2026-06-11, founder-approved):** Supabase is the chosen backend — Auth (optional sign-in, NEVER required; engine never network-dependent), Postgres for synced streaks/journeys, Edge Functions for Google Play purchase-notification verification (server-side entitlements, closes the trial-reinstall loophole) and for scheduled SMS (MSG91/Twilio) + email (Resend) reminders. Payment cards stay with Google Play always.
+- **Status:** Queued — POST-LAUNCH phase (founder: launch with zero backend). Spec to be written when the launch train is moving.
 - **Date added:** 2026-06-11
 - **Originated from:** SP-12 paywall v2 approval message.
 

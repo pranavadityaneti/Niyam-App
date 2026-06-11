@@ -319,3 +319,10 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - **Verified live (Pixel 9):** cold-start splash shows the tile (Android 12+ automatic); Welcome shows the lockup on sunrise. Launcher-drawer screenshot impossible headless (swipe won't open drawer) — icon verified via faithful mask-composition render (circle + squircle), labelled as such in the gallery. Gallery: `docs/screenshots/sp13-brand/index.html`.
 - **Flag for founder:** fresh installs default to DEVANAGARI_SANSKRIT display language (SP-3 default) → since SP-11 the first-touch chrome is Hindi until the user picks a language. One-line default change if English-first is preferred.
 - **Process note:** no adversarial subagent review for this SP — asset-only change + one Image composable, zero logic; the founder gallery is the review gate. Test device left as a fresh user on Welcome (pm clear was needed to show it).
+
+---
+
+## 2026-06-11 (cont.) — Backend decision: Supabase, post-launch
+
+- Pranav asked whether Supabase could be the backend ("not just a database") — answered yes (Auth + Postgres + Edge Functions = the whole server). Decision taken on my recommendation, founder-approved: **launch with zero backend/server**; Supabase locked as the backend-phase stack afterwards. Order within that phase: optional sign-in (never required; engine never network-dependent) → progress sync → server-verified entitlements via Play purchase notifications → SMS/email trial reminders (forlater 9). Payment cards never stored by us — Google Play only.
+- forlater item 9 updated with the stack decision and post-launch status.
