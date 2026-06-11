@@ -1,5 +1,8 @@
 package com.myniyam.app.ui
 
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -62,7 +65,14 @@ fun AppNavHost(
 ) {
     val onboardingVm: OnboardingViewModel = viewModel()
 
-    NavHost(navController = navController, startDestination = startDestination) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        enterTransition = { fadeIn(animationSpec = tween(220)) },
+        exitTransition = { fadeOut(animationSpec = tween(220)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(220)) },
+        popExitTransition = { fadeOut(animationSpec = tween(220)) }
+    ) {
 
         composable(NiyamRoutes.WELCOME) {
             WelcomeScreen(onGetStarted = { navController.navigate(NiyamRoutes.ONB_INTENTION) })

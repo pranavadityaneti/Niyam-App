@@ -20,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.onboarding.SelectableCard
 import com.myniyam.app.onboarding.mantraGist
 import com.myniyam.app.progress.NextSadhana
+import com.myniyam.app.ui.theme.NiyamBackground
 import kotlinx.coroutines.launch
 
 /**
@@ -48,13 +50,14 @@ fun NextSadhanaScreen(onDone: () -> Unit) {
     }
     var selectedId by remember { mutableStateOf<String?>(null) }
 
-    Scaffold { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(horizontal = 24.dp)
-        ) {
+    NiyamBackground {
+        Scaffold(containerColor = Color.Transparent) { innerPadding ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(horizontal = 24.dp)
+            ) {
             Spacer(Modifier.height(24.dp))
 
             Text(
@@ -102,7 +105,8 @@ fun NextSadhanaScreen(onDone: () -> Unit) {
                 )
             }
 
-            Spacer(Modifier.height(20.dp))
+                Spacer(Modifier.height(20.dp))
+            }
         }
     }
 }
