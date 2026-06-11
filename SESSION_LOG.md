@@ -309,3 +309,13 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - Adversarial review of the range dispatched in background; verdict to be appended.
 
 - **SP-12 review verdict: SHIP** (adversarial Opus pass, all 7 items with evidence): engine untouched; the collapse-buy-mismatch trap confirmed closed (toggle resets selection to YEARLY both ways — what you see is what you buy); FREE users can never reach the timeline; reminder false-positive hunt came up empty (future start, premium combo, day-0, clock rollback all blocked) and the 6 tests pin the boundary; worker schedule is KEEP-unique, channel registered before any fire; locales 24/24 keys with dead keys gone everywhere; 123/123, build green, all ancestors of origin/main. One benign note: flag persists after notify — a crash in that window means at most one duplicate notification (tolerated by design). Task #44 closed.
+
+---
+
+## 2026-06-11 (cont.) — SP-13: brand logo lands — launcher icon + Welcome lockup
+
+- Pranav delivered `docs/brand/Niyam App Icon.png` (2000², flattened) + `In App_Logo.png` (2000², alpha). Placement ruling delivered + accepted: Welcome + launcher/splash only; never the overlay; Settings-footer mark offered, not yet taken.
+- **Built:** adaptive icon — foreground cut from the ALPHA file's tile region (no color-keying), scaled to the 66/108dp safe zone, density PNGs mdpi→xxxhdpi; background = brand eggshell `#F5EBE1`; `mipmap-anydpi-v26` icon+round XMLs; manifest swapped off the stock `sym_def_app_icon`. Welcome: `brand_lockup` (trimmed, 1000px) replaces the text title (wordmark is in the image). Suite **123/123**, build green.
+- **Verified live (Pixel 9):** cold-start splash shows the tile (Android 12+ automatic); Welcome shows the lockup on sunrise. Launcher-drawer screenshot impossible headless (swipe won't open drawer) — icon verified via faithful mask-composition render (circle + squircle), labelled as such in the gallery. Gallery: `docs/screenshots/sp13-brand/index.html`.
+- **Flag for founder:** fresh installs default to DEVANAGARI_SANSKRIT display language (SP-3 default) → since SP-11 the first-touch chrome is Hindi until the user picks a language. One-line default change if English-first is preferred.
+- **Process note:** no adversarial subagent review for this SP — asset-only change + one Image composable, zero logic; the founder gallery is the review gate. Test device left as a fresh user on Welcome (pm clear was needed to show it).
