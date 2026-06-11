@@ -140,6 +140,7 @@ object UserPrefs {
     suspend fun setThemePref(context: Context, pref: ThemePref) {
         context.niyamDataStore.edit { it[KEY_THEME_PREF] = pref.name }
         current = current.copy(themePref = pref)
+        com.myniyam.app.ui.theme.ThemeState.set(pref)
     }
 
     suspend fun setNotifyOnCompletion(context: Context, enabled: Boolean) {

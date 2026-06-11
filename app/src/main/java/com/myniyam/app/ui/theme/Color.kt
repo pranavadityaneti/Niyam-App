@@ -14,3 +14,13 @@ val PumpkinOrange = Color(0xFFFF6400)
 val OrangeTint = Color(0xFFFFF3EA)
 val SaladGreen = Color(0xFF8CC850)
 val ChipFill = Color(0xFFECE0D2)
+
+// Dark theme tokens (SP-7 spec §2) — bottle-green inversion, orange untouched.
+val DarkBg = Color(0xFF0A2A20)
+val DarkCard = Color(0xFF11352A)
+val DarkHairline = Color(0xFF1E4438)
+val DarkInk = Color(0xFFF5EBE1)
+val DarkInkMuted = Color(0xFFB9C9C2)
+val DarkLabelMuted = Color(0xFF7E948B)
+val DarkChipFill = Color(0xFF1A3F33)
+val DarkOrangeTint = Color(0xFF3A2415)
