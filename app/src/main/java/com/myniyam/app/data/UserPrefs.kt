@@ -35,6 +35,7 @@ object UserPrefs {
     private val KEY_TRIAL_START = longPreferencesKey("trial_start_epoch_day")
     private val KEY_PREMIUM_ACTIVE = booleanPreferencesKey("premium_active")
     private val KEY_PREMIUM_PLAN = stringPreferencesKey("premium_plan")
+    private val KEY_TRIAL_REMINDER_SHOWN = booleanPreferencesKey("trial_reminder_shown")
 
     data class Snapshot(
         val onboardingComplete: Boolean,
@@ -49,7 +50,8 @@ object UserPrefs {
         val notifyOnCompletion: Boolean,
         val trialStartEpochDay: Long,
         val premiumActive: Boolean,
-        val premiumPlan: String?
+        val premiumPlan: String?,
+        val trialReminderShown: Boolean
     ) {
         companion object {
             val DEFAULTS = Snapshot(
@@ -65,7 +67,8 @@ object UserPrefs {
                 notifyOnCompletion = true,
                 trialStartEpochDay = 0L,
                 premiumActive = false,
-                premiumPlan = null
+                premiumPlan = null,
+                trialReminderShown = false
             )
 
             fun fromRaw(
@@ -81,7 +84,8 @@ object UserPrefs {
                 notifyOnCompletion: Boolean? = null,
                 trialStart: Long? = null,
                 premiumActive: Boolean? = null,
-                premiumPlan: String? = null
+                premiumPlan: String? = null,
+                trialReminderShown: Boolean? = null
             ): Snapshot = Snapshot(
                 onboardingComplete = onboardingComplete ?: DEFAULTS.onboardingComplete,
                 currentMantraId = mantraId?.takeIf { it.isNotBlank() } ?: DEFAULTS.currentMantraId,
@@ -101,7 +105,8 @@ object UserPrefs {
                 notifyOnCompletion = notifyOnCompletion ?: DEFAULTS.notifyOnCompletion,
                 trialStartEpochDay = trialStart ?: DEFAULTS.trialStartEpochDay,
                 premiumActive = premiumActive ?: DEFAULTS.premiumActive,
-                premiumPlan = premiumPlan ?: DEFAULTS.premiumPlan
+                premiumPlan = premiumPlan ?: DEFAULTS.premiumPlan,
+                trialReminderShown = trialReminderShown ?: DEFAULTS.trialReminderShown
             )
         }
     }
@@ -132,7 +137,8 @@ object UserPrefs {
                     notifyOnCompletion = p[KEY_NOTIFY_ON_COMPLETION],
                     trialStart = p[KEY_TRIAL_START],
                     premiumActive = p[KEY_PREMIUM_ACTIVE],
-                    premiumPlan = p[KEY_PREMIUM_PLAN]
+                    premiumPlan = p[KEY_PREMIUM_PLAN],
+                    trialReminderShown = p[KEY_TRIAL_REMINDER_SHOWN]
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load prefs; using defaults", e)
@@ -218,6 +224,11 @@ object UserPrefs {
         val backdated = todayEpochDay - 7
         context.niyamDataStore.edit { it[KEY_TRIAL_START] = backdated }
         current = current.copy(trialStartEpochDay = backdated)
+    }
+
+    suspend fun setTrialReminderShown(context: Context) {
+        context.niyamDataStore.edit { it[KEY_TRIAL_REMINDER_SHOWN] = true }
+        current = current.copy(trialReminderShown = true)
     }
 
     fun setSnapshotForTest(snapshot: Snapshot) { current = snapshot }

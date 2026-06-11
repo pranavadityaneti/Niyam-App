@@ -123,24 +123,33 @@
     <!-- Settings entry -->
     <string name="settings_content_desc">Settings</string>
 
-    <!-- Paywall -->
+    <!-- Paywall (v2 — SP-12 trial timeline) -->
     <string name="paywall_overline">Niyam Premium</string>
     <string name="paywall_close_desc">Close</string>
     <string name="paywall_hero">Every mantra.\nEvery language.</string>
-    <plurals name="paywall_trial_left">
-        <item quantity="one">%1$d day of free trial left</item>
-        <item quantity="other">%1$d days of free trial left</item>
-    </plurals>
-    <string name="paywall_benefit_mantras">All 26 mantras</string>
-    <string name="paywall_benefit_languages">All 9 languages &amp; scripts</string>
-    <string name="paywall_benefit_switching">Unlimited sadhana switching</string>
-    <string name="paywall_benefit_no_ads">No ads</string>
-    <string name="paywall_period_week">week</string>
-    <string name="paywall_period_month">month</string>
-    <string name="paywall_period_year">year</string>
+    <string name="paywall_timeline_today_title">Today</string>
+    <string name="paywall_timeline_today_body">Everything is unlocked — your 7-day trial is already on.</string>
+    <string name="paywall_timeline_day6_title">Day 6</string>
+    <string name="paywall_timeline_day6_body">We remind you before it ends.</string>
+    <string name="paywall_timeline_day7_title">Day 7</string>
+    <string name="paywall_timeline_day7_body">Trial ends — keep it all with Premium.</string>
+    <string name="paywall_plan_annual_fmt">Annual — ₹%1$d</string>
+    <string name="paywall_plan_annual_subline_fmt">≈ ₹%1$d a month, billed yearly</string>
+    <string name="paywall_plan_monthly_fmt">Monthly — ₹%1$d</string>
+    <string name="paywall_plan_monthly_subline">Flexible, cancel anytime</string>
+    <string name="paywall_plan_weekly_fmt">Weekly — ₹%1$d</string>
+    <string name="paywall_plan_weekly_subline">Try it a week at a time</string>
     <string name="paywall_best_value">Best value</string>
+    <string name="paywall_more_plans">More plans</string>
+    <string name="paywall_fewer_plans">Fewer plans</string>
+    <string name="paywall_restore">Restore purchase</string>
+    <string name="paywall_restore_sandbox_toast">Sandbox build — nothing to restore yet.</string>
+    <string name="paywall_trust_sandbox">Sandbox — no real payment</string>
     <string name="paywall_cta">Unlock Niyam</string>
-    <string name="paywall_footnote">Sandbox build — no real payment is charged.</string>
+
+    <!-- Trial reminder notification -->
+    <string name="notif_trial_title">Your trial ends tomorrow</string>
+    <string name="notif_trial_body">Keep every mantra and language — unlock Niyam Premium.</string>
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">Unlock with Premium</string>

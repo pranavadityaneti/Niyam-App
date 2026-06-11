@@ -1,6 +1,10 @@
 package com.myniyam.app.billing
 
+import android.widget.Toast
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,12 +12,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Done
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -30,23 +42,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
 import com.myniyam.app.data.UserPrefs
-import com.myniyam.app.onboarding.SelectableCard
 import com.myniyam.app.ui.theme.NiyamBackground
 import com.myniyam.app.ui.theme.NiyamTheme
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 /**
- * Premium paywall (spec §3.4) in the locked SP-8 "Sunrise Sans" system: warm overline,
- * 700 hero, floating benefits card, three plan cards (yearly pre-selected), filled-orange
- * pill CTA driving a sandbox purchase. Static — no animated elements.
+ * Premium paywall v2 (SP-12 spec §1, founder-approved mockup): trial timeline as the
+ * hero content while in TRIAL, expanded three-plan view behind "More plans" (and as
+ * the default in FREE state, where the timeline's "trial is on" line would be false).
+ * Sunrise Sans system throughout; static — no animated elements.
  */
 @Composable
 fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
@@ -56,8 +67,8 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
     val snap = UserPrefs.snapshot()
     val today = LocalDate.now().toEpochDay()
     val state = Entitlements.state(snap.premiumActive, snap.trialStartEpochDay, today)
-    val daysLeft = Entitlements.trialDaysLeft(snap.trialStartEpochDay, today)
 
+    var expanded by remember { mutableStateOf(state != PremiumState.TRIAL) }
     var selectedPlan by remember { mutableStateOf(Plan.YEARLY) }
 
     NiyamBackground {
@@ -70,7 +81,6 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
             ) {
                 Spacer(Modifier.height(24.dp))
 
-                // 1. Overline + close
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.paywall_overline).uppercase(),
@@ -89,85 +99,142 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
 
                 Spacer(Modifier.height(8.dp))
 
-                // 2. Hero
-                Text(
-                    text = stringResource(R.string.paywall_hero),
-                    style = MaterialTheme.typography.displayMedium,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
-
-                // 3. Trial caption (only while in trial)
-                if (state == PremiumState.TRIAL) {
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        text = pluralStringResource(R.plurals.paywall_trial_left, daysLeft, daysLeft),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-
-                Spacer(Modifier.height(20.dp))
-
-                // Middle section scrolls; CTA stays pinned below (protected bottom zone).
+                // Middle scrolls; trust pill + CTA stay pinned (protected bottom zone).
                 Column(
                     modifier = Modifier
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    // 4. Benefits card
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .shadow(
-                                elevation = 8.dp,
-                                shape = RoundedCornerShape(24.dp),
-                                ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
-                                spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
-                            )
-                            .background(
-                                color = MaterialTheme.colorScheme.surface,
-                                shape = RoundedCornerShape(24.dp)
-                            )
-                            .padding(20.dp)
-                    ) {
-                        BenefitRow(stringResource(R.string.paywall_benefit_mantras))
-                        Spacer(Modifier.height(14.dp))
-                        BenefitRow(stringResource(R.string.paywall_benefit_languages))
-                        Spacer(Modifier.height(14.dp))
-                        BenefitRow(stringResource(R.string.paywall_benefit_switching))
-                        Spacer(Modifier.height(14.dp))
-                        BenefitRow(stringResource(R.string.paywall_benefit_no_ads))
+                    if (!expanded) {
+                        TimelineRow(
+                            icon = Icons.Default.Done,
+                            title = stringResource(R.string.paywall_timeline_today_title),
+                            body = stringResource(R.string.paywall_timeline_today_body),
+                            connector = true
+                        )
+                        TimelineRow(
+                            icon = Icons.Default.Notifications,
+                            title = stringResource(R.string.paywall_timeline_day6_title),
+                            body = stringResource(R.string.paywall_timeline_day6_body),
+                            connector = true
+                        )
+                        TimelineRow(
+                            icon = Icons.Default.CheckCircle,
+                            title = stringResource(R.string.paywall_timeline_day7_title),
+                            body = stringResource(R.string.paywall_timeline_day7_body),
+                            connector = false
+                        )
+
+                        Spacer(Modifier.height(16.dp))
+
+                        PlanCard(
+                            title = stringResource(R.string.paywall_plan_annual_fmt, Plan.YEARLY.priceInr),
+                            subline = stringResource(
+                                R.string.paywall_plan_annual_subline_fmt, Plan.YEARLY.priceInr / 12
+                            ),
+                            badge = stringResource(R.string.paywall_best_value),
+                            selected = true,
+                            onClick = { selectedPlan = Plan.YEARLY }
+                        )
+                    } else {
+                        Text(
+                            text = stringResource(R.string.paywall_hero),
+                            style = MaterialTheme.typography.displayMedium,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        PlanCard(
+                            title = stringResource(R.string.paywall_plan_annual_fmt, Plan.YEARLY.priceInr),
+                            subline = stringResource(
+                                R.string.paywall_plan_annual_subline_fmt, Plan.YEARLY.priceInr / 12
+                            ),
+                            badge = stringResource(R.string.paywall_best_value),
+                            selected = selectedPlan == Plan.YEARLY,
+                            onClick = { selectedPlan = Plan.YEARLY }
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        PlanCard(
+                            title = stringResource(R.string.paywall_plan_monthly_fmt, Plan.MONTHLY.priceInr),
+                            subline = stringResource(R.string.paywall_plan_monthly_subline),
+                            badge = null,
+                            selected = selectedPlan == Plan.MONTHLY,
+                            onClick = { selectedPlan = Plan.MONTHLY }
+                        )
+                        Spacer(Modifier.height(10.dp))
+                        PlanCard(
+                            title = stringResource(R.string.paywall_plan_weekly_fmt, Plan.WEEKLY.priceInr),
+                            subline = stringResource(R.string.paywall_plan_weekly_subline),
+                            badge = null,
+                            selected = selectedPlan == Plan.WEEKLY,
+                            onClick = { selectedPlan = Plan.WEEKLY }
+                        )
                     }
 
-                    Spacer(Modifier.height(20.dp))
+                    Spacer(Modifier.height(14.dp))
 
-                    // 5. Plan picker
-                    Column {
-                        Plan.entries.forEach { plan ->
-                            val period = stringResource(
-                                when (plan) {
-                                    Plan.WEEKLY -> R.string.paywall_period_week
-                                    Plan.MONTHLY -> R.string.paywall_period_month
-                                    Plan.YEARLY -> R.string.paywall_period_year
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = stringResource(R.string.paywall_restore),
+                            style = MaterialTheme.typography.labelMedium,
+                            color = NiyamTheme.colors.overlineWarm,
+                            modifier = Modifier
+                                .clickable {
+                                    Toast.makeText(
+                                        ctx,
+                                        ctx.getString(R.string.paywall_restore_sandbox_toast),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
-                            )
-                            SelectableCard(
-                                text = "₹${plan.priceInr} / $period",
-                                supportingText = if (plan == Plan.YEARLY) {
-                                    stringResource(R.string.paywall_best_value)
-                                } else {
-                                    null
-                                },
-                                selected = selectedPlan == plan,
-                                onClick = { selectedPlan = plan }
-                            )
+                                .padding(vertical = 8.dp)
+                        )
+                        Spacer(Modifier.weight(1f))
+                        // FREE state has no collapsed timeline view to return to.
+                        if (state == PremiumState.TRIAL) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier
+                                    .clickable { expanded = !expanded; selectedPlan = Plan.YEARLY }
+                                    .padding(vertical = 8.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(
+                                        if (expanded) R.string.paywall_fewer_plans
+                                        else R.string.paywall_more_plans
+                                    ),
+                                    style = MaterialTheme.typography.labelMedium,
+                                    color = NiyamTheme.colors.overlineWarm
+                                )
+                                Icon(
+                                    imageVector = if (expanded) Icons.Default.KeyboardArrowUp
+                                        else Icons.Default.KeyboardArrowDown,
+                                    contentDescription = null,
+                                    tint = NiyamTheme.colors.overlineWarm,
+                                    modifier = Modifier.size(18.dp)
+                                )
+                            }
                         }
                     }
                 }
 
+                Spacer(Modifier.height(8.dp))
+
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    Text(
+                        text = stringResource(R.string.paywall_trust_sandbox),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .border(
+                                width = 1.dp,
+                                color = MaterialTheme.colorScheme.outlineVariant,
+                                shape = RoundedCornerShape(999.dp)
+                            )
+                            .padding(horizontal = 12.dp, vertical = 4.dp)
+                    )
+                }
+
                 Spacer(Modifier.height(12.dp))
 
-                // 6. CTA
                 Button(
                     onClick = {
                         scope.launch {
@@ -185,17 +252,6 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
                     )
                 }
 
-                Spacer(Modifier.height(12.dp))
-
-                // 7. Footnote
-                Text(
-                    text = stringResource(R.string.paywall_footnote),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
                 Spacer(Modifier.height(20.dp))
             }
         }
@@ -203,18 +259,119 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
 }
 
 @Composable
-private fun BenefitRow(text: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Icon(
-            imageVector = Icons.Default.Check,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(start = 12.dp)
-        )
+private fun TimelineRow(icon: ImageVector, title: String, body: String, connector: Boolean) {
+    Row {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Box(
+                modifier = Modifier
+                    .size(38.dp)
+                    .shadow(
+                        elevation = 4.dp,
+                        shape = CircleShape,
+                        ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
+                        spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
+                    )
+                    .background(MaterialTheme.colorScheme.surface, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+            if (connector) {
+                Box(
+                    modifier = Modifier
+                        .width(2.dp)
+                        .height(26.dp)
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                )
+            }
+        }
+        Column(modifier = Modifier.padding(start = 12.dp, bottom = if (connector) 10.dp else 0.dp)) {
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Text(
+                text = body,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+@Composable
+private fun PlanCard(
+    title: String,
+    subline: String,
+    badge: String?,
+    selected: Boolean,
+    onClick: () -> Unit
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .shadow(
+                elevation = 6.dp,
+                shape = RoundedCornerShape(20.dp),
+                ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
+                spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
+            )
+            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(20.dp))
+            .then(
+                if (selected) Modifier.border(
+                    width = 2.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(20.dp)
+                ) else Modifier
+            )
+            .clickable(onClick = onClick)
+            .padding(horizontal = 16.dp, vertical = 14.dp)
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            if (badge != null) {
+                Text(
+                    text = badge.uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = NiyamTheme.colors.overlineWarm,
+                    modifier = Modifier
+                        .background(NiyamTheme.colors.orangeTint, RoundedCornerShape(999.dp))
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                )
+                Spacer(Modifier.height(6.dp))
+            }
+            Text(
+                text = title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+            Spacer(Modifier.height(2.dp))
+            Text(
+                text = subline,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+        if (selected) {
+            Box(
+                modifier = Modifier
+                    .size(26.dp)
+                    .background(MaterialTheme.colorScheme.primary, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Check,
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                    modifier = Modifier.size(16.dp)
+                )
+            }
+        }
     }
 }

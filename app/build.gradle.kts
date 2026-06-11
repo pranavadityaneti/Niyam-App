@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.autostarter)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.play.services.ads)
+    implementation(libs.androidx.work.runtime)
 
     debugImplementation(libs.androidx.ui.tooling)
 
