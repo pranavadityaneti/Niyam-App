@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
+import com.myniyam.app.billing.Entitlements
 import com.myniyam.app.data.DisplayLanguage
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.onboarding.SelectableCard
@@ -44,10 +45,12 @@ private val LANGUAGE_LABELS: List<Triple<DisplayLanguage, String, String>> = lis
 )
 
 @Composable
-fun LanguageSettingScreen(onSaved: () -> Unit) {
+fun LanguageSettingScreen(onSaved: () -> Unit, onPaywall: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
-    var selected by remember { mutableStateOf(UserPrefs.snapshot().displayLanguage) }
+    val snap = UserPrefs.snapshot()
+    val state = Entitlements.state(snap.premiumActive, snap.trialStartEpochDay, java.time.LocalDate.now().toEpochDay())
+    var selected by remember { mutableStateOf(snap.displayLanguage) }
 
     NiyamBackground {
         Scaffold(containerColor = Color.Transparent) { padding ->
@@ -66,11 +69,16 @@ fun LanguageSettingScreen(onSaved: () -> Unit) {
                         .verticalScroll(rememberScrollState())
                 ) {
                     LANGUAGE_LABELS.forEach { (lang, native, caption) ->
+                        val usable = Entitlements.canUseLanguage(state, lang, snap.displayLanguage)
                         SelectableCard(
                             text = native,
-                            supportingText = caption,
+                            supportingText = if (usable) {
+                                caption
+                            } else {
+                                caption + stringResource(R.string.settings_language_premium_suffix)
+                            },
                             selected = selected == lang,
-                            onClick = { selected = lang }
+                            onClick = { if (usable) selected = lang else onPaywall() }
                         )
                     }
                 }

@@ -10,16 +10,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -37,6 +41,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
+import com.myniyam.app.billing.Entitlements
 import com.myniyam.app.data.Deity
 import com.myniyam.app.data.Intention
 import com.myniyam.app.data.MantraRepository
@@ -53,6 +58,7 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
     MantraRepository.ensureLoaded(ctx)
     val all = MantraRepository.all()
     val snap = UserPrefs.snapshot()
+    val state = Entitlements.state(snap.premiumActive, snap.trialStartEpochDay, java.time.LocalDate.now().toEpochDay())
 
     var selection by remember { mutableStateOf(LibraryFilters.Selection()) }
     val results = remember(selection, all) { LibraryFilters.apply(all, selection) }
@@ -140,6 +146,16 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
                                             mantra.id in snap.completedMantraIds -> MarkerChip(
                                                 stringResource(R.string.library_completed_marker),
                                                 MaterialTheme.colorScheme.secondary
+                                            )
+                                        }
+                                        if (!Entitlements.canUseMantra(state, mantra.id, snap.currentMantraId)) {
+                                            Icon(
+                                                imageVector = Icons.Default.Lock,
+                                                contentDescription = null,
+                                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                                modifier = Modifier
+                                                    .padding(start = 8.dp)
+                                                    .size(16.dp)
                                             )
                                         }
                                     }

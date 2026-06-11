@@ -193,7 +193,8 @@ fun AppNavHost(
             MantraDetailScreen(
                 mantraId = backStackEntry.arguments?.getString("mantraId") ?: "",
                 onSwitched = { navController.popBackStack(NiyamRoutes.HOME, inclusive = false) },
-                onMissing = { navController.popBackStack() }
+                onMissing = { navController.popBackStack() },
+                onPaywall = { navController.navigate(NiyamRoutes.PAYWALL) }
             )
         }
 
@@ -202,11 +203,15 @@ fun AppNavHost(
                 onOpenCurrentSadhana = { navController.navigate(NiyamRoutes.LIBRARY) },
                 onOpenLanguage = { navController.navigate(NiyamRoutes.SETTINGS_LANGUAGE) },
                 onOpenApps = { navController.navigate(NiyamRoutes.SETTINGS_APPS) },
-                onOpenIntention = { navController.navigate(NiyamRoutes.SETTINGS_INTENTION) }
+                onOpenIntention = { navController.navigate(NiyamRoutes.SETTINGS_INTENTION) },
+                onOpenPaywall = { navController.navigate(NiyamRoutes.PAYWALL) }
             )
         }
         composable(NiyamRoutes.SETTINGS_LANGUAGE) {
-            LanguageSettingScreen(onSaved = { navController.popBackStack() })
+            LanguageSettingScreen(
+                onSaved = { navController.popBackStack() },
+                onPaywall = { navController.navigate(NiyamRoutes.PAYWALL) }
+            )
         }
         composable(NiyamRoutes.SETTINGS_APPS) {
             BlockedAppsSettingScreen(onSaved = { navController.popBackStack() })

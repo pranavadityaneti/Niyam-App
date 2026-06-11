@@ -10,6 +10,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.core.view.WindowCompat
 import com.myniyam.app.data.ThemePref
 import com.myniyam.app.data.UserPrefs
+import kotlinx.coroutines.runBlocking
 import com.myniyam.app.ui.AppNavHost
 import com.myniyam.app.ui.NiyamRoutes
 import com.myniyam.app.ui.theme.NiyamTheme
@@ -24,6 +25,10 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT)
         )
         UserPrefs.ensureLoaded(this)
+        val s = UserPrefs.snapshot()
+        if (s.onboardingComplete && s.trialStartEpochDay == 0L) {
+            runBlocking { UserPrefs.startTrial(this@MainActivity, java.time.LocalDate.now().toEpochDay()) }
+        }
         ThemeState.set(UserPrefs.snapshot().themePref)
         val start = if (UserPrefs.snapshot().onboardingComplete) NiyamRoutes.HOME else NiyamRoutes.WELCOME
         setContent {

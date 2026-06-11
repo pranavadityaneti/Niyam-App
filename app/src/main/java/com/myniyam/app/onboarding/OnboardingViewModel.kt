@@ -54,6 +54,9 @@ class OnboardingViewModel : ViewModel() {
     }
 
     fun persistOnboardingComplete(context: Context) {
-        viewModelScope.launch { UserPrefs.setOnboardingComplete(context) }
+        viewModelScope.launch {
+            UserPrefs.setOnboardingComplete(context)
+            UserPrefs.startTrial(context, java.time.LocalDate.now().toEpochDay())
+        }
     }
 }

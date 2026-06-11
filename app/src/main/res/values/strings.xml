@@ -136,4 +136,18 @@
     <string name="paywall_best_value">Best value</string>
     <string name="paywall_cta">Unlock Niyam</string>
     <string name="paywall_footnote">Sandbox build — no real payment is charged.</string>
+
+    <!-- Premium gates -->
+    <string name="detail_unlock_premium">Unlock with Premium</string>
+    <string name="settings_language_premium_suffix"> · Premium</string>
+    <string name="settings_section_premium">Niyam Premium</string>
+    <string name="settings_row_premium">Premium</string>
+    <string name="settings_premium_active">Active</string>
+    <string name="settings_premium_free">Free plan</string>
+    <plurals name="settings_premium_trial_left">
+        <item quantity="one">%1$d day of trial left</item>
+        <item quantity="other">%1$d days of trial left</item>
+    </plurals>
+    <string name="settings_debug_expire_trial">Sandbox: expire trial now</string>
+    <string name="settings_debug_clear_premium">Sandbox: clear premium + trial</string>
 </resources>

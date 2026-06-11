@@ -31,6 +31,7 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,11 +42,14 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.BuildConfig
 import com.myniyam.app.R
+import com.myniyam.app.billing.Entitlements
+import com.myniyam.app.billing.PremiumState
 import com.myniyam.app.data.ThemePref
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.notifications.CompletionNotifier
@@ -61,11 +65,14 @@ fun SettingsScreen(
     onOpenCurrentSadhana: () -> Unit,
     onOpenLanguage: () -> Unit,
     onOpenApps: () -> Unit,
-    onOpenIntention: () -> Unit
+    onOpenIntention: () -> Unit,
+    onOpenPaywall: () -> Unit
 ) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val snap = UserPrefs.snapshot()
+    var snapState by remember { mutableStateOf(UserPrefs.snapshot()) }
+    LaunchedEffect(Unit) { snapState = UserPrefs.snapshot() }
 
     var notifyOn by remember { mutableStateOf(snap.notifyOnCompletion) }
     var permissionGranted by remember { mutableStateOf(CompletionNotifier.hasPostPermission(ctx)) }
@@ -113,6 +120,53 @@ fun SettingsScreen(
                         onOpenIntention,
                         leading = Icons.Default.Edit
                     )
+                }
+
+                Spacer(Modifier.height(20.dp))
+                SectionLabel(stringResource(R.string.settings_section_premium))
+                SectionCard {
+                    val premiumState = Entitlements.state(
+                        snapState.premiumActive,
+                        snapState.trialStartEpochDay,
+                        java.time.LocalDate.now().toEpochDay()
+                    )
+                    val statusText = when (premiumState) {
+                        PremiumState.PREMIUM -> stringResource(R.string.settings_premium_active)
+                        PremiumState.TRIAL -> {
+                            val daysLeft = Entitlements.trialDaysLeft(
+                                snapState.trialStartEpochDay,
+                                java.time.LocalDate.now().toEpochDay()
+                            )
+                            pluralStringResource(R.plurals.settings_premium_trial_left, daysLeft, daysLeft)
+                        }
+                        PremiumState.FREE -> stringResource(R.string.settings_premium_free)
+                    }
+                    NavRow(
+                        stringResource(R.string.settings_row_premium),
+                        onOpenPaywall,
+                        trailing = statusText,
+                        leading = Icons.Default.Star
+                    )
+                    if (BuildConfig.DEBUG) {
+                        NavRow(
+                            stringResource(R.string.settings_debug_expire_trial),
+                            onClick = {
+                                scope.launch {
+                                    UserPrefs.expireTrialForSandbox(ctx, java.time.LocalDate.now().toEpochDay())
+                                    snapState = UserPrefs.snapshot()
+                                }
+                            }
+                        )
+                        NavRow(
+                            stringResource(R.string.settings_debug_clear_premium),
+                            onClick = {
+                                scope.launch {
+                                    UserPrefs.clearPremiumForSandbox(ctx)
+                                    snapState = UserPrefs.snapshot()
+                                }
+                            }
+                        )
+                    }
                 }
 
                 Spacer(Modifier.height(20.dp))

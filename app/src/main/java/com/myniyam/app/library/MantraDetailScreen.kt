@@ -23,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.myniyam.app.R
+import com.myniyam.app.billing.Entitlements
 import com.myniyam.app.data.CurrentSadhana
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.Script
@@ -35,7 +36,7 @@ import com.myniyam.app.ui.theme.SaladGreen
 import kotlinx.coroutines.launch
 
 @Composable
-fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -> Unit) {
+fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -> Unit, onPaywall: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     MantraRepository.ensureLoaded(ctx)
@@ -46,8 +47,10 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
     }
 
     val snap = UserPrefs.snapshot()
+    val state = Entitlements.state(snap.premiumActive, snap.trialStartEpochDay, java.time.LocalDate.now().toEpochDay())
     val isCurrent = mantra.id == snap.currentMantraId
     val isCompleted = mantra.id in snap.completedMantraIds
+    val locked = !Entitlements.canUseMantra(state, mantra.id, snap.currentMantraId)
     val lang = CurrentSadhana.LANGUAGE
 
     var showDialog by remember { mutableStateOf(false) }
@@ -142,6 +145,10 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
                 Spacer(Modifier.height(12.dp))
                 Button(
                     onClick = {
+                        if (locked) {
+                            onPaywall()
+                            return@Button
+                        }
                         if (isCurrent) return@Button
                         val currentHasProgress = !snap.pendingCelebration &&
                             snap.currentMantraId !in snap.completedMantraIds
@@ -168,6 +175,7 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
                     Text(
                         stringResource(
                             when {
+                                locked -> R.string.detail_unlock_premium
                                 isCurrent -> R.string.detail_is_current
                                 isCompleted -> R.string.detail_practice_again
                                 else -> R.string.detail_make_current
