@@ -139,7 +139,7 @@
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">Unlock with Premium</string>
-    <string name="settings_language_premium_suffix"> · Premium</string>
+    <string name="settings_language_premium_suffix">" · Premium"</string>
     <string name="settings_section_premium">Niyam Premium</string>
     <string name="settings_row_premium">Premium</string>
     <string name="settings_premium_active">Active</string>
