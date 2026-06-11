@@ -20,12 +20,11 @@
 <style>
   * { margin:0; box-sizing:border-box; }
   body { font-family:'Outfit',sans-serif; background:#FAF6F1; color:#222222; }
-  .nav { display:flex; align-items:center; max-width:1080px; margin:0 auto; padding:26px 32px; }
-  .nav img { height:72px; }
-  .nav .cta { margin-left:auto; background:#FF6400; color:#fff; font-size:14px; font-weight:500;
-    border-radius:99px; padding:10px 22px; text-decoration:none; }
+  .nav { display:flex; align-items:center; justify-content:center; max-width:1080px; margin:0 auto; padding:26px 32px 10px; }
+  .nav img { height:84px; }
   .hero { text-align:center; padding:38px 24px 0; }
-  .chip { display:inline-block; background:#FFF3EA; color:#99511F; font-size:13px; border-radius:99px; padding:6px 16px; }
+  .chip { display:inline-flex; align-items:center; gap:7px; background:#FFF3EA; color:#99511F; font-size:13px; border-radius:99px; padding:6px 16px; }
+  .chip svg { display:block; }
   h1 { font-family:'Fraunces',serif; font-weight:420; font-size:clamp(40px,7vw,68px); line-height:1.08; margin-top:22px; letter-spacing:-0.01em; }
   .sub { font-size:16px; color:#6b6258; line-height:1.6; max-width:440px; margin:18px auto 0; }
   .waitlist { display:flex; gap:10px; justify-content:center; margin:26px auto 0; max-width:420px; padding:0 16px; }
@@ -45,7 +44,9 @@
   .phone .screen { border-radius:27px; overflow:hidden; display:block; position:relative; }
   .phone img { width:100%; display:block; }
   .phone .cam { position:absolute; top:13px; left:50%; transform:translateX(-50%); width:9px; height:9px;
-    border-radius:50%; background:#000; box-shadow:inset 0 0 2px 1px #1e2a33; z-index:2; }
+    border-radius:50%; background:#000; box-shadow:inset 0 0 2px 1px #1e2a33; z-index:3; }
+  .phone .reveal { position:absolute; top:0; left:0; width:100%; z-index:2; animation:reveal 8s ease-in-out infinite; }
+  @keyframes reveal { 0%,16% { opacity:0; } 30%,84% { opacity:1; } 96%,100% { opacity:0; } }
   .p-back { transform:translate(-50%,-50%) translateX(-128px) rotate(-6deg); z-index:1; }
   .p-front { transform:translate(-50%,-50%) translateX(128px) rotate(6deg); z-index:2; }
   .benefits { display:flex; justify-content:center; gap:64px; flex-wrap:wrap; padding:30px 24px 8px; text-align:center; }
@@ -71,15 +72,15 @@
 <body>
 <nav class="nav">
   <img src="/assets/lockup.png" alt="Niyam">
-  <a class="cta" href="#waitlist">Get early access</a>
 </nav>
 
 <section class="hero">
-  <span class="chip">Launching soon on Google Play</span>
+  <span class="chip">Launching soon on
+    <svg width="15" height="16" viewBox="0 0 24 26" aria-label="Google Play"><path d="M1.5 1.6v22.8c0 .5.6.9 1 .6l12-6.3-3.4-5.3 3.4-5.3-12-6.3c-.4-.3-1 .1-1 .6z" fill="#00C4FF"/><path d="M14.5 7.4 3.3 1.2l8.4 9.2z" fill="#00E783"/><path d="M14.5 18.6 3.3 24.8l8.4-9.2z" fill="#FF4757"/><path d="m14.5 7.4 4.8 2.6c1.2.7 1.2 2.3 0 3l-4.8 2.6-3.4-4.1z" fill="#FFC400"/></svg></span>
   <h1>A pause<br>before the scroll.</h1>
   <p class="sub">Your chosen mantra appears for 15 seconds before Instagram, YouTube or Facebook opens.
   Discipline through devotion.</p>
-  <form class="waitlist" id="waitlist" action="https://formsubmit.co/sowfreyr@gmail.com" method="POST">
+  <form class="waitlist" id="waitlist" action="https://formsubmit.co/netipranavaditya@gmail.com" method="POST">
     <input type="hidden" name="_subject" value="Niyam waitlist signup">
     <input type="hidden" name="_captcha" value="false">
     <input type="hidden" name="_next" value="https://www.myniyam.com/?subscribed=1">
@@ -93,7 +94,7 @@
   <div class="wash"></div>
   <div class="hill"></div>
   <div class="phone p-back"><span class="cam"></span><span class="screen"><img src="/assets/screen-back.png" alt="Mahamrityunjaya Mantra page in Niyam — Sanskrit text, transliteration and meaning"></span></div>
-  <div class="phone p-front"><span class="cam"></span><span class="screen"><img src="/assets/screen-front.png" alt="Niyam blocking YouTube — Mahamrityunjaya mantra with the 15-second ring"></span></div>
+  <div class="phone p-front"><span class="cam"></span><span class="screen"><img src="/assets/yt-screen.png" alt="YouTube opening"><img class="reveal" src="/assets/screen-front.png" alt="Niyam appears over YouTube — Mahamrityunjaya mantra with the 15-second ring"></span></div>
 </section>
 
 <section class="benefits">
