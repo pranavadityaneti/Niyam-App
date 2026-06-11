@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.UserPrefs
+import com.myniyam.app.notifications.CompletionNotifier
 import com.myniyam.app.progress.ProgressRepository
 
 class NiyamApplication : Application() {
@@ -13,6 +14,7 @@ class NiyamApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         registerForegroundServiceChannel()
+        CompletionNotifier.registerChannel(this)
         Thread {
             MantraRepository.ensureLoaded(this)
             UserPrefs.ensureLoaded(this)

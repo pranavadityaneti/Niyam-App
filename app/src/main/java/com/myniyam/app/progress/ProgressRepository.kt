@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.UserPrefs
+import com.myniyam.app.notifications.CompletionNotifier
 import kotlinx.coroutines.runBlocking
 import java.time.LocalDate
 import java.util.concurrent.Executors
@@ -59,6 +60,17 @@ object ProgressRepository {
             .distinctDaysFor(mantraId, snap.sadhanaStartEpochDay)
         if (ProgressMath.isComplete(days, mantra.completionThresholdDays)) {
             UserPrefs.markCompleted(context, mantraId)
+            try {
+                val notifyOn = UserPrefs.snapshot().notifyOnCompletion
+                if (CompletionNotifier.shouldPost(notifyOn, CompletionNotifier.hasPostPermission(context))) {
+                    CompletionNotifier.notifyCompletion(
+                        context,
+                        MantraRepository.displayMantra(mantraId).canonicalName
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "completion notification failed", e)
+            }
         }
     }
 
