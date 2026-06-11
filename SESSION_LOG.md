@@ -269,3 +269,15 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - Hostile Opus review of `171955b..bf5f478` dispatched in background; verdict to be appended.
 - forlater item 8 added: full UI chrome translation (8 languages) — surfaced by the language gallery.
 - **Next:** SP-6 paywall spec (freemium split as approved) as the next async veto point.
+
+---
+
+## 2026-06-11 (cont.) — "Finish the app" → SP-6 FREEMIUM SANDBOX EXECUTED
+
+- SP-9 review verdict: **SHIP** (hostile Opus pass; wiring, grace semantics, recursion risk, tests, font deletion all confirmed; its "not pushed" caveat was stale — push had landed).
+- Pranav: "Go ahead. What else is pending? Finish the app once and for all." → SP-6 executed.
+- **SP-6 built** (spec `c25cd19` veto point; 4 Opus subagent tasks + my verification): `billing/Entitlements` (PREMIUM/TRIAL/FREE, 7-day exclusive-boundary trial, clock-rollback guard, grandfather rules, 18 TDD tests) · `BillingGateway` + `SandboxBillingGateway` (instant fake purchase, ₹15/49/399 Plan enum) · UserPrefs premium fields + sandbox levers · `PaywallScreen` (Sunrise Sans, route `paywall`) · gates (library lock icons, locked-detail CTA→paywall, language editor locks+"· Premium", Settings premium section + debug-only expire/clear rows) · trial seeding (MainActivity warm-up + onboarding completion) · AdMob TEST banners (official sample ids) on Home+Library, FREE state only, init off main thread. Suite **98 → 116/116**; engine isolation verified by diff (zero service/overlay files).
+- **Live acceptance walked end-to-end on Pixel 9** (report `docs/superpowers/test-reports/2026-06-11-sp6-acceptance.md`): trial → expire → ads+locks+paywall routes → sandbox purchase → everything unlocks → clear → free tier returns. Found+fixed live: XML-trimmed leading space in "· Premium" suffix (`5286363`).
+- **Founder-veto gallery** (paywall is a new screen): `docs/screenshots/sp6-premium/index.html`, opened in browser. Adversarial Opus review of the full range dispatched (background; verdict pending at log time).
+- Test device left on a fresh 7-day trial; emulator killed.
+- **App status after SP-6: feature-complete for the sandbox phase.** Remaining to "done": paywall veto, launcher icon (needs founder pick), polish batch (forlater 2/4/5/6), chrome translation (forlater 8), external items (native-speaker review, real-device Phase 2, Play Console/RevenueCat/AdMob accounts), landing page (after app sign-off).
