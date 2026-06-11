@@ -35,6 +35,14 @@
 - **Date added:** 2026-06-10
 - **Originated from:** Sub-project 1 spec, Phase 2 acceptance section.
 
+### 5. Dark-mode variant of the unlock overlay
+- **What:** The mantra overlay (View XML, `overlay_mantra.xml`) stays eggshell-light in all themes. Add a bottle-green dark variant that follows the user's themePref.
+- **Why:** SP-7 shipped in-app dark mode but deliberately excluded the overlay to preserve the zero-engine-touch rule. A dark-mode user who unlocks Instagram at night gets a bright eggshell flash — acceptable for an interruption surface, but worth revisiting.
+- **Scope:** `overlay_mantra.xml` + `OverlayManager` color binding — **engine-adjacent**, needs its own careful pass + emulator verification.
+- **Status:** Deferred by design (SP-7 spec §2 "Overlay stays light").
+- **Date added:** 2026-06-11
+- **Originated from:** SP-7 design spec, overlay rule.
+
 ## In progress
 
 _(empty)_

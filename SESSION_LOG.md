@@ -216,3 +216,15 @@ No code change is blocked. The next code task (sub-project 2 content model) does
 
 ### Where to pick up
 SP-5 is code-complete. Next: **SP-7** (settings / notifications / dark mode) design → plan → build, then SP-6 (paywall sandbox), then landing page.
+
+---
+
+## 2026-06-11 — SP-7 EXECUTED — settings, completion notification, dark mode
+
+- Spec `f210c40` + plan `c1191f6` (7 tasks) authored same-day; commits `741e49b → 03ac51b` all on origin/main. Suite **83/83** (76 + 4 prefs round-trips + 3 notifier-guard); zero engine-file touches (verified diff vs `f210c40`; sole permitted exception: try/caught notifier hook in ProgressRepository).
+- T1 ThemePref + notifyOnCompletion prefs (TDD) · T2 dark bottle-green scheme + live ThemeState mirror · T3 CompletionNotifier (channel/guard/PendingIntent→Celebration via pendingCelebration) · T4 SettingsScreen (rows, appearance segmented control, notify toggle + API-33 permission flow, version footer; buildConfig=true) · T5 language/apps/intention editors (reuse SelectableCard; empty-set guard) · T6 routes + Home gear.
+- Two parallel Opus reviews: data/infra pass clean; UI pass flagged 2 → fixed `03ac51b`: centered segment labels + **NiyamExtraColors CompositionLocal** so pre-dark-mode screens (Library chips, detail InfoChips, shared SelectableCard) stop hardcoding light tokens. Light mode byte-identical.
+- Dark overlay variant deliberately excluded → forlater.md item 5. Report: `docs/superpowers/test-reports/2026-06-11-sp7-acceptance.md`.
+
+### Where to pick up
+Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in sandbox mode** (design → plan → build; live billing gated on Pranav's Play Console/RevenueCat answers), then the landing page.
