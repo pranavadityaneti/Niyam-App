@@ -20,12 +20,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
 import com.myniyam.app.data.UserPrefs
+import com.myniyam.app.onboarding.AppIcon
 import com.myniyam.app.onboarding.SelectableCard
+import com.myniyam.app.ui.theme.NiyamBackground
 import kotlinx.coroutines.launch
 
 private val APP_CATALOG: List<Pair<String, String>> = listOf(
@@ -44,52 +47,55 @@ fun BlockedAppsSettingScreen(onSaved: () -> Unit) {
     val scope = rememberCoroutineScope()
     var selected by remember { mutableStateOf(UserPrefs.snapshot().blockedPackages) }
 
-    Scaffold { padding ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 24.dp)
-        ) {
-            Spacer(Modifier.height(24.dp))
-            Text(stringResource(R.string.settings_apps_title), style = MaterialTheme.typography.headlineMedium)
-            Spacer(Modifier.height(8.dp))
-            Text(
-                stringResource(R.string.settings_apps_empty_hint),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(Modifier.height(16.dp))
+    NiyamBackground {
+        Scaffold(containerColor = Color.Transparent) { padding ->
             Column(
                 Modifier
-                    .weight(1f)
-                    .verticalScroll(rememberScrollState())
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = 24.dp)
             ) {
-                APP_CATALOG.forEach { (name, pkg) ->
-                    SelectableCard(
-                        text = name,
-                        selected = pkg in selected,
-                        onClick = {
-                            selected = if (pkg in selected) selected - pkg else selected + pkg
-                        }
-                    )
-                }
-            }
-            Spacer(Modifier.height(12.dp))
-            Button(
-                onClick = {
-                    scope.launch {
-                        UserPrefs.setBlockedPackages(ctx, selected)
-                        onSaved()
+                Spacer(Modifier.height(24.dp))
+                Text(stringResource(R.string.settings_apps_title), style = MaterialTheme.typography.headlineMedium)
+                Spacer(Modifier.height(8.dp))
+                Text(
+                    stringResource(R.string.settings_apps_empty_hint),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                Spacer(Modifier.height(16.dp))
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    APP_CATALOG.forEach { (name, pkg) ->
+                        SelectableCard(
+                            text = name,
+                            selected = pkg in selected,
+                            onClick = {
+                                selected = if (pkg in selected) selected - pkg else selected + pkg
+                            },
+                            leading = { AppIcon(pkg = pkg, name = name) }
+                        )
                     }
-                },
-                enabled = selected.isNotEmpty(),
-                shape = RoundedCornerShape(999.dp),
-                modifier = Modifier.fillMaxWidth().height(52.dp)
-            ) {
-                Text(stringResource(R.string.settings_save), style = MaterialTheme.typography.labelLarge)
+                }
+                Spacer(Modifier.height(12.dp))
+                Button(
+                    onClick = {
+                        scope.launch {
+                            UserPrefs.setBlockedPackages(ctx, selected)
+                            onSaved()
+                        }
+                    },
+                    enabled = selected.isNotEmpty(),
+                    shape = RoundedCornerShape(999.dp),
+                    modifier = Modifier.fillMaxWidth().height(52.dp)
+                ) {
+                    Text(stringResource(R.string.settings_save), style = MaterialTheme.typography.labelLarge)
+                }
+                Spacer(Modifier.height(20.dp))
             }
-            Spacer(Modifier.height(20.dp))
         }
     }
 }

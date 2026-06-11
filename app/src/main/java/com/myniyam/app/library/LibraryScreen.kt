@@ -1,6 +1,5 @@
 package com.myniyam.app.library
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -43,6 +43,7 @@ import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.SourceCategory
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.onboarding.mantraGist
+import com.myniyam.app.ui.theme.NiyamBackground
 import com.myniyam.app.ui.theme.NiyamTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,99 +57,107 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
     var selection by remember { mutableStateOf(LibraryFilters.Selection()) }
     val results = remember(selection, all) { LibraryFilters.apply(all, selection) }
 
-    Scaffold { padding ->
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(padding)
-                .padding(horizontal = 24.dp)
-        ) {
-            Spacer(Modifier.height(24.dp))
-            Text(
-                stringResource(R.string.library_overline).uppercase(),
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-            Spacer(Modifier.height(10.dp))
-            Text(stringResource(R.string.library_title), style = MaterialTheme.typography.headlineMedium)
-            Spacer(Modifier.height(14.dp))
-
-            FilterRow(
-                options = SourceCategory.entries.map { it to it.label() },
-                selected = selection.category,
-                onSelect = { selection = selection.copy(category = it) }
-            )
-            FilterRow(
-                options = LengthBucket.entries.map { it to it.label() },
-                selected = selection.length,
-                onSelect = { selection = selection.copy(length = it) }
-            )
-            FilterRow(
-                options = Intention.entries.map { it to it.label() },
-                selected = selection.intention,
-                onSelect = { selection = selection.copy(intention = it) }
-            )
-            FilterRow(
-                options = Deity.entries.map { it to it.label() },
-                selected = selection.deity,
-                onSelect = { selection = selection.copy(deity = it) }
-            )
-
-            Spacer(Modifier.height(8.dp))
-
-            if (results.isEmpty()) {
+    NiyamBackground {
+        Scaffold(containerColor = Color.Transparent) { padding ->
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .padding(horizontal = 24.dp)
+            ) {
+                Spacer(Modifier.height(24.dp))
                 Text(
-                    stringResource(R.string.library_empty),
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(vertical = 24.dp)
+                    stringResource(R.string.library_overline).uppercase(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = NiyamTheme.colors.overlineWarm
                 )
-            } else {
-                LazyColumn(state = rememberLazyListState(), modifier = Modifier.weight(1f)) {
-                    items(results, key = { it.id }) { mantra ->
-                        Card(
-                            onClick = { onOpenDetail(mantra.id) },
-                            shape = RoundedCornerShape(14.dp),
-                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-                            border = BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline),
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = 10.dp)
-                        ) {
-                            Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(Modifier.height(10.dp))
+                Text(stringResource(R.string.library_title), style = MaterialTheme.typography.headlineMedium)
+                Spacer(Modifier.height(14.dp))
+
+                FilterRow(
+                    options = SourceCategory.entries.map { it to it.label() },
+                    selected = selection.category,
+                    onSelect = { selection = selection.copy(category = it) }
+                )
+                FilterRow(
+                    options = LengthBucket.entries.map { it to it.label() },
+                    selected = selection.length,
+                    onSelect = { selection = selection.copy(length = it) }
+                )
+                FilterRow(
+                    options = Intention.entries.map { it to it.label() },
+                    selected = selection.intention,
+                    onSelect = { selection = selection.copy(intention = it) }
+                )
+                FilterRow(
+                    options = Deity.entries.map { it to it.label() },
+                    selected = selection.deity,
+                    onSelect = { selection = selection.copy(deity = it) }
+                )
+
+                Spacer(Modifier.height(8.dp))
+
+                if (results.isEmpty()) {
+                    Text(
+                        stringResource(R.string.library_empty),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(vertical = 24.dp)
+                    )
+                } else {
+                    LazyColumn(state = rememberLazyListState(), modifier = Modifier.weight(1f)) {
+                        items(results, key = { it.id }) { mantra ->
+                            Card(
+                                onClick = { onOpenDetail(mantra.id) },
+                                shape = RoundedCornerShape(24.dp),
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                elevation = CardDefaults.cardElevation(defaultElevation = 0.dp),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 12.dp)
+                                    .shadow(
+                                        elevation = 8.dp,
+                                        shape = RoundedCornerShape(24.dp),
+                                        ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
+                                        spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
+                                    )
+                            ) {
+                                Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
+                                    Row(verticalAlignment = Alignment.CenterVertically) {
+                                        Text(
+                                            mantra.canonicalName,
+                                            style = MaterialTheme.typography.titleLarge,
+                                            modifier = Modifier.weight(1f),
+                                            maxLines = 1,
+                                            overflow = TextOverflow.Ellipsis
+                                        )
+                                        when {
+                                            mantra.id == snap.currentMantraId -> MarkerChip(
+                                                stringResource(R.string.library_current_marker),
+                                                MaterialTheme.colorScheme.primary
+                                            )
+                                            mantra.id in snap.completedMantraIds -> MarkerChip(
+                                                stringResource(R.string.library_completed_marker),
+                                                MaterialTheme.colorScheme.secondary
+                                            )
+                                        }
+                                    }
+                                    Spacer(Modifier.height(4.dp))
                                     Text(
-                                        mantra.canonicalName,
-                                        style = MaterialTheme.typography.titleLarge,
-                                        modifier = Modifier.weight(1f),
-                                        maxLines = 1,
+                                        mantraGist(mantra.meaning.en),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        maxLines = 2,
                                         overflow = TextOverflow.Ellipsis
                                     )
-                                    when {
-                                        mantra.id == snap.currentMantraId -> MarkerChip(
-                                            stringResource(R.string.library_current_marker),
-                                            MaterialTheme.colorScheme.primary
-                                        )
-                                        mantra.id in snap.completedMantraIds -> MarkerChip(
-                                            stringResource(R.string.library_completed_marker),
-                                            MaterialTheme.colorScheme.secondary
-                                        )
-                                    }
+                                    Spacer(Modifier.height(6.dp))
+                                    Text(
+                                        "${mantra.sourceCategory.label()} · ~${mantra.estimatedReadSeconds}s",
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                 }
-                                Spacer(Modifier.height(4.dp))
-                                Text(
-                                    mantraGist(mantra.meaning.en),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                                Spacer(Modifier.height(6.dp))
-                                Text(
-                                    "${mantra.sourceCategory.label()} · ~${mantra.estimatedReadSeconds}s",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
                             }
                         }
                     }
@@ -174,6 +183,12 @@ private fun <T> FilterRow(options: List<Pair<T, String>>, selected: T?, onSelect
             colors = FilterChipDefaults.filterChipColors(
                 selectedContainerColor = NiyamTheme.colors.orangeTint,
                 selectedLabelColor = NiyamTheme.colors.onTint
+            ),
+            modifier = Modifier.shadow(
+                elevation = 3.dp,
+                shape = RoundedCornerShape(8.dp),
+                ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
+                spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
             )
         )
         options.forEach { (value, label) ->
@@ -184,6 +199,12 @@ private fun <T> FilterRow(options: List<Pair<T, String>>, selected: T?, onSelect
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = NiyamTheme.colors.orangeTint,
                     selectedLabelColor = NiyamTheme.colors.onTint
+                ),
+                modifier = Modifier.shadow(
+                    elevation = 3.dp,
+                    shape = RoundedCornerShape(8.dp),
+                    ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
+                    spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
                 )
             )
         }
