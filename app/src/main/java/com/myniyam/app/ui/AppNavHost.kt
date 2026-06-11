@@ -21,6 +21,10 @@ import com.myniyam.app.onboarding.LanguageScreen
 import com.myniyam.app.onboarding.MantraPickerScreen
 import com.myniyam.app.onboarding.OnboardingViewModel
 import com.myniyam.app.permissions.PermissionChecker
+import com.myniyam.app.settings.SettingsScreen
+import com.myniyam.app.settings.LanguageSettingScreen
+import com.myniyam.app.settings.BlockedAppsSettingScreen
+import com.myniyam.app.settings.IntentionSettingScreen
 import com.myniyam.app.ui.screens.CelebrationScreen
 import com.myniyam.app.ui.screens.HomeScreen
 import com.myniyam.app.ui.screens.NextSadhanaScreen
@@ -45,6 +49,10 @@ object NiyamRoutes {
     const val NEXT_SADHANA = "next_sadhana"
     const val LIBRARY = "library"
     const val MANTRA_DETAIL = "mantra_detail/{mantraId}"
+    const val SETTINGS = "settings"
+    const val SETTINGS_LANGUAGE = "settings_language"
+    const val SETTINGS_APPS = "settings_apps"
+    const val SETTINGS_INTENTION = "settings_intention"
 }
 
 @Composable
@@ -135,7 +143,8 @@ fun AppNavHost(
             }
             HomeScreen(
                 onFixProtection = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) },
-                onBrowseLibrary = { navController.navigate(NiyamRoutes.LIBRARY) }
+                onBrowseLibrary = { navController.navigate(NiyamRoutes.LIBRARY) },
+                onOpenSettings = { navController.navigate(NiyamRoutes.SETTINGS) }
             )
         }
 
@@ -170,6 +179,24 @@ fun AppNavHost(
                 onSwitched = { navController.popBackStack(NiyamRoutes.HOME, inclusive = false) },
                 onMissing = { navController.popBackStack() }
             )
+        }
+
+        composable(NiyamRoutes.SETTINGS) {
+            SettingsScreen(
+                onOpenCurrentSadhana = { navController.navigate(NiyamRoutes.LIBRARY) },
+                onOpenLanguage = { navController.navigate(NiyamRoutes.SETTINGS_LANGUAGE) },
+                onOpenApps = { navController.navigate(NiyamRoutes.SETTINGS_APPS) },
+                onOpenIntention = { navController.navigate(NiyamRoutes.SETTINGS_INTENTION) }
+            )
+        }
+        composable(NiyamRoutes.SETTINGS_LANGUAGE) {
+            LanguageSettingScreen(onSaved = { navController.popBackStack() })
+        }
+        composable(NiyamRoutes.SETTINGS_APPS) {
+            BlockedAppsSettingScreen(onSaved = { navController.popBackStack() })
+        }
+        composable(NiyamRoutes.SETTINGS_INTENTION) {
+            IntentionSettingScreen(onSaved = { navController.popBackStack() })
         }
     }
 }

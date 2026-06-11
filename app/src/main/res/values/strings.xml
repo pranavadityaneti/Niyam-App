@@ -109,4 +109,6 @@
     <string name="settings_apps_title">Blocked apps</string>
     <string name="settings_apps_empty_hint">Keep at least one app blocked.</string>
     <string name="settings_intention_title">Intention</string>
+    <!-- Settings entry -->
+    <string name="settings_content_desc">Settings</string>
 </resources>
