@@ -51,6 +51,14 @@
 - **Date added:** 2026-06-11
 - **Originated from:** Screenshot walkthrough.
 
+### 7. Niyam launcher icon
+- **What:** The app still ships the default Android robot launcher icon (visible on splash + home screen). Design a Niyam icon — orange/bottle-green, no Om (founder dropped Om from the brand for now).
+- **Why:** First thing a user sees on their home screen; default icon reads unfinished. Spotted in SP-8 emulator verification.
+- **Scope:** Adaptive icon (foreground/background layers) + splash theming; needs founder approval of the mark.
+- **Status:** Deferred — needs a design pass with founder veto.
+- **Date added:** 2026-06-11
+- **Originated from:** SP-8 v2 screenshot session.
+
 ## In progress
 
 _(empty)_

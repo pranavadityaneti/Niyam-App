@@ -238,3 +238,13 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - **ENGINE FINDING 1 (product decision needed):** Continue grants only the 2s debounce — the next TYPE_WINDOW_STATE_CHANGED inside the same blocked app re-triggers the overlay (AppLockAccessibilityService.kt: debounce check only `< DEBOUNCE_MS`). In real use, in-app navigation after Continue re-blocks almost immediately. Recommendation: per-package grace period (e.g. 5 min) after Continue. NOT touched — engine requires explicit approval.
 - **ENGINE FINDING 2 (bug):** Nothing hides the overlay when the foreground app changes to a NON-blocked app. Empirically: overlay re-shown over YouTube persisted over launcher and over Niyam itself until Continue was tapped (screenshot 17). Recommendation: on window state change to a non-blocked package while overlay is showing → hide. NOT touched — same rule.
 - Pranav's SP-6 answers received: freemium confirmed; sample/test ads OK (AdMob test units); trial per my rec; needs RevenueCat-in-plain-English + account list; landing page after app done.
+
+---
+
+## 2026-06-11 (cont.) — UI v2 design sprint + SP-8 EXECUTED
+
+- **Design sprint with Pranav (interactive mockups):** he rejected v1 as "just textual"; shared 5 reference apps (gradient canvases, floating cards, serif heroes, small icons). Iterated composition live: centered → upper-third → final rule "content immediately below the top bar, protected CTA bottom zone." Full 16-frame mockup set approved. Om mark explored (bold + brush options) → **dropped entirely**. Typography: he asked for Google Sans (proprietary) → **Outfit** accepted as licensed equivalent. All decisions transcribed into `docs/superpowers/specs/2026-06-11-ui-v2-design.md`.
+- **SP-8 executed** (plan `3a716eb`, commits `0791a39 → ae22d6e`): Outfit via FontVariation + full type scale; sunrise/dark gradient brushes + NiyamBackground + OverlineWarm tokens; edge-to-edge; all screens restyled (floating 24dp cards, filled CTAs, real app icons via PackageManager, permission dashes, petal one-shot, fade-through nav, animated progress fill); **overlay restyled visual-only** (gradient drawable, Outfit XML font-family, RingCountdownView 15s ring) — OverlayManager diff verified render-target-swap-only.
+- **Emulator verification:** fresh install, full walkthrough, core loop confirmed (overlay → ring → Continue → read recorded). Found+fixed "1 reads today" plural (`ae22d6e`). v2 gallery: `docs/screenshots/v2/index.html`. Launcher icon still default → forlater item 7.
+- Suite 83/83 throughout; combined Opus review of the full range dispatched (running in background at log time).
+- **Still pending from Pranav:** the two engine findings decision ("fix both"?), freemium-split veto (SP-6 blocked on it).
