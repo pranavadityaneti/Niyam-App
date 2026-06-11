@@ -59,6 +59,14 @@
 - **Date added:** 2026-06-11
 - **Originated from:** SP-8 v2 screenshot session.
 
+### 8. Full UI chrome translation (Hindi/Telugu/Tamil/+5)
+- **What:** Today the display-language setting localises the mantra script + meaning only; all chrome (buttons, labels, settings, dialogs — ~80 strings in `strings.xml`) stays English. Translate the chrome into the 8 supported meaning languages via Android `values-<lang>/strings.xml` resources, driven by the same in-app language choice (per-app locale via `AppCompatDelegate.setApplicationLocales` or manual resource resolution).
+- **Why:** India-first product; a Telugu-speaking user who picks తెలుగు reasonably expects "Browse library" to localise too. Pranav saw the gap in the 2026-06-11 language gallery and was told it's a separate, queueable piece.
+- **Scope:** 8 × strings.xml translations + locale plumbing + plurals per language (Indic plural rules) + native-speaker review (ties into item 1).
+- **Status:** Queued — awaiting founder prioritisation (post-SP-6 candidate).
+- **Date added:** 2026-06-11
+- **Originated from:** Hindi/Telugu/Tamil screenshot gallery session ("Good to go" turn).
+
 ## In progress
 
 _(empty)_

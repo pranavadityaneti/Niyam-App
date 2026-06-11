@@ -257,3 +257,15 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - **Pranav asked: show screens in Hindi, Telugu, Tamil.** Captured live on Pixel 9 emulator (latest APK reinstalled — old install predated the plural fix): per language Home + Gayatri detail + unlock overlay over YouTube, switched via Settings → Display language each time. Gallery `docs/screenshots/v2-languages/index.html` (self-contained base64), commit `86bfcd7`, opened in browser. Clearly noted in gallery + chat: only mantra script + meaning localise; app chrome stays English (separate work item if wanted).
 - **ENGINE FINDINGS 1+2 reproduced twice more during capture:** after Continue, overlay re-triggered within seconds (finding 1) and then sat over Home/launcher swallowing all taps until Continue (finding 2) — had to dismiss + force-stop YouTube to proceed. Strengthens the "fix both" case; still awaiting Pranav's go.
 - Device state restored: language → English, emulator killed. Suite untouched (no code changes this segment).
+
+---
+
+## 2026-06-11 (cont.) — "Good to go" → SP-9 ENGINE FIXES EXECUTED + font cleanup
+
+- Pranav's "Good to go" taken as the green light on the flagged queue (engine fixes, font deletion, freemium plan standing; interpretation stated explicitly in chat with rollback offer).
+- **SP-9 (first intentional engine change since build):** spec `171955b` committed as async veto point, then built inline with TDD — `UnlockGrace` (5-min per-package window, granted ONLY by Continue, injectable clock, 7 tests) + `OverlayHideDecision` (pure hide rule: non-blocked foreground hides; systemui + own overlay window excluded; own MainActivity hides; 8 tests) in `d315706`; surgical wiring (service non-blocked branch + grace gate before debounce; OverlayManager isShowing + one grant line) in `c15f07c`. **Suite 83 → 98/98**, assembleDebug green.
+- **Live emulator acceptance (both findings confirmed dead):** overlay → HOME → overlay gone, relaunch re-blocks (no grace from leaving); Continue → video open/close + relaunch within window all overlay-free. Report: `docs/superpowers/test-reports/2026-06-11-sp9-acceptance.md`. Grace expiry boundary verified at unit level only.
+- **Dead fonts deleted** (`bf5f478`, separate commit per approval): inter.ttf + playfair_display.ttf, ~1.18MB, zero refs; suite 98/98 after.
+- Hostile Opus review of `171955b..bf5f478` dispatched in background; verdict to be appended.
+- forlater item 8 added: full UI chrome translation (8 languages) — surfaced by the language gallery.
+- **Next:** SP-6 paywall spec (freemium split as approved) as the next async veto point.
