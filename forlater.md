@@ -36,6 +36,14 @@
 - **Date added:** 2026-06-11
 - **Originated from:** Website design session.
 
+### 11. Play accessibility prominent-disclosure hardening (pre-submission gate)
+- **What:** Per Google Play's AccessibilityService policy, apps that are NOT accessibility tools must (a) complete the AccessibilityService declaration in Play Console and (b) show an in-app PROMINENT DISCLOSURE with affirmative consent before enabling the service. Our accessibility permission screen describes the use, but the copy should be hardened to name the AccessibilityService explicitly, state what is/isn't accessed, and capture explicit consent before routing to system settings.
+- **Why:** Rejection-proofing the Play review — accessibility misdeclaration is a common rejection/suspension cause.
+- **Scope:** PermissionScreen accessibility step copy + an explicit consent affirmation; Play Console declaration text + possibly a demo video; strings ×8 locales.
+- **Status:** Queued — MUST land before the first Play submission. Trigger: Play Console arrival.
+- **Date added:** 2026-06-12
+- **Originated from:** SEO/legal research session (Play policy lookup).
+
 ## In progress
 
 _(empty)_

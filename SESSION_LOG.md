@@ -342,3 +342,13 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - **Site iteration (93e1b68, live):** founder picked option B for the unlock story — front phone now animates blurred-YouTube → Mahamrityunjaya overlay on an 8s loop (videos anonymized by Gaussian blur, YT chrome recognizable); nav CTA removed + lockup centered; chip now "Launching soon on ▶(Play logo SVG)"; waitlist + privacy email switched sowfreyr → netipranavaditya@gmail.com (needs fresh formsubmit activation; branded address later = 1-line swap). Overlay-story options page at docs/mockups/overlay-story/.
 
 - **Site iteration 2 (cb53f6c, live):** chip = Play triangle + "Google Play" words; stage bottom cut fixed via fade-to-cream ::after layer (phones re-z-indexed above it); audio strategy upgraded to the legal ceiling — muted autoplay from page load + unmute mid-flow on first gesture (pointerdown/touchend/keydown/click/scroll), mute-toggle preference preserved. Explained to founder: pre-gesture unmuted sound is browser-forbidden for all sites.
+
+---
+
+## 2026-06-12 — SP-15: legal pages + SEO/AEO engine launch
+
+- Cut-line: deeper fix deployed earlier (e3a5871 — contained rounded glows + 200px fade).
+- **Legal (researched live):** /terms (Play-policy-aligned subscriptions/trial/refunds, India governing law, DPDP grievance contact w/ 7-day ack + 90-day resolution) + privacy v2 (DPDP Act 2023 rights section, Data Protection Board, breach notification, children, Play AccessibilityService disclosure language). Sources: Play AccessibilityService policy + prominent-disclosure guides, DPDP Rules 2025 summaries.
+- **⚠️ Launch-path discovery → forlater 11 (pre-submission GATE):** Niyam is not an "accessibility tool" per Play's definition → Play Console declaration + hardened in-app prominent disclosure/consent REQUIRED before first submission.
+- **SEO/AEO engine (Pranav's standing mandate: full control):** /faq (8 Q&As + FAQPage schema), homepage MobileApplication+Organization JSON-LD, footer nav, expanded sitemap; /blog + 4 articles via parallel Opus writers (doomscrolling 1288w, India blockers 1104w, Gayatri 1332w w/ full Devanagari + word-gloss, digital-sadhana category essay 1026w) — all Article schema, interlinked, structure-verified (canonical/h1/schema sweep clean). Strategy of record: docs/seo-strategy.html (own the empty mantra×blocker intersection → climb generic; batch 2 = 4 devotional articles; ~2/wk cadence; hi/te phase 2).
+- **Needs Pranav:** Google Search Console property + verification token (only must-have integration); Bing optional.

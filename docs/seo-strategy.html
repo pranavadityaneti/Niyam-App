@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Niyam — SEO/AEO Strategy</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 780px; margin: 0 auto; padding: 40px 24px 80px; color: #1c1917; line-height: 1.65; }
+  h1 { font-size: 28px; margin-bottom: 4px; } .sub { color:#99511F; margin-bottom: 28px; }
+  h2 { font-size: 19px; color: #003223; margin: 26px 0 8px; }
+  td, th { font-size: 14px; padding: 6px 10px; border-bottom: 1px solid #eee; text-align: left; }
+  pre { background: #f6f2ec; padding: 12px; border-radius: 8px; font-size: 13px; }
+  .done { color: #2e7d32; } .todo { color: #b26a00; }
+  @media print { body { padding: 0; } }
+</style>
+</head>
+<body>
+<h1>Niyam — SEO / AEO strategy</h1>
+<p class="sub">Standing mandate from Pranav (2026-06-12): full control over search optimization. This doc is the plan of record.</p>
+
+<h2>Positioning — the search we want to own</h2>
+<p>Nobody else occupies "mantra + app blocker." Generic blocker keywords are crowded; devotional-digital-wellbeing
+keywords are nearly empty. Strategy: win the empty intersection first (it converts best and builds topical authority),
+then climb the generic terms with that authority.</p>
+
+<h2>Keyword clusters → pages</h2>
+<table>
+<tr><th>Cluster</th><th>Example queries</th><th>Page</th><th>Status</th></tr>
+<tr><td>Brand/concept (AEO seed)</td><td>mantra before social media, spiritual app blocker, digital sadhana</td><td>/blog/digital-sadhana-mantra-before-social-media + /faq</td><td class="done">live</td></tr>
+<tr><td>Problem (high volume)</td><td>how to stop doomscrolling, stop scrolling instagram</td><td>/blog/how-to-stop-doomscrolling</td><td class="done">live</td></tr>
+<tr><td>Category (commercial)</td><td>app blocker android india, block instagram app</td><td>/blog/best-app-blockers-india-android</td><td class="done">live</td></tr>
+<tr><td>Devotional (volume + trust)</td><td>gayatri mantra meaning/benefits</td><td>/blog/gayatri-mantra-meaning-benefits</td><td class="done">live</td></tr>
+<tr><td>Devotional series (next)</td><td>mahamrityunjaya meaning, om namah shivaya meaning, hanuman chalisa first doha, gita 2.47 karmanyevadhikaraste</td><td>one article each — same template</td><td class="todo">batch 2</td></tr>
+<tr><td>Problem series (next)</td><td>instagram addiction india, youtube shorts addiction, phone detox during exams</td><td>batch 3</td><td class="todo">queued</td></tr>
+<tr><td>Hindi/Telugu content</td><td>गायत्री मंत्र का अर्थ, doomscrolling कैसे रोकें</td><td>/hi/... after EN settles (hreflang)</td><td class="todo">phase 2</td></tr>
+</table>
+
+<h2>AEO — being the answer engines' answer</h2>
+<ul>
+  <li class="done">FAQPage schema on /faq with 8 canonical Q&amp;As (the exact questions people ask assistants).</li>
+  <li class="done">MobileApplication + Organization schema on the homepage; Article schema on every post.</li>
+  <li class="done">Every page answers its question in the first two sentences (extractable snippets).</li>
+  <li class="todo">After launch: Play Store listing + site must agree word-for-word on key facts (price, languages, claims) — consistency is an AI-citation signal.</li>
+  <li class="todo">Wikipedia-style neutrality in the category article keeps it citable.</li>
+</ul>
+
+<h2>Technical checklist</h2>
+<ul>
+  <li class="done">Static, no JS framework, &lt;1s loads; semantic HTML; canonical, OG/Twitter cards, sitemap.xml, robots.txt, favicon set.</li>
+  <li class="done">cleanUrls (no .html); all pages mobile-first.</li>
+  <li class="todo">Google Search Console — needs Pranav (5 min, his Google account; verification file is my side).</li>
+  <li class="todo">Bing Webmaster (free, feeds Copilot answers) — same pattern.</li>
+  <li class="todo">After Play launch: appId links / app indexing, store badge with UTM.</li>
+</ul>
+
+<h2>Cadence</h2>
+<p>Batch 2 (4 devotional articles) within days; afterwards ~2 articles/week alternating devotional × problem clusters,
+each batch interlinked and added to the sitemap. Blog deliberately unlinked from the hero flow — it serves search,
+not visitors, exactly as Pranav specified (it IS linked in the footer, which engines need for crawl discovery).</p>
+
+<h2>Integrations needed (Pranav)</h2>
+<ol>
+  <li><b>Google Search Console</b> — create property "myniyam.com" with your Google account; send me the HTML-file verification token; I deploy it and submit the sitemap. This is the only must-have.</li>
+  <li><b>Bing Webmaster</b> — optional, 5 min, same flow.</li>
+  <li>No paid APIs needed at this stage.</li>
+</ol>
+</body>
+</html>
