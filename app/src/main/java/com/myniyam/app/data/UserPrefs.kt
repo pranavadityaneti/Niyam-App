@@ -32,6 +32,9 @@ object UserPrefs {
     private val KEY_PENDING_CELEBRATION = booleanPreferencesKey("pending_celebration")
     private val KEY_THEME_PREF = stringPreferencesKey("theme_pref")
     private val KEY_NOTIFY_ON_COMPLETION = booleanPreferencesKey("notify_on_completion")
+    private val KEY_TRIAL_START = longPreferencesKey("trial_start_epoch_day")
+    private val KEY_PREMIUM_ACTIVE = booleanPreferencesKey("premium_active")
+    private val KEY_PREMIUM_PLAN = stringPreferencesKey("premium_plan")
 
     data class Snapshot(
         val onboardingComplete: Boolean,
@@ -43,7 +46,10 @@ object UserPrefs {
         val completedMantraIds: Set<String>,
         val pendingCelebration: Boolean,
         val themePref: ThemePref,
-        val notifyOnCompletion: Boolean
+        val notifyOnCompletion: Boolean,
+        val trialStartEpochDay: Long,
+        val premiumActive: Boolean,
+        val premiumPlan: String?
     ) {
         companion object {
             val DEFAULTS = Snapshot(
@@ -56,7 +62,10 @@ object UserPrefs {
                 completedMantraIds = emptySet(),
                 pendingCelebration = false,
                 themePref = ThemePref.LIGHT,
-                notifyOnCompletion = true
+                notifyOnCompletion = true,
+                trialStartEpochDay = 0L,
+                premiumActive = false,
+                premiumPlan = null
             )
 
             fun fromRaw(
@@ -69,7 +78,10 @@ object UserPrefs {
                 completed: Set<String>? = null,
                 pendingCelebration: Boolean? = null,
                 themePref: String? = null,
-                notifyOnCompletion: Boolean? = null
+                notifyOnCompletion: Boolean? = null,
+                trialStart: Long? = null,
+                premiumActive: Boolean? = null,
+                premiumPlan: String? = null
             ): Snapshot = Snapshot(
                 onboardingComplete = onboardingComplete ?: DEFAULTS.onboardingComplete,
                 currentMantraId = mantraId?.takeIf { it.isNotBlank() } ?: DEFAULTS.currentMantraId,
@@ -86,7 +98,10 @@ object UserPrefs {
                 themePref = themePref?.let { raw ->
                     ThemePref.entries.firstOrNull { it.name == raw }
                 } ?: DEFAULTS.themePref,
-                notifyOnCompletion = notifyOnCompletion ?: DEFAULTS.notifyOnCompletion
+                notifyOnCompletion = notifyOnCompletion ?: DEFAULTS.notifyOnCompletion,
+                trialStartEpochDay = trialStart ?: DEFAULTS.trialStartEpochDay,
+                premiumActive = premiumActive ?: DEFAULTS.premiumActive,
+                premiumPlan = premiumPlan ?: DEFAULTS.premiumPlan
             )
         }
     }
@@ -114,7 +129,10 @@ object UserPrefs {
                     completed = p[KEY_COMPLETED_MANTRAS],
                     pendingCelebration = p[KEY_PENDING_CELEBRATION],
                     themePref = p[KEY_THEME_PREF],
-                    notifyOnCompletion = p[KEY_NOTIFY_ON_COMPLETION]
+                    notifyOnCompletion = p[KEY_NOTIFY_ON_COMPLETION],
+                    trialStart = p[KEY_TRIAL_START],
+                    premiumActive = p[KEY_PREMIUM_ACTIVE],
+                    premiumPlan = p[KEY_PREMIUM_PLAN]
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load prefs; using defaults", e)
@@ -170,6 +188,36 @@ object UserPrefs {
     suspend fun setOnboardingComplete(context: Context) {
         context.niyamDataStore.edit { it[KEY_ONBOARDING_COMPLETE] = true }
         current = current.copy(onboardingComplete = true)
+    }
+
+    suspend fun startTrial(context: Context, epochDay: Long) {
+        context.niyamDataStore.edit { it[KEY_TRIAL_START] = epochDay }
+        current = current.copy(trialStartEpochDay = epochDay)
+    }
+
+    suspend fun setPremium(context: Context, plan: String) {
+        context.niyamDataStore.edit {
+            it[KEY_PREMIUM_ACTIVE] = true
+            it[KEY_PREMIUM_PLAN] = plan
+        }
+        current = current.copy(premiumActive = true, premiumPlan = plan)
+    }
+
+    /** Debug "show me the free tier" lever: drops premium AND resets the trial. */
+    suspend fun clearPremiumForSandbox(context: Context) {
+        context.niyamDataStore.edit {
+            it[KEY_PREMIUM_ACTIVE] = false
+            it.remove(KEY_PREMIUM_PLAN)
+            it[KEY_TRIAL_START] = 0L
+        }
+        current = current.copy(premiumActive = false, premiumPlan = null, trialStartEpochDay = 0L)
+    }
+
+    /** Debug lever: backdate the trial start so state() computes FREE without touching premium. */
+    suspend fun expireTrialForSandbox(context: Context, todayEpochDay: Long) {
+        val backdated = todayEpochDay - 7
+        context.niyamDataStore.edit { it[KEY_TRIAL_START] = backdated }
+        current = current.copy(trialStartEpochDay = backdated)
     }
 
     fun setSnapshotForTest(snapshot: Snapshot) { current = snapshot }
