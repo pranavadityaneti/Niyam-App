@@ -88,7 +88,8 @@ fun AppNavHost(
                 bodyResId = R.string.perm_usage_body,
                 isGranted = { PermissionChecker.hasUsageStatsAccess(ctx) },
                 launchSettings = { PermissionChecker.openUsageAccessSettings(ctx) },
-                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_OVERLAY) }
+                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_OVERLAY) },
+                stepIndex = 0
             )
         }
 
@@ -99,7 +100,8 @@ fun AppNavHost(
                 bodyResId = R.string.perm_overlay_body,
                 isGranted = { PermissionChecker.hasOverlayPermission(ctx) },
                 launchSettings = { PermissionChecker.openOverlayPermissionSettings(ctx) },
-                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_ACCESSIBILITY) }
+                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_ACCESSIBILITY) },
+                stepIndex = 1
             )
         }
 
@@ -110,7 +112,8 @@ fun AppNavHost(
                 bodyResId = R.string.perm_accessibility_body,
                 isGranted = { PermissionChecker.isAccessibilityServiceEnabled(ctx) },
                 launchSettings = { PermissionChecker.openAccessibilitySettings(ctx) },
-                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_BATTERY) }
+                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_BATTERY) },
+                stepIndex = 2
             )
         }
 
@@ -121,7 +124,8 @@ fun AppNavHost(
                 bodyResId = R.string.perm_battery_body,
                 isGranted = { PermissionChecker.isIgnoringBatteryOptimizations(ctx) },
                 launchSettings = { PermissionChecker.openIgnoreBatteryOptimizationSettings(ctx) },
-                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_OEM) }
+                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_OEM) },
+                stepIndex = 3
             )
         }
 

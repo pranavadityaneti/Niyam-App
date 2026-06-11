@@ -31,7 +31,8 @@ fun AppsScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
             SelectableCard(
                 text = name,
                 selected = pkg in vm.selectedPackages,
-                onClick = { vm.togglePackage(pkg) }
+                onClick = { vm.togglePackage(pkg) },
+                leading = { AppIcon(pkg = pkg, name = name) }
             )
         }
     }
