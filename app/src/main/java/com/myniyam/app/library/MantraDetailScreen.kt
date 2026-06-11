@@ -1,5 +1,7 @@
 package com.myniyam.app.library
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,8 +23,12 @@ import com.myniyam.app.R
 import com.myniyam.app.data.CurrentSadhana
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.Script
+import com.myniyam.app.data.Deity
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.progress.ProgressRepository
+import com.myniyam.app.ui.theme.ChipFill
+import com.myniyam.app.ui.theme.InkMuted
+import com.myniyam.app.ui.theme.SaladGreen
 import kotlinx.coroutines.launch
 
 @Composable
@@ -66,6 +72,20 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
             )
             Spacer(Modifier.height(10.dp))
             Text(mantra.canonicalName, style = MaterialTheme.typography.headlineMedium)
+            Spacer(Modifier.height(12.dp))
+            Row(
+                Modifier.horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                InfoChip(mantra.sourceCategory.label())
+                InfoChip("~${mantra.estimatedReadSeconds}s")
+                if (mantra.deity != Deity.UNIVERSAL) {
+                    InfoChip(mantra.deity.label())
+                }
+                if (isCompleted) {
+                    MarkerChip(stringResource(R.string.library_completed_marker), SaladGreen)
+                }
+            }
             Spacer(Modifier.height(16.dp))
             Column(
                 Modifier
@@ -164,4 +184,16 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
             }
         )
     }
+}
+
+@Composable
+private fun InfoChip(label: String) {
+    Text(
+        label,
+        style = MaterialTheme.typography.labelSmall,
+        color = InkMuted,
+        modifier = Modifier
+            .background(ChipFill, RoundedCornerShape(999.dp))
+            .padding(horizontal = 8.dp, vertical = 3.dp)
+    )
 }

@@ -192,7 +192,7 @@ private fun <T> FilterRow(options: List<Pair<T, String>>, selected: T?, onSelect
 }
 
 @Composable
-private fun MarkerChip(label: String, color: Color) {
+internal fun MarkerChip(label: String, color: Color) {
     Text(
         label,
         style = MaterialTheme.typography.labelSmall,
