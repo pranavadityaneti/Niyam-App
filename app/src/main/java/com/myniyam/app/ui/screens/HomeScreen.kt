@@ -46,8 +46,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
+import com.myniyam.app.billing.AdBanner
+import com.myniyam.app.billing.Entitlements
+import com.myniyam.app.billing.PremiumState
 import com.myniyam.app.data.CurrentSadhana
 import com.myniyam.app.data.MantraRepository
+import com.myniyam.app.data.UserPrefs
+import java.time.LocalDate
 import com.myniyam.app.permissions.PermissionChecker
 import com.myniyam.app.progress.ProgressRepository
 import com.myniyam.app.ui.theme.NiyamBackground
@@ -80,6 +85,10 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
     }
 
     val protectionOk = remember(refreshKey) { PermissionChecker.allPermissionsGranted(ctx) }
+    val premiumState = remember(refreshKey) {
+        val snap = UserPrefs.snapshot()
+        Entitlements.state(snap.premiumActive, snap.trialStartEpochDay, LocalDate.now().toEpochDay())
+    }
     val mantra = MantraRepository.displayMantra(CurrentSadhana.MANTRA_ID)
     val firstLine = mantra.text.forScript(CurrentSadhana.LANGUAGE.script).lineSequence().first()
 
@@ -236,6 +245,10 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                }
+
+                if (premiumState == PremiumState.FREE) {
+                    AdBanner()
                 }
 
                 Spacer(modifier = Modifier.height(8.dp))

@@ -41,7 +41,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
+import com.myniyam.app.billing.AdBanner
 import com.myniyam.app.billing.Entitlements
+import com.myniyam.app.billing.PremiumState
 import com.myniyam.app.data.Deity
 import com.myniyam.app.data.Intention
 import com.myniyam.app.data.MantraRepository
@@ -177,6 +179,10 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
                             }
                         }
                     }
+                }
+
+                if (state == PremiumState.FREE) {
+                    AdBanner()
                 }
             }
         }

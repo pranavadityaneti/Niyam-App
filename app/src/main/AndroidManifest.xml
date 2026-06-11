@@ -21,6 +21,12 @@
         android:theme="@style/Theme.Niyam"
         tools:targetApi="34">
 
+        <!-- Google's official AdMob sample app id (test only). Swap for the real
+             AdMob app id once the account exists. -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-3940256099942544~3347511713" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

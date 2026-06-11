@@ -67,6 +67,7 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.autostarter)
     implementation(libs.kotlinx.serialization.json)
+    implementation(libs.play.services.ads)
 
     debugImplementation(libs.androidx.ui.tooling)
 

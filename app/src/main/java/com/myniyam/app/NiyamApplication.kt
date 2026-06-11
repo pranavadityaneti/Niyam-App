@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.content.Context
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.UserPrefs
+import com.google.android.gms.ads.MobileAds
 import com.myniyam.app.notifications.CompletionNotifier
 import com.myniyam.app.progress.ProgressRepository
 
@@ -19,6 +20,7 @@ class NiyamApplication : Application() {
             MantraRepository.ensureLoaded(this)
             UserPrefs.ensureLoaded(this)
             ProgressRepository.warmUp(this)
+            MobileAds.initialize(this)
         }.start()
     }
 
