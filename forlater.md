@@ -19,14 +19,6 @@
 - **Date added:** 2026-06-10
 - **Originated from:** Sub-project 1 spec, Phase 2 acceptance section.
 
-### 7. Niyam launcher icon
-- **What:** The app still ships the default Android robot launcher icon (visible on splash + home screen). Design a Niyam icon — orange/bottle-green, no Om (founder dropped Om from the brand for now).
-- **Why:** First thing a user sees on their home screen; default icon reads unfinished. Spotted in SP-8 emulator verification.
-- **Scope:** Adaptive icon (foreground/background layers) + splash theming; needs founder approval of the mark.
-- **Status:** Deferred — needs a design pass with founder veto.
-- **Date added:** 2026-06-11
-- **Originated from:** SP-8 v2 screenshot session.
-
 ### 9. SMS + email trial reminders (founder request, needs backend)
 - **What:** Pranav (2026-06-11, SP-12 approval): "We will remind the customer, we can automate an SMS and email." Automate trial-ending reminders over SMS and email in addition to the on-device notification that SP-12 ships.
 - **Why blocked:** The app collects no phone number or email (privacy feature: zero personal data) and has no backend. Needs: a contact-collection step (likely with sign-in), a server, an SMS provider (e.g. MSG91/Twilio) + email provider (e.g. SES/Resend), and a privacy-policy update.
@@ -41,6 +33,15 @@
 _(empty)_
 
 ## Done — archived
+
+### 7. Niyam launcher icon
+- **What:** The app still ships the default Android robot launcher icon (visible on splash + home screen). Design a Niyam icon — orange/bottle-green, no Om (founder dropped Om from the brand for now).
+- **Why:** First thing a user sees on their home screen; default icon reads unfinished. Spotted in SP-8 emulator verification.
+- **Scope:** Adaptive icon (foreground/background layers) + splash theming; needs founder approval of the mark.
+- **Status:** DONE — founder supplied the brand logo; adaptive icon + splash + Welcome lockup shipped as SP-13.
+- **Date added:** 2026-06-11
+- **Originated from:** SP-8 v2 screenshot session.
+- **Completed:** 2026-06-11 (SP-13, commit 411c989)
 
 ### 8. Full UI chrome translation (Hindi/Telugu/Tamil/+5)
 - **What:** Today the display-language setting localises the mantra script + meaning only; all chrome (buttons, labels, settings, dialogs — ~80 strings in `strings.xml`) stays English. Translate the chrome into the 8 supported meaning languages via Android `values-<lang>/strings.xml` resources, driven by the same in-app language choice (per-app locale via `AppCompatDelegate.setApplicationLocales` or manual resource resolution).
