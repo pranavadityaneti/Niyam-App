@@ -121,24 +121,33 @@
     <!-- Settings entry -->
     <string name="settings_content_desc">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
 
-    <!-- Paywall -->
+    <!-- Paywall (v2 — SP-12 trial timeline) -->
     <string name="paywall_overline">ನಿಯಮ ಪ್ರೀಮಿಯಂ</string>
     <string name="paywall_close_desc">ಮುಚ್ಚಿ</string>
     <string name="paywall_hero">ಪ್ರತಿ ಮಂತ್ರ.\nಪ್ರತಿ ಭಾಷೆ.</string>
-    <plurals name="paywall_trial_left">
-        <item quantity="one">ಉಚಿತ ಪ್ರಯೋಗದ %1$d ದಿನ ಬಾಕಿ</item>
-        <item quantity="other">ಉಚಿತ ಪ್ರಯೋಗದ %1$d ದಿನಗಳು ಬಾಕಿ</item>
-    </plurals>
-    <string name="paywall_benefit_mantras">ಎಲ್ಲಾ 26 ಮಂತ್ರಗಳು</string>
-    <string name="paywall_benefit_languages">ಎಲ್ಲಾ 9 ಭಾಷೆಗಳು &amp; ಲಿಪಿಗಳು</string>
-    <string name="paywall_benefit_switching">ಅಪರಿಮಿತ ಸಾಧನೆ ಬದಲಾವಣೆ</string>
-    <string name="paywall_benefit_no_ads">ಜಾಹೀರಾತುಗಳಿಲ್ಲ</string>
-    <string name="paywall_period_week">ವಾರ</string>
-    <string name="paywall_period_month">ತಿಂಗಳು</string>
-    <string name="paywall_period_year">ವರ್ಷ</string>
+    <string name="paywall_timeline_today_title">ಇಂದು</string>
+    <string name="paywall_timeline_today_body">ಎಲ್ಲವೂ ಅನ್‌ಲಾಕ್ ಆಗಿದೆ — ನಿಮ್ಮ 7-ದಿನಗಳ ಪ್ರಯೋಗ ಈಗಾಗಲೇ ನಡೆಯುತ್ತಿದೆ.</string>
+    <string name="paywall_timeline_day6_title">ದಿನ 6</string>
+    <string name="paywall_timeline_day6_body">ಮುಗಿಯುವ ಮೊದಲು ನಾವು ನಿಮಗೆ ನೆನಪಿಸುತ್ತೇವೆ.</string>
+    <string name="paywall_timeline_day7_title">ದಿನ 7</string>
+    <string name="paywall_timeline_day7_body">ಪ್ರಯೋಗ ಮುಗಿಯಿತು — ಪ್ರೀಮಿಯಂನೊಂದಿಗೆ ಎಲ್ಲವನ್ನೂ ಉಳಿಸಿಕೊಳ್ಳಿ.</string>
+    <string name="paywall_plan_annual_fmt">ವಾರ್ಷಿಕ — ₹%1$d</string>
+    <string name="paywall_plan_annual_subline_fmt">≈ ತಿಂಗಳಿಗೆ ₹%1$d, ವಾರ್ಷಿಕ ಬಿಲ್</string>
+    <string name="paywall_plan_monthly_fmt">ಮಾಸಿಕ — ₹%1$d</string>
+    <string name="paywall_plan_monthly_subline">ಹೊಂದಿಕೊಳ್ಳುವ, ಯಾವಾಗ ಬೇಕಾದರೂ ರದ್ದುಗೊಳಿಸಿ</string>
+    <string name="paywall_plan_weekly_fmt">ಸಾಪ್ತಾಹಿಕ — ₹%1$d</string>
+    <string name="paywall_plan_weekly_subline">ಒಂದೊಂದು ವಾರ ಪ್ರಯತ್ನಿಸಿ</string>
     <string name="paywall_best_value">ಅತ್ಯುತ್ತಮ ಮೌಲ್ಯ</string>
+    <string name="paywall_more_plans">ಹೆಚ್ಚಿನ ಯೋಜನೆಗಳು</string>
+    <string name="paywall_fewer_plans">ಕಡಿಮೆ ಯೋಜನೆಗಳು</string>
+    <string name="paywall_restore">ಖರೀದಿ ಮರುಸ್ಥಾಪಿಸಿ</string>
+    <string name="paywall_restore_sandbox_toast">ಸ್ಯಾಂಡ್‌ಬಾಕ್ಸ್ ಬಿಲ್ಡ್ — ಈಗ ಮರುಸ್ಥಾಪಿಸಲು ಏನೂ ಇಲ್ಲ.</string>
+    <string name="paywall_trust_sandbox">ಸ್ಯಾಂಡ್‌ಬಾಕ್ಸ್ — ನಿಜವಾದ ಪಾವತಿ ಇಲ್ಲ</string>
     <string name="paywall_cta">ನಿಯಮ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</string>
-    <string name="paywall_footnote">ಸ್ಯಾಂಡ್‌ಬಾಕ್ಸ್ ಬಿಲ್ಡ್ — ನಿಜವಾದ ಯಾವ ಪಾವತಿಯೂ ವಿಧಿಸಲಾಗುವುದಿಲ್ಲ.</string>
+
+    <!-- Trial reminder notification -->
+    <string name="notif_trial_title">ನಿಮ್ಮ ಪ್ರಯೋಗ ನಾಳೆ ಮುಗಿಯುತ್ತದೆ</string>
+    <string name="notif_trial_body">ಪ್ರತಿ ಮಂತ್ರ ಮತ್ತು ಭಾಷೆ ಉಳಿಸಿಕೊಳ್ಳಿ — ನಿಯಮ ಪ್ರೀಮಿಯಂ ಅನ್‌ಲಾಕ್ ಮಾಡಿ.</string>
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">ಪ್ರೀಮಿಯಂನೊಂದಿಗೆ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</string>

@@ -121,24 +121,33 @@
     <!-- Settings entry -->
     <string name="settings_content_desc">સેટિંગ્સ</string>
 
-    <!-- Paywall -->
+    <!-- Paywall (v2 — SP-12 trial timeline) -->
     <string name="paywall_overline">નિયમ પ્રીમિયમ</string>
     <string name="paywall_close_desc">બંધ કરો</string>
     <string name="paywall_hero">દરેક મંત્ર.\nદરેક ભાષા.</string>
-    <plurals name="paywall_trial_left">
-        <item quantity="one">મફત અજમાયશનો %1$d દિવસ બાકી</item>
-        <item quantity="other">મફત અજમાયશના %1$d દિવસ બાકી</item>
-    </plurals>
-    <string name="paywall_benefit_mantras">બધા 26 મંત્રો</string>
-    <string name="paywall_benefit_languages">બધી 9 ભાષાઓ &amp; લિપિઓ</string>
-    <string name="paywall_benefit_switching">અમર્યાદ સાધના બદલવાની સુવિધા</string>
-    <string name="paywall_benefit_no_ads">કોઈ જાહેરાત નહીં</string>
-    <string name="paywall_period_week">અઠવાડિયું</string>
-    <string name="paywall_period_month">મહિનો</string>
-    <string name="paywall_period_year">વર્ષ</string>
+    <string name="paywall_timeline_today_title">આજે</string>
+    <string name="paywall_timeline_today_body">બધું જ અનલોક છે — તમારી 7-દિવસની અજમાયશ પહેલેથી જ ચાલુ છે.</string>
+    <string name="paywall_timeline_day6_title">દિવસ 6</string>
+    <string name="paywall_timeline_day6_body">પૂરી થાય તે પહેલાં અમે તમને યાદ અપાવીશું.</string>
+    <string name="paywall_timeline_day7_title">દિવસ 7</string>
+    <string name="paywall_timeline_day7_body">અજમાયશ પૂરી — પ્રીમિયમ સાથે બધું જ જાળવી રાખો.</string>
+    <string name="paywall_plan_annual_fmt">વાર્ષિક — ₹%1$d</string>
+    <string name="paywall_plan_annual_subline_fmt">≈ મહિને ₹%1$d, વાર્ષિક બિલ</string>
+    <string name="paywall_plan_monthly_fmt">માસિક — ₹%1$d</string>
+    <string name="paywall_plan_monthly_subline">લવચીક, ગમે ત્યારે રદ કરો</string>
+    <string name="paywall_plan_weekly_fmt">સાપ્તાહિક — ₹%1$d</string>
+    <string name="paywall_plan_weekly_subline">એક-એક અઠવાડિયું અજમાવો</string>
     <string name="paywall_best_value">શ્રેષ્ઠ મૂલ્ય</string>
+    <string name="paywall_more_plans">વધુ યોજનાઓ</string>
+    <string name="paywall_fewer_plans">ઓછી યોજનાઓ</string>
+    <string name="paywall_restore">ખરીદી પુનઃસ્થાપિત કરો</string>
+    <string name="paywall_restore_sandbox_toast">સેન્ડબોક્સ બિલ્ડ — અત્યારે પુનઃસ્થાપિત કરવા જેવું કંઈ નથી.</string>
+    <string name="paywall_trust_sandbox">સેન્ડબોક્સ — કોઈ વાસ્તવિક ચુકવણી નહીં</string>
     <string name="paywall_cta">નિયમ અનલોક કરો</string>
-    <string name="paywall_footnote">સેન્ડબોક્સ બિલ્ડ — કોઈ વાસ્તવિક ચુકવણી લેવાતી નથી.</string>
+
+    <!-- Trial reminder notification -->
+    <string name="notif_trial_title">તમારી અજમાયશ આવતીકાલે પૂરી થાય છે</string>
+    <string name="notif_trial_body">દરેક મંત્ર અને ભાષા જાળવી રાખો — નિયમ પ્રીમિયમ અનલોક કરો.</string>
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">પ્રીમિયમ સાથે અનલોક કરો</string>

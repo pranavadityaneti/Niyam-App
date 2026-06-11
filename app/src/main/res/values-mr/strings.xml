@@ -121,24 +121,33 @@
     <!-- Settings entry -->
     <string name="settings_content_desc">सेटिंग्ज</string>
 
-    <!-- Paywall -->
+    <!-- Paywall (v2 — SP-12 trial timeline) -->
     <string name="paywall_overline">नियम प्रीमियम</string>
     <string name="paywall_close_desc">बंद करा</string>
     <string name="paywall_hero">प्रत्येक मंत्र.\nप्रत्येक भाषा.</string>
-    <plurals name="paywall_trial_left">
-        <item quantity="one">मोफत चाचणीचा %1$d दिवस शिल्लक</item>
-        <item quantity="other">मोफत चाचणीचे %1$d दिवस शिल्लक</item>
-    </plurals>
-    <string name="paywall_benefit_mantras">सर्व 26 मंत्र</string>
-    <string name="paywall_benefit_languages">सर्व 9 भाषा आणि लिपी</string>
-    <string name="paywall_benefit_switching">अमर्याद साधना बदल</string>
-    <string name="paywall_benefit_no_ads">जाहिराती नाहीत</string>
-    <string name="paywall_period_week">आठवडा</string>
-    <string name="paywall_period_month">महिना</string>
-    <string name="paywall_period_year">वर्ष</string>
+    <string name="paywall_timeline_today_title">आज</string>
+    <string name="paywall_timeline_today_body">सगळं अनलॉक आहे — तुमची 7-दिवसांची चाचणी आधीच सुरू आहे.</string>
+    <string name="paywall_timeline_day6_title">दिवस 6</string>
+    <string name="paywall_timeline_day6_body">संपण्याआधी आम्ही तुम्हाला आठवण करून देऊ.</string>
+    <string name="paywall_timeline_day7_title">दिवस 7</string>
+    <string name="paywall_timeline_day7_body">चाचणी संपली — प्रीमियमसह सगळं टिकवून ठेवा.</string>
+    <string name="paywall_plan_annual_fmt">वार्षिक — ₹%1$d</string>
+    <string name="paywall_plan_annual_subline_fmt">≈ ₹%1$d दरमहा, वार्षिक बिल</string>
+    <string name="paywall_plan_monthly_fmt">मासिक — ₹%1$d</string>
+    <string name="paywall_plan_monthly_subline">लवचिक, कधीही रद्द करा</string>
+    <string name="paywall_plan_weekly_fmt">साप्ताहिक — ₹%1$d</string>
+    <string name="paywall_plan_weekly_subline">एक-एक आठवडा आजमावून पाहा</string>
     <string name="paywall_best_value">सर्वोत्तम मूल्य</string>
+    <string name="paywall_more_plans">अधिक योजना</string>
+    <string name="paywall_fewer_plans">कमी योजना</string>
+    <string name="paywall_restore">खरेदी पुनर्संचयित करा</string>
+    <string name="paywall_restore_sandbox_toast">सँडबॉक्स बिल्ड — आत्ता पुनर्संचयित करण्यासारखं काही नाही.</string>
+    <string name="paywall_trust_sandbox">सँडबॉक्स — प्रत्यक्ष पैसे नाहीत</string>
     <string name="paywall_cta">नियम अनलॉक करा</string>
-    <string name="paywall_footnote">सँडबॉक्स बिल्ड — कोणतेही प्रत्यक्ष पैसे आकारले जात नाहीत.</string>
+
+    <!-- Trial reminder notification -->
+    <string name="notif_trial_title">तुमची चाचणी उद्या संपत आहे</string>
+    <string name="notif_trial_body">प्रत्येक मंत्र आणि भाषा टिकवून ठेवा — नियम प्रीमियम अनलॉक करा.</string>
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">प्रीमियमसह अनलॉक करा</string>

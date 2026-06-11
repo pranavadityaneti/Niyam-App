@@ -295,3 +295,15 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - Device left: English, fresh-trial state. **Remaining to app-done:** SP-11 review verdict + Pranav's wording pass, paywall gallery veto, launcher icon (logo from Pranav), real billing (Play Console from Pranav), native-speaker pass (forlater 1), real-device Phase 2 (forlater 3). Then: landing page.
 
 - **SP-11 review verdict: SHIP** (independent Opus pass): plumbing exhaustive + idempotent (ensureLoaded double-call harmless); the hardest-scrutinized risk — overlay show/hide with a wrapped context across both background-service paths — confirmed safe (removeView keys on the View's window session, not context identity); reviewer's own parity script: 7 × 106 strings + 4 plurals, zero placeholder/escaping defects; 117/117, build green, zero service/ files. Reviewer read hi/te/ta personally: natural, respectful register; 4 minor free-translation notes added to the native-review rider (TE "నిమిషం" embellishment, TA evocative welcome line, HI sharper apps-title tone, TA terse "திற" CTA). Task #43 closed.
+
+---
+
+## 2026-06-11 (cont.) — SP-12: paywall v2 (founder reference) + day-6 trial reminder
+
+- Pranav sent an iOS-style trial-timeline paywall as a CONTENT-POSITIONING reference (background/system unchanged); mockup adapted to our mechanics (trial auto-starts at onboarding — timeline tells the true story; FREE state opens the expanded plans view since "trial is on" would be false) → approved ("Good to go").
+- **His "automate an SMS and email" reminder ask:** not buildable without contact data + backend (app collects neither, by design) — told him plainly, queued as forlater 9; built the on-device equivalent now.
+- **Built (4440375):** PaywallScreen v2 (TimelineRow + PlanCard components, More/Fewer plans expander, restore link + sandbox toast, trust pill, pinned CTA); TrialReminder pure logic (TDD, 6 tests) + TrialReminderNotifier (own channel) + TrialReminderWorker (WorkManager 2.9.1 daily unique work, enqueued at app start); UserPrefs.trialReminderShown flag; strings v2 (9 dead keys removed). Suite 117 → **123/123**.
+- **Locales:** one Opus subagent updated all 7 files (17 new keys, dead keys removed, brand/Premium/trial terms matched to each file's register); independent parity + placeholder sweep clean; rebuilt green.
+- **Live verification (Pixel 9):** timeline default in TRIAL, expander both ways, FREE → expanded direct, restore toast, purchase → "Active", clear → fresh trial; **Hindi paywall verified live** (आज/दिन 6/दिन 7, वार्षिक — ₹399). Gallery `docs/screenshots/sp12-paywall-v2/index.html` opened for Pranav. Report: `docs/superpowers/test-reports/2026-06-11-sp12-acceptance.md`.
+- Caveat logged: real 24h WorkManager firing rides the Phase 2 real-device pass.
+- Adversarial review of the range dispatched in background; verdict to be appended.

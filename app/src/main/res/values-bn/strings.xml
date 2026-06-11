@@ -121,24 +121,33 @@
     <!-- Settings entry -->
     <string name="settings_content_desc">সেটিংস</string>
 
-    <!-- Paywall -->
+    <!-- Paywall (v2 — SP-12 trial timeline) -->
     <string name="paywall_overline">নিয়ম প্রিমিয়াম</string>
     <string name="paywall_close_desc">বন্ধ করুন</string>
     <string name="paywall_hero">প্রতিটি মন্ত্র।\nপ্রতিটি ভাষা।</string>
-    <plurals name="paywall_trial_left">
-        <item quantity="one">ফ্রি ট্রায়ালের %1$d দিন বাকি</item>
-        <item quantity="other">ফ্রি ট্রায়ালের %1$d দিন বাকি</item>
-    </plurals>
-    <string name="paywall_benefit_mantras">সব ২৬টি মন্ত্র</string>
-    <string name="paywall_benefit_languages">সব ৯টি ভাষা ও লিপি</string>
-    <string name="paywall_benefit_switching">সীমাহীন সাধনা বদল</string>
-    <string name="paywall_benefit_no_ads">কোনো বিজ্ঞাপন নেই</string>
-    <string name="paywall_period_week">সপ্তাহ</string>
-    <string name="paywall_period_month">মাস</string>
-    <string name="paywall_period_year">বছর</string>
+    <string name="paywall_timeline_today_title">আজ</string>
+    <string name="paywall_timeline_today_body">সবকিছু আনলক করা — আপনার 7-দিনের ট্রায়াল ইতিমধ্যেই চালু।</string>
+    <string name="paywall_timeline_day6_title">দিন 6</string>
+    <string name="paywall_timeline_day6_body">শেষ হওয়ার আগে আমরা আপনাকে মনে করিয়ে দেব।</string>
+    <string name="paywall_timeline_day7_title">দিন 7</string>
+    <string name="paywall_timeline_day7_body">ট্রায়াল শেষ — প্রিমিয়াম দিয়ে সবকিছু ধরে রাখুন।</string>
+    <string name="paywall_plan_annual_fmt">বার্ষিক — ₹%1$d</string>
+    <string name="paywall_plan_annual_subline_fmt">≈ মাসে ₹%1$d, বছরে বিল করা হয়</string>
+    <string name="paywall_plan_monthly_fmt">মাসিক — ₹%1$d</string>
+    <string name="paywall_plan_monthly_subline">নমনীয়, যেকোনো সময় বাতিল করুন</string>
+    <string name="paywall_plan_weekly_fmt">সাপ্তাহিক — ₹%1$d</string>
+    <string name="paywall_plan_weekly_subline">এক সপ্তাহ করে চেষ্টা করুন</string>
     <string name="paywall_best_value">সেরা মূল্য</string>
+    <string name="paywall_more_plans">আরও প্ল্যান</string>
+    <string name="paywall_fewer_plans">কম প্ল্যান</string>
+    <string name="paywall_restore">কেনাকাটা পুনরুদ্ধার করুন</string>
+    <string name="paywall_restore_sandbox_toast">স্যান্ডবক্স বিল্ড — এখন পুনরুদ্ধার করার মতো কিছু নেই।</string>
+    <string name="paywall_trust_sandbox">স্যান্ডবক্স — প্রকৃত কোনো পেমেন্ট নেই</string>
     <string name="paywall_cta">নিয়ম আনলক করুন</string>
-    <string name="paywall_footnote">স্যান্ডবক্স বিল্ড — প্রকৃত কোনো পেমেন্ট নেওয়া হয় না।</string>
+
+    <!-- Trial reminder notification -->
+    <string name="notif_trial_title">আপনার ট্রায়াল আগামীকাল শেষ হচ্ছে</string>
+    <string name="notif_trial_body">প্রতিটি মন্ত্র ও ভাষা ধরে রাখুন — নিয়ম প্রিমিয়াম আনলক করুন।</string>
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">প্রিমিয়াম দিয়ে আনলক করুন</string>

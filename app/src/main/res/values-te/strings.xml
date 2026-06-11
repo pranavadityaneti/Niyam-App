@@ -121,24 +121,33 @@
     <!-- Settings entry -->
     <string name="settings_content_desc">సెట్టింగ్‌లు</string>
 
-    <!-- Paywall -->
+    <!-- Paywall (v2 — SP-12 trial timeline) -->
     <string name="paywall_overline">నియమ్ ప్రీమియం</string>
     <string name="paywall_close_desc">మూసివేయి</string>
     <string name="paywall_hero">ప్రతి మంత్రం.\nప్రతి భాష.</string>
-    <plurals name="paywall_trial_left">
-        <item quantity="one">ఉచిత ట్రయల్ %1$d రోజు మిగిలి ఉంది</item>
-        <item quantity="other">ఉచిత ట్రయల్ %1$d రోజులు మిగిలి ఉన్నాయి</item>
-    </plurals>
-    <string name="paywall_benefit_mantras">మొత్తం 26 మంత్రాలు</string>
-    <string name="paywall_benefit_languages">మొత్తం 9 భాషలు &amp; లిపులు</string>
-    <string name="paywall_benefit_switching">అపరిమిత సాధన మార్పిడి</string>
-    <string name="paywall_benefit_no_ads">ప్రకటనలు లేవు</string>
-    <string name="paywall_period_week">వారం</string>
-    <string name="paywall_period_month">నెల</string>
-    <string name="paywall_period_year">సంవత్సరం</string>
+    <string name="paywall_timeline_today_title">ఈరోజు</string>
+    <string name="paywall_timeline_today_body">అంతా అన్‌లాక్ అయ్యింది — మీ 7-రోజుల ట్రయల్ ఇప్పటికే నడుస్తోంది.</string>
+    <string name="paywall_timeline_day6_title">రోజు 6</string>
+    <string name="paywall_timeline_day6_body">ముగియక ముందే మేము మీకు గుర్తు చేస్తాం.</string>
+    <string name="paywall_timeline_day7_title">రోజు 7</string>
+    <string name="paywall_timeline_day7_body">ట్రయల్ ముగిసింది — ప్రీమియంతో అంతా అలాగే ఉంచుకోండి.</string>
+    <string name="paywall_plan_annual_fmt">వార్షికం — ₹%1$d</string>
+    <string name="paywall_plan_annual_subline_fmt">≈ నెలకు ₹%1$d, ఏటా బిల్లింగ్</string>
+    <string name="paywall_plan_monthly_fmt">నెలవారీ — ₹%1$d</string>
+    <string name="paywall_plan_monthly_subline">అనువైనది, ఎప్పుడైనా రద్దు చేయండి</string>
+    <string name="paywall_plan_weekly_fmt">వారానికి — ₹%1$d</string>
+    <string name="paywall_plan_weekly_subline">ఒక్కో వారం చొప్పున ప్రయత్నించండి</string>
     <string name="paywall_best_value">ఉత్తమ విలువ</string>
+    <string name="paywall_more_plans">మరిన్ని ప్లాన్‌లు</string>
+    <string name="paywall_fewer_plans">తక్కువ ప్లాన్‌లు</string>
+    <string name="paywall_restore">కొనుగోలును పునరుద్ధరించండి</string>
+    <string name="paywall_restore_sandbox_toast">శాండ్‌బాక్స్ బిల్డ్ — ఇప్పుడు పునరుద్ధరించడానికి ఏదీ లేదు.</string>
+    <string name="paywall_trust_sandbox">శాండ్‌బాక్స్ — నిజమైన చెల్లింపు లేదు</string>
     <string name="paywall_cta">నియమ్‌ను అన్‌లాక్ చేయండి</string>
-    <string name="paywall_footnote">శాండ్‌బాక్స్ బిల్డ్ — నిజమైన చెల్లింపు ఏదీ వసూలు చేయబడదు.</string>
+
+    <!-- Trial reminder notification -->
+    <string name="notif_trial_title">మీ ట్రయల్ రేపు ముగుస్తుంది</string>
+    <string name="notif_trial_body">ప్రతి మంత్రం, ప్రతి భాష అలాగే ఉంచుకోండి — నియమ్ ప్రీమియం అన్‌లాక్ చేయండి.</string>
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">ప్రీమియంతో అన్‌లాక్ చేయండి</string>

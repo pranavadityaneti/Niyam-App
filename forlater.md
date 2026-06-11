@@ -35,6 +35,14 @@
 - **Date added:** 2026-06-11
 - **Originated from:** Hindi/Telugu/Tamil screenshot gallery session ("Good to go" turn).
 
+### 9. SMS + email trial reminders (founder request, needs backend)
+- **What:** Pranav (2026-06-11, SP-12 approval): "We will remind the customer, we can automate an SMS and email." Automate trial-ending reminders over SMS and email in addition to the on-device notification that SP-12 ships.
+- **Why blocked:** The app collects no phone number or email (privacy feature: zero personal data) and has no backend. Needs: a contact-collection step (likely with sign-in), a server, an SMS provider (e.g. MSG91/Twilio) + email provider (e.g. SES/Resend), and a privacy-policy update.
+- **Scope:** Backend phase work — pairs naturally with whatever server work real-billing analytics eventually needs.
+- **Status:** Queued — revisit when accounts/backend phase opens (Play Console arrival is the natural trigger).
+- **Date added:** 2026-06-11
+- **Originated from:** SP-12 paywall v2 approval message.
+
 ## In progress
 
 _(empty)_

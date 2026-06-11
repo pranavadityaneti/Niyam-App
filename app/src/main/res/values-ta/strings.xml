@@ -121,24 +121,33 @@
     <!-- Settings entry -->
     <string name="settings_content_desc">அமைப்புகள்</string>
 
-    <!-- Paywall -->
+    <!-- Paywall (v2 — SP-12 trial timeline) -->
     <string name="paywall_overline">நியம் ப்ரீமியம்</string>
     <string name="paywall_close_desc">மூடு</string>
     <string name="paywall_hero">ஒவ்வொரு மந்திரமும்.\nஒவ்வொரு மொழியும்.</string>
-    <plurals name="paywall_trial_left">
-        <item quantity="one">இலவச சோதனை முடிய %1$d நாள் உள்ளது</item>
-        <item quantity="other">இலவச சோதனை முடிய %1$d நாட்கள் உள்ளன</item>
-    </plurals>
-    <string name="paywall_benefit_mantras">அனைத்து 26 மந்திரங்கள்</string>
-    <string name="paywall_benefit_languages">அனைத்து 9 மொழிகள் &amp; எழுத்துகள்</string>
-    <string name="paywall_benefit_switching">வரம்பற்ற சாதனை மாற்றம்</string>
-    <string name="paywall_benefit_no_ads">விளம்பரங்கள் இல்லை</string>
-    <string name="paywall_period_week">வாரம்</string>
-    <string name="paywall_period_month">மாதம்</string>
-    <string name="paywall_period_year">ஆண்டு</string>
+    <string name="paywall_timeline_today_title">இன்று</string>
+    <string name="paywall_timeline_today_body">அனைத்தும் திறக்கப்பட்டுள்ளது — உங்கள் 7-நாள் சோதனை ஏற்கனவே இயங்குகிறது.</string>
+    <string name="paywall_timeline_day6_title">நாள் 6</string>
+    <string name="paywall_timeline_day6_body">முடிவதற்கு முன் உங்களுக்கு நினைவூட்டுவோம்.</string>
+    <string name="paywall_timeline_day7_title">நாள் 7</string>
+    <string name="paywall_timeline_day7_body">சோதனை முடிந்தது — ப்ரீமியத்துடன் அனைத்தையும் வைத்திருங்கள்.</string>
+    <string name="paywall_plan_annual_fmt">ஆண்டுக்கு — ₹%1$d</string>
+    <string name="paywall_plan_annual_subline_fmt">≈ மாதம் ₹%1$d, ஆண்டுதோறும் கட்டணம்</string>
+    <string name="paywall_plan_monthly_fmt">மாதம் — ₹%1$d</string>
+    <string name="paywall_plan_monthly_subline">நெகிழ்வானது, எப்போது வேண்டுமானாலும் ரத்து செய்யலாம்</string>
+    <string name="paywall_plan_weekly_fmt">வாரம் — ₹%1$d</string>
+    <string name="paywall_plan_weekly_subline">ஒரு வாரம் முயன்று பாருங்கள்</string>
     <string name="paywall_best_value">சிறந்த மதிப்பு</string>
+    <string name="paywall_more_plans">மேலும் திட்டங்கள்</string>
+    <string name="paywall_fewer_plans">குறைவான திட்டங்கள்</string>
+    <string name="paywall_restore">கொள்முதலை மீட்டமை</string>
+    <string name="paywall_restore_sandbox_toast">சாண்ட்பாக்ஸ் பதிப்பு — இப்போது மீட்டமைக்க எதுவும் இல்லை.</string>
+    <string name="paywall_trust_sandbox">சாண்ட்பாக்ஸ் — உண்மையான கட்டணம் இல்லை</string>
     <string name="paywall_cta">நியம்-ஐ திற</string>
-    <string name="paywall_footnote">சாண்ட்பாக்ஸ் பதிப்பு — உண்மையான கட்டணம் எதுவும் வசூலிக்கப்படாது.</string>
+
+    <!-- Trial reminder notification -->
+    <string name="notif_trial_title">உங்கள் சோதனை நாளை முடிகிறது</string>
+    <string name="notif_trial_body">ஒவ்வொரு மந்திரத்தையும் மொழியையும் வைத்திருங்கள் — நியம் ப்ரீமியத்தை திறங்கள்.</string>
 
     <!-- Premium gates -->
     <string name="detail_unlock_premium">ப்ரீமியத்துடன் திற</string>
