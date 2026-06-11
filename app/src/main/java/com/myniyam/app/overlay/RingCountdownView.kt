@@ -46,6 +46,13 @@ class RingCountdownView @JvmOverloads constructor(
     private var sweepFraction = 0f
     private var secondsLeft = 0
 
+    /** Dark-variant palette (forlater 5) — progress arc stays brand orange. */
+    fun setPalette(trackColor: Int, numeralColor: Int) {
+        trackPaint.color = trackColor
+        textPaint.color = numeralColor
+        invalidate()
+    }
+
     /** Called from OverlayManager.onTick/onFinish — no timer here. */
     fun setProgress(secondsLeftValue: Int, totalSeconds: Int) {
         secondsLeft = secondsLeftValue.coerceAtLeast(0)

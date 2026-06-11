@@ -1,10 +1,12 @@
 package com.myniyam.app.overlay
 
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.PixelFormat
 import android.os.Build
 import android.os.CountDownTimer
 import android.os.SystemClock
+import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
@@ -14,6 +16,8 @@ import com.myniyam.app.R
 import com.myniyam.app.data.CurrentSadhana
 import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.Script
+import com.myniyam.app.data.ThemePref
+import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.progress.ProgressRepository
 import com.myniyam.app.service.AppLockAccessibilityService
 import com.myniyam.app.service.UnlockGrace
@@ -36,10 +40,19 @@ object OverlayManager {
         val mantra = MantraRepository.displayMantra(CurrentSadhana.MANTRA_ID)
         val lang = CurrentSadhana.LANGUAGE
         view.findViewById<TextView>(R.id.overlay_devanagari).text = mantra.text.forScript(lang.script)
-        view.findViewById<TextView>(R.id.overlay_transliteration).text = mantra.text.forScript(Script.ROMAN)
+        // Roman script already IS the transliteration — don't render the same line twice (forlater 6).
+        view.findViewById<TextView>(R.id.overlay_transliteration).apply {
+            if (lang.script == Script.ROMAN) {
+                visibility = View.GONE
+            } else {
+                text = mantra.text.forScript(Script.ROMAN)
+            }
+        }
         view.findViewById<TextView>(R.id.overlay_meaning).text = mantra.meaning.forLang(lang.meaningLang)
         view.findViewById<TextView>(R.id.overlay_label).text =
             ctx.getString(R.string.overlay_label_fmt, mantra.canonicalName)
+
+        applyTheme(ctx, view)
 
         val ring = view.findViewById<RingCountdownView>(R.id.overlay_ring)
         val continueBtn = view.findViewById<Button>(R.id.overlay_continue)
@@ -75,6 +88,30 @@ object OverlayManager {
         } catch (e: Exception) {
             android.util.Log.e("OverlayManager", "Failed to attach overlay", e)
         }
+    }
+
+    /**
+     * Dark-variant binding (forlater 5) — purely visual, applied once at inflate.
+     * Follows the user's themePref; SYSTEM resolves via the device uiMode.
+     */
+    private fun applyTheme(ctx: Context, view: View) {
+        val dark = when (UserPrefs.snapshot().themePref) {
+            ThemePref.DARK -> true
+            ThemePref.LIGHT -> false
+            ThemePref.SYSTEM ->
+                (ctx.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) ==
+                    Configuration.UI_MODE_NIGHT_YES
+        }
+        if (!dark) return  // light = the existing XML defaults, untouched
+
+        fun color(id: Int) = ContextCompat.getColor(ctx, id)
+        view.setBackgroundResource(R.drawable.bg_overlay_gradient_dark)
+        view.findViewById<TextView>(R.id.overlay_label).setTextColor(color(R.color.overlay_label_warm_dark))
+        view.findViewById<TextView>(R.id.overlay_devanagari).setTextColor(color(R.color.overlay_ink_dark))
+        view.findViewById<TextView>(R.id.overlay_transliteration).setTextColor(color(R.color.overlay_roman_dark))
+        view.findViewById<TextView>(R.id.overlay_meaning).setTextColor(color(R.color.overlay_ink_muted_dark))
+        view.findViewById<RingCountdownView>(R.id.overlay_ring)
+            .setPalette(color(R.color.overlay_ring_track_dark), color(R.color.overlay_ink_dark))
     }
 
     fun isShowing(): Boolean = overlayView != null

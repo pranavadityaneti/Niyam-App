@@ -31,7 +31,12 @@
     <string name="perm_battery_title">Don\'t shut us off in the background</string>
     <string name="perm_battery_body">So your phone doesn\'t kill Niyam while you\'re using it elsewhere.</string>
     <string name="perm_oem_title">Allow background activity</string>
-    <string name="perm_oem_body">So your phone allows us to start when needed.</string>
+    <string name="perm_oem_body_miui">Xiaomi, Redmi and POCO phones aggressively close background apps. Tap Grant, find Niyam in the list, and switch Autostart on.</string>
+    <string name="perm_oem_body_color_os">OPPO and realme phones close background apps to save battery. Tap Grant and allow Niyam to start automatically.</string>
+    <string name="perm_oem_body_funtouch_os">vivo and iQOO phones close background apps to save battery. Tap Grant and allow Niyam to start in the background.</string>
+    <string name="perm_oem_body_oxygen_os">OnePlus phones optimise battery aggressively. Tap Grant, then set Niyam\'s battery usage to "Don\'t optimise".</string>
+    <string name="perm_oem_body_one_ui">Samsung phones put unused apps to sleep. Tap Grant, then make sure Niyam is never added to "Sleeping apps".</string>
+    <string name="perm_oem_body_generic">Some phones quietly stop background apps to save battery. If your phone shows an Autostart or background-activity option for Niyam, switch it on. If you don\'t see one, you\'re all set — tap Done.</string>
 
     <string name="grant">Grant</string>
     <string name="done">Done</string>

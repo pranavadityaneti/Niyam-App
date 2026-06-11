@@ -17,4 +17,13 @@
     <color name="overlay_ring_track">#FFF2E0CC</color>
     <color name="overlay_ring_progress">#FFFF6400</color>
     <color name="overlay_label_warm">#FF99511F</color>
+    <!-- Dark overlay variant (forlater 5) — mirrors SP-7/SP-8 dark theme tokens -->
+    <color name="overlay_grad_top_dark">#FF17503A</color>
+    <color name="overlay_grad_center_dark">#FF0E382A</color>
+    <color name="overlay_grad_bottom_dark">#FF0A2A20</color>
+    <color name="overlay_ink_dark">#FFF5EBE1</color>
+    <color name="overlay_ink_muted_dark">#FFB9C9C2</color>
+    <color name="overlay_roman_dark">#FF7E948B</color>
+    <color name="overlay_label_warm_dark">#FFE0A878</color>
+    <color name="overlay_ring_track_dark">#FF1E4438</color>
 </resources>

@@ -25,11 +25,12 @@ object MantraRepository {
         canonicalName = "Om (Pranava)",
         originalLanguage = OriginalLanguage.SANSKRIT,
         text = MantraText(
-            devanagari = "ॐ", telugu = "ఓం", tamil = "ஓம்",
+            devanagari = "ॐ", telugu = "ఓం", tamil = "ௐ",
             kannada = "ಓಂ", bengali = "ওঁ", gujarati = "ૐ", roman = "Om"
         ),
         meaning = MantraMeaning(
-            en = "The primordial sound of the universe.",
+            en = "The primordial sound of the universe. One syllable holding creation, " +
+                "preservation, and dissolution — a single breath that settles the mind.",
             hi = "ब्रह्मांड की आदि ध्वनि।",
             te = "విశ్వపు ఆది నాదం.",
             ta = "பிரபஞ்சத்தின் ஆதி ஒலி.",

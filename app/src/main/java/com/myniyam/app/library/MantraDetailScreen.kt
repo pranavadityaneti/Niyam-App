@@ -119,12 +119,14 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
                             style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 30.sp),
                             color = MaterialTheme.colorScheme.onSurface
                         )
-                        Spacer(Modifier.height(14.dp))
-                        Text(
-                            mantra.text.forScript(Script.ROMAN),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
+                        if (lang.script != Script.ROMAN) {
+                            Spacer(Modifier.height(14.dp))
+                            Text(
+                                mantra.text.forScript(Script.ROMAN),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
                         Spacer(Modifier.height(16.dp))
                         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                         Spacer(Modifier.height(16.dp))

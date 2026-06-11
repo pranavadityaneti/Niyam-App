@@ -45,8 +45,16 @@ fun OemAutostartScreen(onDone: () -> Unit) {
                 )
                 Spacer(Modifier.height(16.dp))
                 Text(
-                    text = "Your phone is ${Build.MANUFACTURER} (${flow.name}). " +
-                        stringResource(R.string.perm_oem_body),
+                    text = stringResource(
+                        when (flow) {
+                            OemAutostartHelper.OemFlow.MIUI -> R.string.perm_oem_body_miui
+                            OemAutostartHelper.OemFlow.COLOR_OS -> R.string.perm_oem_body_color_os
+                            OemAutostartHelper.OemFlow.FUNTOUCH_OS -> R.string.perm_oem_body_funtouch_os
+                            OemAutostartHelper.OemFlow.OXYGEN_OS -> R.string.perm_oem_body_oxygen_os
+                            OemAutostartHelper.OemFlow.ONE_UI -> R.string.perm_oem_body_one_ui
+                            OemAutostartHelper.OemFlow.GENERIC -> R.string.perm_oem_body_generic
+                        }
+                    ),
                     style = MaterialTheme.typography.bodyLarge
                 )
                 Spacer(Modifier.weight(1f))
