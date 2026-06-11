@@ -248,3 +248,12 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - **Emulator verification:** fresh install, full walkthrough, core loop confirmed (overlay → ring → Continue → read recorded). Found+fixed "1 reads today" plural (`ae22d6e`). v2 gallery: `docs/screenshots/v2/index.html`. Launcher icon still default → forlater item 7.
 - Suite 83/83 throughout; combined Opus review of the full range dispatched (running in background at log time).
 - **Still pending from Pranav:** the two engine findings decision ("fix both"?), freemium-split veto (SP-6 blocked on it).
+
+---
+
+## 2026-06-11 (cont.) — SP-8 review verdict + Hindi/Telugu/Tamil gallery
+
+- **SP-8 combined Opus review returned ✅ SHIP-READY** (range `3a716eb..ae22d6e`): engine isolation gate passes (zero service/BlockList/ProgressRepository/data files in diff; OverlayManager delta confirmed render-target-swap-only with identical guards/params/timer/listeners); spec §2 fidelity byte-exact on gradients/tokens/type scale; quality checks clean (Animatable keys, allocation-free onDraw, plurals). Two flags: (1) dead `inter.ttf` + `playfair_display.ttf` ≈1.18MB APK bloat — recommend deletion, NOT deleted (needs Pranav's OK); (2) SelectableCard tap animation is steady-state tween 0.985↔1.0, not spec's transient spring 0.97→1.0 — cosmetic nit, flagged. Task #39 closed.
+- **Pranav asked: show screens in Hindi, Telugu, Tamil.** Captured live on Pixel 9 emulator (latest APK reinstalled — old install predated the plural fix): per language Home + Gayatri detail + unlock overlay over YouTube, switched via Settings → Display language each time. Gallery `docs/screenshots/v2-languages/index.html` (self-contained base64), commit `86bfcd7`, opened in browser. Clearly noted in gallery + chat: only mantra script + meaning localise; app chrome stays English (separate work item if wanted).
+- **ENGINE FINDINGS 1+2 reproduced twice more during capture:** after Continue, overlay re-triggered within seconds (finding 1) and then sat over Home/launcher swallowing all taps until Continue (finding 2) — had to dismiss + force-stop YouTube to proceed. Strengthens the "fix both" case; still awaiting Pranav's go.
+- Device state restored: language → English, emulator killed. Suite untouched (no code changes this segment).
