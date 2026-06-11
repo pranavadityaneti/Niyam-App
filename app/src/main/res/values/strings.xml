@@ -103,4 +103,10 @@
     <string name="settings_notify_blocked">Notifications are blocked in system settings.</string>
     <string name="settings_apps_count_fmt">%1$d blocked</string>
     <string name="settings_version_fmt">Niyam v%1$s</string>
+    <!-- Settings editors -->
+    <string name="settings_save">Save</string>
+    <string name="settings_language_title">Display language</string>
+    <string name="settings_apps_title">Blocked apps</string>
+    <string name="settings_apps_empty_hint">Keep at least one app blocked.</string>
+    <string name="settings_intention_title">Intention</string>
 </resources>
