@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome screen -->
+    <string name="welcome_title">நியம்</string>
+    <string name="welcome_subtitle">திரையில் மூழ்கும் முன் ஒரு நிறுத்தம்.</string>
+    <string name="welcome_cta">தொடங்குங்கள்</string>
+
+    <!-- Onboarding -->
+    <string name="onb_step_fmt">படி %1$d / 4</string>
+    <string name="onb_continue">தொடரவும்</string>
+    <string name="onb_intention_title">நீங்கள் ஏன் இங்கே வந்தீர்கள்?</string>
+    <string name="onb_intention_focus">கவனம் கூடுதலாக, திரை குறைவாக</string>
+    <string name="onb_intention_calm">அலையும் மனதை அமைதிப்படுத்த</string>
+    <string name="onb_intention_sadhana">தினசரி சாதனையைத் தொடங்க</string>
+    <string name="onb_intention_dharma">தர்மத்துடன் இன்னும் நெருங்கி உணர</string>
+    <string name="onb_intention_devotion">என் பக்தியை ஆழப்படுத்த</string>
+    <string name="onb_mantra_title">உங்கள் தொடக்க மந்திரத்தைத் தேர்ந்தெடுங்கள்</string>
+    <string name="onb_read_time_fmt">~%1$d வினாடி</string>
+    <string name="onb_language_title">உங்கள் மொழி</string>
+    <string name="onb_apps_title">எது உங்களை இழுக்கிறது?</string>
+
+    <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
+    <string name="perm_usage_title">தடுக்கப்பட்ட செயலிகளைத் திறக்கும்போது அறிய</string>
+    <string name="perm_usage_body">நீங்கள் Instagram, Facebook அல்லது YouTube திறக்கும்போது அறிந்து, உங்கள் மந்திரத்தை முதலில் காட்டுவதற்காக.</string>
+    <string name="perm_overlay_title">மற்ற செயலிகளுக்கு மேலே காட்ட</string>
+    <string name="perm_overlay_body">தடுக்கப்பட்ட செயலிக்கு மேலே உங்கள் மந்திரத்தைக் காட்டுவதற்காக.</string>
+    <string name="perm_accessibility_title">செயலிகள் திறப்பதை உடனடியாகக் கண்டறிய</string>
+    <string name="perm_accessibility_body">Instagram, Facebook அல்லது YouTube திறக்கும் சரியான கணத்தை — தாமதமின்றி, உடனடியாகக் கண்டறிவதற்காக.</string>
+    <string name="perm_battery_title">பின்னணியில் எங்களை நிறுத்திவிடாதீர்கள்</string>
+    <string name="perm_battery_body">நீங்கள் வேறு செயலியைப் பயன்படுத்தும்போது உங்கள் தொலைபேசி நியம்-ஐ நிறுத்திவிடாமல் இருக்க.</string>
+    <string name="perm_oem_title">பின்னணி செயல்பாட்டை அனுமதிக்கவும்</string>
+    <string name="perm_oem_body_miui">Xiaomi, Redmi மற்றும் POCO தொலைபேசிகள் பின்னணி செயலிகளைத் தீவிரமாக மூடிவிடும். அளி என்பதைத் தட்டி, பட்டியலில் நியம்-ஐக் கண்டுபிடித்து, தானியங்கி தொடக்கத்தை இயக்கவும்.</string>
+    <string name="perm_oem_body_color_os">OPPO மற்றும் realme தொலைபேசிகள் பேட்டரியைச் சேமிக்க பின்னணி செயலிகளை மூடிவிடும். அளி என்பதைத் தட்டி, நியம்-ஐ தானாகத் தொடங்க அனுமதிக்கவும்.</string>
+    <string name="perm_oem_body_funtouch_os">vivo மற்றும் iQOO தொலைபேசிகள் பேட்டரியைச் சேமிக்க பின்னணி செயலிகளை மூடிவிடும். அளி என்பதைத் தட்டி, நியம்-ஐ பின்னணியில் தொடங்க அனுமதிக்கவும்.</string>
+    <string name="perm_oem_body_oxygen_os">OnePlus தொலைபேசிகள் பேட்டரியைத் தீவிரமாக மேம்படுத்தும். அளி என்பதைத் தட்டி, பின்னர் நியம்-இன் பேட்டரி பயன்பாட்டை \"மேம்படுத்த வேண்டாம்\" என அமைக்கவும்.</string>
+    <string name="perm_oem_body_one_ui">Samsung தொலைபேசிகள் பயன்படுத்தாத செயலிகளை உறங்க வைக்கும். அளி என்பதைத் தட்டி, பின்னர் நியம் ஒருபோதும் \"உறங்கும் செயலிகள்\" பட்டியலில் சேர்க்கப்படவில்லை என்பதை உறுதிசெய்யவும்.</string>
+    <string name="perm_oem_body_generic">சில தொலைபேசிகள் பேட்டரியைச் சேமிக்க பின்னணி செயலிகளை அமைதியாக நிறுத்திவிடும். உங்கள் தொலைபேசி நியம்-க்கு தானியங்கி தொடக்கம் அல்லது பின்னணி செயல்பாட்டு விருப்பத்தைக் காட்டினால், அதை இயக்கவும். எதுவும் தென்படவில்லை எனில் எல்லாம் தயார் — முடிந்தது என்பதைத் தட்டவும்.</string>
+
+    <string name="grant">அளி</string>
+    <string name="done">முடிந்தது</string>
+    <string name="next">அடுத்து</string>
+
+    <!-- Home -->
+    <string name="home_overline">உங்கள் சாதனை</string>
+    <string name="home_day_fmt">நாள் %1$d / %2$d</string>
+    <string name="home_streak_fmt">%1$d நாள் தொடர்ச்சி</string>
+    <plurals name="home_today_plural">
+        <item quantity="one">இன்று %1$d முறை</item>
+        <item quantity="other">இன்று %1$d முறை</item>
+    </plurals>
+    <string name="home_protection_ok">பாதுகாப்பு செயலில் உள்ளது</string>
+    <string name="home_protection_fix">கவனம் தேவை — சரிசெய்யத் தட்டவும்</string>
+    <string name="home_browse_library">நூலகத்தைப் பார்வையிடு</string>
+
+    <!-- Celebration / next sadhana -->
+    <string name="celebration_overline">பயணம் நிறைவடைந்தது</string>
+    <string name="celebration_title_fmt">%2$s — %1$d நாட்கள்</string>
+    <string name="celebration_body">நீங்கள் இறுதிவரை நிலைத்திருந்தீர்கள். அந்த ஒழுக்கமே சாதனை.</string>
+    <string name="celebration_next">உங்கள் அடுத்த சாதனையைத் தேர்ந்தெடுங்கள்</string>
+    <string name="celebration_keep">இதே மந்திரத்துடன் தொடரவும்</string>
+    <string name="next_title">உங்கள் அடுத்த சாதனை</string>
+
+    <!-- Overlay -->
+    <string name="overlay_continue">தொடரவும்</string>
+    <string name="overlay_unlocking_in">%1$d இல் திறக்கிறது…</string>
+    <string name="overlay_label_fmt">உங்கள் சாதனை · %1$s</string>
+
+    <!-- Foreground service notification -->
+    <string name="notif_channel_foreground">நியம் பாதுகாப்பு</string>
+    <string name="notif_text">திரையில் மூழ்காமல் உங்களைக் காத்து நிற்கிறது.</string>
+
+    <!-- Completion notification -->
+    <string name="notif_completion_title">பயணம் நிறைவடைந்தது 🎉</string>
+    <string name="notif_completion_body_fmt">உங்கள் %1$s சாதனையை நிறைவு செய்தீர்கள். கொண்டாடத் தட்டவும்.</string>
+
+    <!-- AccessibilityService user-visible description -->
+    <string name="accessibility_service_description">நீங்கள் Instagram, Facebook அல்லது YouTube திறக்கும்போது உங்கள் மந்திரத்தை முதலில் காட்ட நியம் அணுகல்தன்மையைப் பயன்படுத்துகிறது. உங்கள் திரையில் உள்ள வேறு எந்த உள்ளடக்கத்தையும் இது படிப்பதில்லை.</string>
+
+    <!-- Library -->
+    <string name="library_overline">நூலகம்</string>
+    <string name="library_title">அனைத்து மந்திரங்கள்</string>
+    <string name="library_filter_all">அனைத்தும்</string>
+    <string name="library_empty">பொருந்தும் எதுவுமில்லை — வடிப்பானை அகற்றவும்.</string>
+    <string name="library_current_marker">தற்போதையது</string>
+    <string name="library_completed_marker">நிறைவடைந்தது</string>
+    <string name="detail_make_current">இதை என் சாதனையாக்கு</string>
+    <string name="detail_is_current">உங்கள் தற்போதைய சாதனை</string>
+    <string name="detail_practice_again">மீண்டும் பயிற்சி செய்</string>
+    <string name="detail_switch_title">உங்கள் சாதனையை மாற்றவா?</string>
+    <plurals name="detail_switch_body_plural">
+        <item quantity="one">%2$s சாதனையில் %1$d நாள் முன்னேறியுள்ளீர்கள். மாற்றினால், மீண்டும் இதற்குத் திரும்பும்போது இந்தப் பயணம் புதிதாகத் தொடங்கும்.</item>
+        <item quantity="other">%2$s சாதனையில் %1$d நாட்கள் முன்னேறியுள்ளீர்கள். மாற்றினால், மீண்டும் இதற்குத் திரும்பும்போது இந்தப் பயணம் புதிதாகத் தொடங்கும்.</item>
+    </plurals>
+    <string name="detail_switch_body_nocount_fmt">%1$s சாதனையில் ஓரளவு முன்னேறியுள்ளீர்கள். மாற்றினால், மீண்டும் இதற்குத் திரும்பும்போது இந்தப் பயணம் புதிதாகத் தொடங்கும்.</string>
+    <string name="detail_switch_confirm">மாற்று</string>
+    <string name="detail_switch_cancel">தற்போதையதையே வை</string>
+
+    <!-- Settings -->
+    <string name="settings_title">அமைப்புகள்</string>
+    <string name="settings_section_sadhana">உங்கள் பயிற்சி</string>
+    <string name="settings_row_current_sadhana">தற்போதைய சாதனை</string>
+    <string name="settings_row_language">காட்சி மொழி</string>
+    <string name="settings_row_apps">தடுக்கப்பட்ட செயலிகள்</string>
+    <string name="settings_row_intention">நோக்கம்</string>
+    <string name="settings_section_app">செயலி</string>
+    <string name="settings_row_appearance">தோற்றம்</string>
+    <string name="settings_appearance_light">வெளிச்சம்</string>
+    <string name="settings_appearance_dark">இருள்</string>
+    <string name="settings_appearance_system">அமைப்பு</string>
+    <string name="settings_row_notify">நிறைவு அறிவிப்பு</string>
+    <string name="settings_notify_caption">14 நாள் பயணம் நிறைவடையும்போது அறிவிப்பு பெறுங்கள்.</string>
+    <string name="settings_notify_blocked">கணினி அமைப்புகளில் அறிவிப்புகள் தடுக்கப்பட்டுள்ளன.</string>
+    <string name="settings_apps_count_fmt">%1$d தடுக்கப்பட்டுள்ளன</string>
+    <!-- Settings editors -->
+    <string name="settings_save">சேமி</string>
+    <string name="settings_language_title">காட்சி மொழி</string>
+    <string name="settings_apps_title">தடுக்கப்பட்ட செயலிகள்</string>
+    <string name="settings_apps_empty_hint">குறைந்தது ஒரு செயலியையாவது தடுத்து வைக்கவும்.</string>
+    <string name="settings_intention_title">நோக்கம்</string>
+    <!-- Settings entry -->
+    <string name="settings_content_desc">அமைப்புகள்</string>
+
+    <!-- Paywall -->
+    <string name="paywall_overline">நியம் ப்ரீமியம்</string>
+    <string name="paywall_close_desc">மூடு</string>
+    <string name="paywall_hero">ஒவ்வொரு மந்திரமும்.\nஒவ்வொரு மொழியும்.</string>
+    <plurals name="paywall_trial_left">
+        <item quantity="one">இலவச சோதனை முடிய %1$d நாள் உள்ளது</item>
+        <item quantity="other">இலவச சோதனை முடிய %1$d நாட்கள் உள்ளன</item>
+    </plurals>
+    <string name="paywall_benefit_mantras">அனைத்து 26 மந்திரங்கள்</string>
+    <string name="paywall_benefit_languages">அனைத்து 9 மொழிகள் &amp; எழுத்துகள்</string>
+    <string name="paywall_benefit_switching">வரம்பற்ற சாதனை மாற்றம்</string>
+    <string name="paywall_benefit_no_ads">விளம்பரங்கள் இல்லை</string>
+    <string name="paywall_period_week">வாரம்</string>
+    <string name="paywall_period_month">மாதம்</string>
+    <string name="paywall_period_year">ஆண்டு</string>
+    <string name="paywall_best_value">சிறந்த மதிப்பு</string>
+    <string name="paywall_cta">நியம்-ஐ திற</string>
+    <string name="paywall_footnote">சாண்ட்பாக்ஸ் பதிப்பு — உண்மையான கட்டணம் எதுவும் வசூலிக்கப்படாது.</string>
+
+    <!-- Premium gates -->
+    <string name="detail_unlock_premium">ப்ரீமியத்துடன் திற</string>
+    <string name="settings_language_premium_suffix">" · ப்ரீமியம்"</string>
+    <string name="settings_section_premium">நியம் ப்ரீமியம்</string>
+    <string name="settings_row_premium">ப்ரீமியம்</string>
+    <string name="settings_premium_active">செயலில் உள்ளது</string>
+    <string name="settings_premium_free">இலவசத் திட்டம்</string>
+    <plurals name="settings_premium_trial_left">
+        <item quantity="one">சோதனை முடிய %1$d நாள் உள்ளது</item>
+        <item quantity="other">சோதனை முடிய %1$d நாட்கள் உள்ளன</item>
+    </plurals>
+
+</resources>

@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome screen -->
+    <string name="welcome_title">ನಿಯಮ</string>
+    <string name="welcome_subtitle">ಸ್ಕ್ರಾಲ್‌ಗೆ ಮುನ್ನ ಒಂದು ವಿರಾಮ.</string>
+    <string name="welcome_cta">ಆರಂಭಿಸಿ</string>
+
+    <!-- Onboarding -->
+    <string name="onb_step_fmt">4ರಲ್ಲಿ %1$dನೇ ಹೆಜ್ಜೆ</string>
+    <string name="onb_continue">ಮುಂದುವರಿಸಿ</string>
+    <string name="onb_intention_title">ನೀವು ಇಲ್ಲಿ ಏಕೆ ಬಂದಿರಿ?</string>
+    <string name="onb_intention_focus">ಹೆಚ್ಚು ಏಕಾಗ್ರತೆ, ಕಡಿಮೆ ಸ್ಕ್ರಾಲ್</string>
+    <string name="onb_intention_calm">ಚಂಚಲ ಮನಸ್ಸನ್ನು ಶಾಂತಗೊಳಿಸಿ</string>
+    <string name="onb_intention_sadhana">ದಿನನಿತ್ಯದ ಸಾಧನೆ ಆರಂಭಿಸಿ</string>
+    <string name="onb_intention_dharma">ಧರ್ಮದೊಂದಿಗೆ ಹೆಚ್ಚು ನಂಟು ಬೆಳೆಸಿಕೊಳ್ಳಿ</string>
+    <string name="onb_intention_devotion">ನನ್ನ ಭಕ್ತಿಯನ್ನು ಆಳಗೊಳಿಸಿ</string>
+    <string name="onb_mantra_title">ನಿಮ್ಮ ಆರಂಭಿಕ ಮಂತ್ರವನ್ನು ಆರಿಸಿ</string>
+    <string name="onb_read_time_fmt">~%1$d ಸೆಕೆಂಡ್</string>
+    <string name="onb_language_title">ನಿಮ್ಮ ಭಾಷೆ</string>
+    <string name="onb_apps_title">ನಿಮ್ಮನ್ನು ಯಾವುದು ಸೆಳೆಯುತ್ತದೆ?</string>
+
+    <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
+    <string name="perm_usage_title">ನೀವು ನಿರ್ಬಂಧಿತ ಆ್ಯಪ್‌ಗಳನ್ನು ತೆರೆದಾಗ ಗಮನಿಸಲು</string>
+    <string name="perm_usage_body">ನೀವು Instagram, Facebook ಅಥವಾ YouTube ತೆರೆದಾಗ ಗಮನಿಸಲು — ಆಗ ನಾವು ಮೊದಲು ನಿಮ್ಮ ಮಂತ್ರವನ್ನು ತೋರಿಸಬಹುದು.</string>
+    <string name="perm_overlay_title">ಇತರ ಆ್ಯಪ್‌ಗಳ ಮೇಲೆ ತೋರಿಸಲು</string>
+    <string name="perm_overlay_body">ನಿರ್ಬಂಧಿತ ಆ್ಯಪ್‌ನ ಮೇಲೆ ನಿಮ್ಮ ಮಂತ್ರವನ್ನು ತೋರಿಸಲು.</string>
+    <string name="perm_accessibility_title">ಆ್ಯಪ್ ತೆರೆಯುವಿಕೆಯನ್ನು ತಕ್ಷಣ ಗುರುತಿಸಲು</string>
+    <string name="perm_accessibility_body">Instagram, Facebook ಅಥವಾ YouTube ತೆರೆಯುವ ನಿಖರ ಕ್ಷಣವನ್ನು ಗುರುತಿಸಲು — ತಕ್ಷಣ, ಯಾವುದೇ ವಿಳಂಬವಿಲ್ಲದೆ.</string>
+    <string name="perm_battery_title">ಹಿನ್ನೆಲೆಯಲ್ಲಿ ನಮ್ಮನ್ನು ಮುಚ್ಚಬೇಡಿ</string>
+    <string name="perm_battery_body">ನೀವು ಬೇರೆಡೆ ಫೋನ್ ಬಳಸುತ್ತಿರುವಾಗ ಅದು ನಿಯಮವನ್ನು ಮುಚ್ಚದಂತೆ.</string>
+    <string name="perm_oem_title">ಹಿನ್ನೆಲೆ ಚಟುವಟಿಕೆಗೆ ಅನುಮತಿಸಿ</string>
+    <string name="perm_oem_body_miui">Xiaomi, Redmi ಮತ್ತು POCO ಫೋನ್‌ಗಳು ಹಿನ್ನೆಲೆ ಆ್ಯಪ್‌ಗಳನ್ನು ಒತ್ತಾಯವಾಗಿ ಮುಚ್ಚುತ್ತವೆ. ಅನುಮತಿಸಿ ಒತ್ತಿ, ಪಟ್ಟಿಯಲ್ಲಿ ನಿಯಮವನ್ನು ಹುಡುಕಿ, ಮತ್ತು Autostart ಅನ್ನು ಆನ್ ಮಾಡಿ.</string>
+    <string name="perm_oem_body_color_os">OPPO ಮತ್ತು realme ಫೋನ್‌ಗಳು ಬ್ಯಾಟರಿ ಉಳಿಸಲು ಹಿನ್ನೆಲೆ ಆ್ಯಪ್‌ಗಳನ್ನು ಮುಚ್ಚುತ್ತವೆ. ಅನುಮತಿಸಿ ಒತ್ತಿ ಮತ್ತು ನಿಯಮ ತಾನಾಗಿ ಆರಂಭವಾಗಲು ಅನುಮತಿಸಿ.</string>
+    <string name="perm_oem_body_funtouch_os">vivo ಮತ್ತು iQOO ಫೋನ್‌ಗಳು ಬ್ಯಾಟರಿ ಉಳಿಸಲು ಹಿನ್ನೆಲೆ ಆ್ಯಪ್‌ಗಳನ್ನು ಮುಚ್ಚುತ್ತವೆ. ಅನುಮತಿಸಿ ಒತ್ತಿ ಮತ್ತು ನಿಯಮ ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಆರಂಭವಾಗಲು ಅನುಮತಿಸಿ.</string>
+    <string name="perm_oem_body_oxygen_os">OnePlus ಫೋನ್‌ಗಳು ಬ್ಯಾಟರಿಯನ್ನು ಒತ್ತಾಯವಾಗಿ ಉಳಿಸುತ್ತವೆ. ಅನುಮತಿಸಿ ಒತ್ತಿ, ನಂತರ ನಿಯಮದ ಬ್ಯಾಟರಿ ಬಳಕೆಯನ್ನು \"ಉಳಿಸಬೇಡಿ\" ಎಂದು ಹೊಂದಿಸಿ.</string>
+    <string name="perm_oem_body_one_ui">Samsung ಫೋನ್‌ಗಳು ಬಳಕೆಯಾಗದ ಆ್ಯಪ್‌ಗಳನ್ನು ನಿದ್ರೆಗೆ ಹಾಕುತ್ತವೆ. ಅನುಮತಿಸಿ ಒತ್ತಿ, ನಂತರ ನಿಯಮವನ್ನು \"ನಿದ್ರಿಸುವ ಆ್ಯಪ್‌ಗಳಿಗೆ\" ಎಂದಿಗೂ ಸೇರಿಸದಂತೆ ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ.</string>
+    <string name="perm_oem_body_generic">ಕೆಲವು ಫೋನ್‌ಗಳು ಬ್ಯಾಟರಿ ಉಳಿಸಲು ಹಿನ್ನೆಲೆ ಆ್ಯಪ್‌ಗಳನ್ನು ಮೌನವಾಗಿ ನಿಲ್ಲಿಸುತ್ತವೆ. ನಿಮ್ಮ ಫೋನ್ ನಿಯಮಕ್ಕಾಗಿ Autostart ಅಥವಾ ಹಿನ್ನೆಲೆ-ಚಟುವಟಿಕೆ ಆಯ್ಕೆಯನ್ನು ತೋರಿಸಿದರೆ, ಅದನ್ನು ಆನ್ ಮಾಡಿ. ಒಂದು ವೇಳೆ ಕಾಣದಿದ್ದರೆ, ನೀವು ಸಿದ್ಧ — ಮುಗಿದಿದೆ ಒತ್ತಿ.</string>
+
+    <string name="grant">ಅನುಮತಿಸಿ</string>
+    <string name="done">ಮುಗಿದಿದೆ</string>
+    <string name="next">ಮುಂದೆ</string>
+
+    <!-- Home -->
+    <string name="home_overline">ನಿಮ್ಮ ಸಾಧನೆ</string>
+    <string name="home_day_fmt">%2$dರಲ್ಲಿ %1$dನೇ ದಿನ</string>
+    <string name="home_streak_fmt">%1$d-ದಿನದ ಸರಣಿ</string>
+    <plurals name="home_today_plural">
+        <item quantity="one">ಇಂದು %1$d ಬಾರಿ ಪಠಣ</item>
+        <item quantity="other">ಇಂದು %1$d ಬಾರಿ ಪಠಣ</item>
+    </plurals>
+    <string name="home_protection_ok">ರಕ್ಷಣೆ ಸಕ್ರಿಯವಾಗಿದೆ</string>
+    <string name="home_protection_fix">ಗಮನ ಬೇಕು — ಸರಿಪಡಿಸಲು ಒತ್ತಿ</string>
+    <string name="home_browse_library">ಗ್ರಂಥಾಲಯ ನೋಡಿ</string>
+
+    <!-- Celebration / next sadhana -->
+    <string name="celebration_overline">ಯಾತ್ರೆ ಪೂರ್ಣಗೊಂಡಿದೆ</string>
+    <string name="celebration_title_fmt">%2$s ನ %1$d ದಿನಗಳು</string>
+    <string name="celebration_body">ನೀವು ಅದರೊಂದಿಗೆ ಉಳಿದಿರಿ. ಆ ಶಿಸ್ತೇ ಸಾಧನೆ.</string>
+    <string name="celebration_next">ನಿಮ್ಮ ಮುಂದಿನ ಸಾಧನೆಯನ್ನು ಆರಿಸಿ</string>
+    <string name="celebration_keep">ಇದೇ ಮಂತ್ರದೊಂದಿಗೆ ಮುಂದುವರಿಯಿರಿ</string>
+    <string name="next_title">ನಿಮ್ಮ ಮುಂದಿನ ಸಾಧನೆ</string>
+
+    <!-- Overlay -->
+    <string name="overlay_continue">ಮುಂದುವರಿಸಿ</string>
+    <string name="overlay_unlocking_in">%1$dರಲ್ಲಿ ತೆರೆಯಲಾಗುತ್ತಿದೆ…</string>
+    <string name="overlay_label_fmt">ನಿಮ್ಮ ಸಾಧನೆ · %1$s</string>
+
+    <!-- Foreground service notification -->
+    <string name="notif_channel_foreground">ನಿಯಮ ರಕ್ಷಣೆ</string>
+    <string name="notif_text">ಡೂಮ್-ಸ್ಕ್ರಾಲ್ ವಿರುದ್ಧ ಕಾವಲು ಕಾಯುತ್ತಿದೆ.</string>
+
+    <!-- Completion notification -->
+    <string name="notif_completion_title">ಯಾತ್ರೆ ಪೂರ್ಣಗೊಂಡಿದೆ 🎉</string>
+    <string name="notif_completion_body_fmt">ನೀವು ನಿಮ್ಮ %1$s ಸಾಧನೆಯನ್ನು ಮುಗಿಸಿದಿರಿ. ಸಂಭ್ರಮಿಸಲು ಒತ್ತಿ.</string>
+
+    <!-- AccessibilityService user-visible description -->
+    <string name="accessibility_service_description">ನೀವು Instagram, Facebook ಅಥವಾ YouTube ತೆರೆದಾಗ ಗುರುತಿಸಿ ಮೊದಲು ನಿಮ್ಮ ಮಂತ್ರವನ್ನು ತೋರಿಸಲು ನಿಯಮ Accessibility ಬಳಸುತ್ತದೆ. ಇದು ನಿಮ್ಮ ಪರದೆಯ ಮೇಲಿನ ಬೇರೆ ಯಾವುದೇ ವಿಷಯವನ್ನು ಓದುವುದಿಲ್ಲ.</string>
+
+    <!-- Library -->
+    <string name="library_overline">ಗ್ರಂಥಾಲಯ</string>
+    <string name="library_title">ಎಲ್ಲಾ ಮಂತ್ರಗಳು</string>
+    <string name="library_filter_all">ಎಲ್ಲಾ</string>
+    <string name="library_empty">ಯಾವುದೂ ಹೊಂದಿಕೆಯಾಗಲಿಲ್ಲ — ಒಂದು ಫಿಲ್ಟರ್ ತೆರವುಗೊಳಿಸಿ.</string>
+    <string name="library_current_marker">ಪ್ರಸ್ತುತ</string>
+    <string name="library_completed_marker">ಪೂರ್ಣಗೊಂಡಿದೆ</string>
+    <string name="detail_make_current">ಇದನ್ನು ನನ್ನ ಸಾಧನೆಯಾಗಿಸಿ</string>
+    <string name="detail_is_current">ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಸಾಧನೆ</string>
+    <string name="detail_practice_again">ಮತ್ತೆ ಅಭ್ಯಾಸ ಮಾಡಿ</string>
+    <string name="detail_switch_title">ನಿಮ್ಮ ಸಾಧನೆ ಬದಲಿಸುವುದೇ?</string>
+    <plurals name="detail_switch_body_plural">
+        <item quantity="one">ನೀವು %2$s ನ %1$d ದಿನದಲ್ಲಿದ್ದೀರಿ. ನೀವು ಬದಲಿಸಿದರೆ, ನೀವು ಮತ್ತೆ ಮರಳಿದಾಗ ಈ ಯಾತ್ರೆ ಮೊದಲಿನಿಂದ ಆರಂಭವಾಗುತ್ತದೆ.</item>
+        <item quantity="other">ನೀವು %2$s ನ %1$d ದಿನಗಳಲ್ಲಿದ್ದೀರಿ. ನೀವು ಬದಲಿಸಿದರೆ, ನೀವು ಮತ್ತೆ ಮರಳಿದಾಗ ಈ ಯಾತ್ರೆ ಮೊದಲಿನಿಂದ ಆರಂಭವಾಗುತ್ತದೆ.</item>
+    </plurals>
+    <string name="detail_switch_body_nocount_fmt">ನೀವು %1$s ನ ಮಧ್ಯದಲ್ಲಿದ್ದೀರಿ. ನೀವು ಬದಲಿಸಿದರೆ, ನೀವು ಮತ್ತೆ ಮರಳಿದಾಗ ಈ ಯಾತ್ರೆ ಮೊದಲಿನಿಂದ ಆರಂಭವಾಗುತ್ತದೆ.</string>
+    <string name="detail_switch_confirm">ಬದಲಿಸಿ</string>
+    <string name="detail_switch_cancel">ಪ್ರಸ್ತುತದ್ದನ್ನೇ ಇರಿಸಿ</string>
+
+    <!-- Settings -->
+    <string name="settings_title">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+    <string name="settings_section_sadhana">ನಿಮ್ಮ ಅಭ್ಯಾಸ</string>
+    <string name="settings_row_current_sadhana">ಪ್ರಸ್ತುತ ಸಾಧನೆ</string>
+    <string name="settings_row_language">ಪ್ರದರ್ಶನ ಭಾಷೆ</string>
+    <string name="settings_row_apps">ನಿರ್ಬಂಧಿತ ಆ್ಯಪ್‌ಗಳು</string>
+    <string name="settings_row_intention">ಉದ್ದೇಶ</string>
+    <string name="settings_section_app">ಆ್ಯಪ್</string>
+    <string name="settings_row_appearance">ಗೋಚರಿಕೆ</string>
+    <string name="settings_appearance_light">ತಿಳಿ</string>
+    <string name="settings_appearance_dark">ಗಾಢ</string>
+    <string name="settings_appearance_system">ಸಿಸ್ಟಂ</string>
+    <string name="settings_row_notify">ಪೂರ್ಣಗೊಳಿಕೆ ಸೂಚನೆ</string>
+    <string name="settings_notify_caption">14-ದಿನದ ಯಾತ್ರೆ ಪೂರ್ಣಗೊಂಡಾಗ ಸೂಚನೆ ಪಡೆಯಿರಿ.</string>
+    <string name="settings_notify_blocked">ಸಿಸ್ಟಂ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ಸೂಚನೆಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ.</string>
+    <string name="settings_apps_count_fmt">%1$d ನಿರ್ಬಂಧಿತ</string>
+    <!-- Settings editors -->
+    <string name="settings_save">ಉಳಿಸಿ</string>
+    <string name="settings_language_title">ಪ್ರದರ್ಶನ ಭಾಷೆ</string>
+    <string name="settings_apps_title">ನಿರ್ಬಂಧಿತ ಆ್ಯಪ್‌ಗಳು</string>
+    <string name="settings_apps_empty_hint">ಕನಿಷ್ಠ ಒಂದು ಆ್ಯಪ್ ಅನ್ನಾದರೂ ನಿರ್ಬಂಧಿಸಿ ಇರಿಸಿ.</string>
+    <string name="settings_intention_title">ಉದ್ದೇಶ</string>
+    <!-- Settings entry -->
+    <string name="settings_content_desc">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+
+    <!-- Paywall -->
+    <string name="paywall_overline">ನಿಯಮ ಪ್ರೀಮಿಯಂ</string>
+    <string name="paywall_close_desc">ಮುಚ್ಚಿ</string>
+    <string name="paywall_hero">ಪ್ರತಿ ಮಂತ್ರ.\nಪ್ರತಿ ಭಾಷೆ.</string>
+    <plurals name="paywall_trial_left">
+        <item quantity="one">ಉಚಿತ ಪ್ರಯೋಗದ %1$d ದಿನ ಬಾಕಿ</item>
+        <item quantity="other">ಉಚಿತ ಪ್ರಯೋಗದ %1$d ದಿನಗಳು ಬಾಕಿ</item>
+    </plurals>
+    <string name="paywall_benefit_mantras">ಎಲ್ಲಾ 26 ಮಂತ್ರಗಳು</string>
+    <string name="paywall_benefit_languages">ಎಲ್ಲಾ 9 ಭಾಷೆಗಳು &amp; ಲಿಪಿಗಳು</string>
+    <string name="paywall_benefit_switching">ಅಪರಿಮಿತ ಸಾಧನೆ ಬದಲಾವಣೆ</string>
+    <string name="paywall_benefit_no_ads">ಜಾಹೀರಾತುಗಳಿಲ್ಲ</string>
+    <string name="paywall_period_week">ವಾರ</string>
+    <string name="paywall_period_month">ತಿಂಗಳು</string>
+    <string name="paywall_period_year">ವರ್ಷ</string>
+    <string name="paywall_best_value">ಅತ್ಯುತ್ತಮ ಮೌಲ್ಯ</string>
+    <string name="paywall_cta">ನಿಯಮ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</string>
+    <string name="paywall_footnote">ಸ್ಯಾಂಡ್‌ಬಾಕ್ಸ್ ಬಿಲ್ಡ್ — ನಿಜವಾದ ಯಾವ ಪಾವತಿಯೂ ವಿಧಿಸಲಾಗುವುದಿಲ್ಲ.</string>
+
+    <!-- Premium gates -->
+    <string name="detail_unlock_premium">ಪ್ರೀಮಿಯಂನೊಂದಿಗೆ ಅನ್‌ಲಾಕ್ ಮಾಡಿ</string>
+    <string name="settings_language_premium_suffix">" · ಪ್ರೀಮಿಯಂ"</string>
+    <string name="settings_section_premium">ನಿಯಮ ಪ್ರೀಮಿಯಂ</string>
+    <string name="settings_row_premium">ಪ್ರೀಮಿಯಂ</string>
+    <string name="settings_premium_active">ಸಕ್ರಿಯ</string>
+    <string name="settings_premium_free">ಉಚಿತ ಯೋಜನೆ</string>
+    <plurals name="settings_premium_trial_left">
+        <item quantity="one">ಪ್ರಯೋಗದ %1$d ದಿನ ಬಾಕಿ</item>
+        <item quantity="other">ಪ್ರಯೋಗದ %1$d ದಿನಗಳು ಬಾಕಿ</item>
+    </plurals>
+</resources>

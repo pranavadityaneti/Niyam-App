@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome screen -->
+    <string name="welcome_title">నియమ్</string>
+    <string name="welcome_subtitle">స్క్రోల్‌కు ముందు ఒక నిమిషం నిలువు.</string>
+    <string name="welcome_cta">మొదలుపెట్టండి</string>
+
+    <!-- Onboarding -->
+    <string name="onb_step_fmt">4లో %1$dవ అడుగు</string>
+    <string name="onb_continue">కొనసాగించండి</string>
+    <string name="onb_intention_title">మీరు ఇక్కడకు ఎందుకు వచ్చారు?</string>
+    <string name="onb_intention_focus">బాగా దృష్టి పెట్టండి, తక్కువ స్క్రోల్ చేయండి</string>
+    <string name="onb_intention_calm">అలసిన మనసుకు ప్రశాంతత</string>
+    <string name="onb_intention_sadhana">రోజువారీ సాధన మొదలుపెట్టండి</string>
+    <string name="onb_intention_dharma">ధర్మంతో మరింత అనుబంధం</string>
+    <string name="onb_intention_devotion">నా భక్తిని మరింత లోతుగా చేసుకోండి</string>
+    <string name="onb_mantra_title">మీ తొలి మంత్రాన్ని ఎంచుకోండి</string>
+    <string name="onb_read_time_fmt">~%1$d సెకన్లు</string>
+    <string name="onb_language_title">మీ భాష</string>
+    <string name="onb_apps_title">మిమ్మల్ని ఏది ఆకర్షిస్తుంది?</string>
+
+    <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
+    <string name="perm_usage_title">మీరు బ్లాక్ చేసిన యాప్‌లను తెరిచినప్పుడు తెలుసుకోవడానికి</string>
+    <string name="perm_usage_body">మీరు Instagram, Facebook లేదా YouTube తెరిచినప్పుడు తెలుసుకోవడానికి — తద్వారా మేము ముందుగా మీ మంత్రాన్ని చూపగలం.</string>
+    <string name="perm_overlay_title">ఇతర యాప్‌ల పైన చూపడానికి</string>
+    <string name="perm_overlay_body">బ్లాక్ చేసిన యాప్ పైన మీ మంత్రాన్ని చూపడానికి.</string>
+    <string name="perm_accessibility_title">యాప్‌లు తెరుచుకున్నది వెంటనే గుర్తించడానికి</string>
+    <string name="perm_accessibility_body">Instagram, Facebook లేదా YouTube తెరుచుకునే సరిగ్గా ఆ క్షణాన్ని గుర్తించడానికి — వెంటనే, ఎలాంటి ఆలస్యం లేకుండా.</string>
+    <string name="perm_battery_title">నేపథ్యంలో మమ్మల్ని ఆపివేయకండి</string>
+    <string name="perm_battery_body">మీరు మరెక్కడో ఉన్నప్పుడు మీ ఫోన్ నియమ్‌ను మూసివేయకుండా ఉండటానికి.</string>
+    <string name="perm_oem_title">నేపథ్య కార్యకలాపాన్ని అనుమతించండి</string>
+    <string name="perm_oem_body_miui">Xiaomi, Redmi మరియు POCO ఫోన్‌లు నేపథ్య యాప్‌లను తీవ్రంగా మూసివేస్తాయి. అనుమతించు నొక్కి, జాబితాలో నియమ్‌ను కనుగొని, ఆటోస్టార్ట్‌ను ఆన్ చేయండి.</string>
+    <string name="perm_oem_body_color_os">OPPO మరియు realme ఫోన్‌లు బ్యాటరీ ఆదా కోసం నేపథ్య యాప్‌లను మూసివేస్తాయి. అనుమతించు నొక్కి, నియమ్ తనంతటతానే మొదలయ్యేందుకు అనుమతించండి.</string>
+    <string name="perm_oem_body_funtouch_os">vivo మరియు iQOO ఫోన్‌లు బ్యాటరీ ఆదా కోసం నేపథ్య యాప్‌లను మూసివేస్తాయి. అనుమతించు నొక్కి, నియమ్ నేపథ్యంలో మొదలయ్యేందుకు అనుమతించండి.</string>
+    <string name="perm_oem_body_oxygen_os">OnePlus ఫోన్‌లు బ్యాటరీని తీవ్రంగా ఆప్టిమైజ్ చేస్తాయి. అనుమతించు నొక్కి, నియమ్ బ్యాటరీ వినియోగాన్ని \"ఆప్టిమైజ్ చేయవద్దు\"గా సెట్ చేయండి.</string>
+    <string name="perm_oem_body_one_ui">Samsung ఫోన్‌లు ఉపయోగించని యాప్‌లను నిద్రపోయేలా చేస్తాయి. అనుమతించు నొక్కి, నియమ్ ఎప్పటికీ \"నిద్రపోతున్న యాప్‌లు\"లో చేరకుండా చూసుకోండి.</string>
+    <string name="perm_oem_body_generic">కొన్ని ఫోన్‌లు బ్యాటరీ ఆదా కోసం నేపథ్య యాప్‌లను నిశ్శబ్దంగా ఆపేస్తాయి. మీ ఫోన్ నియమ్ కోసం ఆటోస్టార్ట్ లేదా నేపథ్య-కార్యకలాప ఎంపికను చూపిస్తే, దాన్ని ఆన్ చేయండి. మీకు ఏదీ కనిపించకపోతే, అంతా సిద్ధం — పూర్తయింది నొక్కండి.</string>
+
+    <string name="grant">అనుమతించు</string>
+    <string name="done">పూర్తయింది</string>
+    <string name="next">తదుపరి</string>
+
+    <!-- Home -->
+    <string name="home_overline">మీ సాధన</string>
+    <string name="home_day_fmt">%2$dలో %1$dవ రోజు</string>
+    <string name="home_streak_fmt">%1$d రోజుల వరుస</string>
+    <plurals name="home_today_plural">
+        <item quantity="one">ఈరోజు %1$d పఠనం</item>
+        <item quantity="other">ఈరోజు %1$d పఠనాలు</item>
+    </plurals>
+    <string name="home_protection_ok">రక్షణ చురుకుగా ఉంది</string>
+    <string name="home_protection_fix">శ్రద్ధ అవసరం — సరిచేయడానికి నొక్కండి</string>
+    <string name="home_browse_library">లైబ్రరీని చూడండి</string>
+
+    <!-- Celebration / next sadhana -->
+    <string name="celebration_overline">ప్రయాణం పూర్తయింది</string>
+    <string name="celebration_title_fmt">%2$s యొక్క %1$d రోజులు</string>
+    <string name="celebration_body">మీరు దీనితో నిలిచారు. ఆ నిష్ఠయే నిజమైన సాధన.</string>
+    <string name="celebration_next">మీ తదుపరి సాధనను ఎంచుకోండి</string>
+    <string name="celebration_keep">ఈ మంత్రంతో కొనసాగండి</string>
+    <string name="next_title">మీ తదుపరి సాధన</string>
+
+    <!-- Overlay -->
+    <string name="overlay_continue">కొనసాగించండి</string>
+    <string name="overlay_unlocking_in">%1$dలో అన్‌లాక్ అవుతుంది…</string>
+    <string name="overlay_label_fmt">మీ సాధన · %1$s</string>
+
+    <!-- Foreground service notification -->
+    <string name="notif_channel_foreground">నియమ్ రక్షణ</string>
+    <string name="notif_text">డూమ్-స్క్రోల్‌కు కాపలాగా నిలిచి ఉంది.</string>
+
+    <!-- Completion notification -->
+    <string name="notif_completion_title">ప్రయాణం పూర్తయింది 🎉</string>
+    <string name="notif_completion_body_fmt">మీరు మీ %1$s సాధనను పూర్తి చేశారు. వేడుక చేసుకోవడానికి నొక్కండి.</string>
+
+    <!-- AccessibilityService user-visible description -->
+    <string name="accessibility_service_description">మీరు Instagram, Facebook లేదా YouTube తెరిచినప్పుడు ముందుగా మీ మంత్రాన్ని చూపేందుకు నియమ్ యాక్సెసిబిలిటీని ఉపయోగిస్తుంది. ఇది మీ స్క్రీన్‌పై మరే ఇతర విషయాన్నీ చదవదు.</string>
+
+    <!-- Library -->
+    <string name="library_overline">లైబ్రరీ</string>
+    <string name="library_title">అన్ని మంత్రాలు</string>
+    <string name="library_filter_all">అన్నీ</string>
+    <string name="library_empty">ఏదీ సరిపోలలేదు — ఒక ఫిల్టర్‌ను తీసివేయండి.</string>
+    <string name="library_current_marker">ప్రస్తుతం</string>
+    <string name="library_completed_marker">పూర్తయింది</string>
+    <string name="detail_make_current">దీన్ని నా సాధనగా చేయి</string>
+    <string name="detail_is_current">మీ ప్రస్తుత సాధన</string>
+    <string name="detail_practice_again">మళ్లీ సాధన చేయండి</string>
+    <string name="detail_switch_title">మీ సాధనను మారుస్తారా?</string>
+    <plurals name="detail_switch_body_plural">
+        <item quantity="one">మీరు %2$sలో %1$d రోజు ముందుకు వచ్చారు. మీరు మారిస్తే, మీరు దీనికి తిరిగి వచ్చినప్పుడు ఈ ప్రయాణం మొదటి నుండి మొదలవుతుంది.</item>
+        <item quantity="other">మీరు %2$sలో %1$d రోజులు ముందుకు వచ్చారు. మీరు మారిస్తే, మీరు దీనికి తిరిగి వచ్చినప్పుడు ఈ ప్రయాణం మొదటి నుండి మొదలవుతుంది.</item>
+    </plurals>
+    <string name="detail_switch_body_nocount_fmt">మీరు %1$sలో కొంతవరకు ముందుకు వచ్చారు. మీరు మారిస్తే, మీరు దీనికి తిరిగి వచ్చినప్పుడు ఈ ప్రయాణం మొదటి నుండి మొదలవుతుంది.</string>
+    <string name="detail_switch_confirm">మారు</string>
+    <string name="detail_switch_cancel">ప్రస్తుతం ఉన్నదే ఉంచు</string>
+
+    <!-- Settings -->
+    <string name="settings_title">సెట్టింగ్‌లు</string>
+    <string name="settings_section_sadhana">మీ సాధన</string>
+    <string name="settings_row_current_sadhana">ప్రస్తుత సాధన</string>
+    <string name="settings_row_language">ప్రదర్శన భాష</string>
+    <string name="settings_row_apps">బ్లాక్ చేసిన యాప్‌లు</string>
+    <string name="settings_row_intention">సంకల్పం</string>
+    <string name="settings_section_app">యాప్</string>
+    <string name="settings_row_appearance">రూపం</string>
+    <string name="settings_appearance_light">లేత</string>
+    <string name="settings_appearance_dark">ముదురు</string>
+    <string name="settings_appearance_system">సిస్టమ్</string>
+    <string name="settings_row_notify">పూర్తి సూచన</string>
+    <string name="settings_notify_caption">14-రోజుల ప్రయాణం పూర్తయినప్పుడు సూచన పొందండి.</string>
+    <string name="settings_notify_blocked">సిస్టమ్ సెట్టింగ్‌లలో సూచనలు బ్లాక్ చేయబడ్డాయి.</string>
+    <string name="settings_apps_count_fmt">%1$d బ్లాక్ చేయబడ్డాయి</string>
+    <!-- Settings editors -->
+    <string name="settings_save">భద్రపరచు</string>
+    <string name="settings_language_title">ప్రదర్శన భాష</string>
+    <string name="settings_apps_title">బ్లాక్ చేసిన యాప్‌లు</string>
+    <string name="settings_apps_empty_hint">కనీసం ఒక యాప్‌ను బ్లాక్‌లో ఉంచండి.</string>
+    <string name="settings_intention_title">సంకల్పం</string>
+    <!-- Settings entry -->
+    <string name="settings_content_desc">సెట్టింగ్‌లు</string>
+
+    <!-- Paywall -->
+    <string name="paywall_overline">నియమ్ ప్రీమియం</string>
+    <string name="paywall_close_desc">మూసివేయి</string>
+    <string name="paywall_hero">ప్రతి మంత్రం.\nప్రతి భాష.</string>
+    <plurals name="paywall_trial_left">
+        <item quantity="one">ఉచిత ట్రయల్ %1$d రోజు మిగిలి ఉంది</item>
+        <item quantity="other">ఉచిత ట్రయల్ %1$d రోజులు మిగిలి ఉన్నాయి</item>
+    </plurals>
+    <string name="paywall_benefit_mantras">మొత్తం 26 మంత్రాలు</string>
+    <string name="paywall_benefit_languages">మొత్తం 9 భాషలు &amp; లిపులు</string>
+    <string name="paywall_benefit_switching">అపరిమిత సాధన మార్పిడి</string>
+    <string name="paywall_benefit_no_ads">ప్రకటనలు లేవు</string>
+    <string name="paywall_period_week">వారం</string>
+    <string name="paywall_period_month">నెల</string>
+    <string name="paywall_period_year">సంవత్సరం</string>
+    <string name="paywall_best_value">ఉత్తమ విలువ</string>
+    <string name="paywall_cta">నియమ్‌ను అన్‌లాక్ చేయండి</string>
+    <string name="paywall_footnote">శాండ్‌బాక్స్ బిల్డ్ — నిజమైన చెల్లింపు ఏదీ వసూలు చేయబడదు.</string>
+
+    <!-- Premium gates -->
+    <string name="detail_unlock_premium">ప్రీమియంతో అన్‌లాక్ చేయండి</string>
+    <string name="settings_language_premium_suffix">" · ప్రీమియం"</string>
+    <string name="settings_section_premium">నియమ్ ప్రీమియం</string>
+    <string name="settings_row_premium">ప్రీమియం</string>
+    <string name="settings_premium_active">చురుకుగా ఉంది</string>
+    <string name="settings_premium_free">ఉచిత ప్లాన్</string>
+    <plurals name="settings_premium_trial_left">
+        <item quantity="one">ట్రయల్ %1$d రోజు మిగిలి ఉంది</item>
+        <item quantity="other">ట్రయల్ %1$d రోజులు మిగిలి ఉన్నాయి</item>
+    </plurals>
+</resources>

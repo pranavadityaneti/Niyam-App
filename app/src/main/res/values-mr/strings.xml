@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Welcome screen -->
+    <string name="welcome_title">नियम</string>
+    <string name="welcome_subtitle">स्क्रोलच्या आधी एक क्षण थांबा.</string>
+    <string name="welcome_cta">सुरुवात करा</string>
+
+    <!-- Onboarding -->
+    <string name="onb_step_fmt">पायरी %1$d / 4</string>
+    <string name="onb_continue">पुढे चला</string>
+    <string name="onb_intention_title">तुम्ही इथे का आला आहात?</string>
+    <string name="onb_intention_focus">अधिक एकाग्रता, कमी स्क्रोल</string>
+    <string name="onb_intention_calm">अस्वस्थ मन शांत करा</string>
+    <string name="onb_intention_sadhana">रोजची साधना सुरू करा</string>
+    <string name="onb_intention_dharma">धर्माशी अधिक जोडलेले वाटावे</string>
+    <string name="onb_intention_devotion">माझी भक्ती अधिक खोल करा</string>
+    <string name="onb_mantra_title">तुमचा सुरुवातीचा मंत्र निवडा</string>
+    <string name="onb_read_time_fmt">~%1$d सेकंद</string>
+    <string name="onb_language_title">तुमची भाषा</string>
+    <string name="onb_apps_title">तुम्हाला कशात गुंतवून ठेवतं?</string>
+
+    <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
+    <string name="perm_usage_title">तुम्ही ब्लॉक केलेले अ‍ॅप्स कधी उघडता ते पाहा</string>
+    <string name="perm_usage_body">तुम्ही Instagram, Facebook किंवा YouTube कधी उघडता हे पाहण्यासाठी — म्हणजे आम्ही आधी तुमचा मंत्र दाखवू शकू.</string>
+    <string name="perm_overlay_title">इतर अ‍ॅप्सच्या वर दाखवा</string>
+    <string name="perm_overlay_body">ब्लॉक केलेल्या अ‍ॅपच्या वर तुमचा मंत्र दाखवण्यासाठी.</string>
+    <string name="perm_accessibility_title">अ‍ॅप उघडल्याचं लगेच ओळखा</string>
+    <string name="perm_accessibility_body">Instagram, Facebook किंवा YouTube उघडण्याचा नेमका क्षण ओळखण्यासाठी — कोणताही विलंब न करता, तत्काळ.</string>
+    <string name="perm_battery_title">पार्श्वभूमीत आम्हाला बंद करू नका</string>
+    <string name="perm_battery_body">म्हणजे तुम्ही दुसरीकडे काम करत असताना तुमचा फोन नियमला बंद करणार नाही.</string>
+    <string name="perm_oem_title">पार्श्वभूमीत सुरू राहण्याची परवानगी द्या</string>
+    <string name="perm_oem_body_miui">Xiaomi, Redmi आणि POCO फोन पार्श्वभूमीतले अ‍ॅप्स जोरकसपणे बंद करतात. परवानगी द्या वर टॅप करा, यादीत नियम शोधा आणि ऑटोस्टार्ट चालू करा.</string>
+    <string name="perm_oem_body_color_os">OPPO आणि realme फोन बॅटरी वाचवण्यासाठी पार्श्वभूमीतले अ‍ॅप्स बंद करतात. परवानगी द्या वर टॅप करा आणि नियमला आपोआप सुरू होऊ द्या.</string>
+    <string name="perm_oem_body_funtouch_os">vivo आणि iQOO फोन बॅटरी वाचवण्यासाठी पार्श्वभूमीतले अ‍ॅप्स बंद करतात. परवानगी द्या वर टॅप करा आणि नियमला पार्श्वभूमीत सुरू होऊ द्या.</string>
+    <string name="perm_oem_body_oxygen_os">OnePlus फोन बॅटरी जोरकसपणे ऑप्टिमाइझ करतात. परवानगी द्या वर टॅप करा, मग नियमचा बॅटरी वापर \"ऑप्टिमाइझ करू नका\" असा सेट करा.</string>
+    <string name="perm_oem_body_one_ui">Samsung फोन न वापरलेले अ‍ॅप्स झोपवतात. परवानगी द्या वर टॅप करा, मग नियम कधीही \"झोपलेल्या अ‍ॅप्स\" मध्ये जाणार नाही याची खात्री करा.</string>
+    <string name="perm_oem_body_generic">काही फोन बॅटरी वाचवण्यासाठी पार्श्वभूमीतले अ‍ॅप्स शांतपणे बंद करतात. तुमच्या फोनवर नियमसाठी ऑटोस्टार्ट किंवा पार्श्वभूमी-कृतीचा पर्याय दिसत असेल, तर तो चालू करा. दिसत नसेल, तर सगळं तयार आहे — पूर्ण झाले वर टॅप करा.</string>
+
+    <string name="grant">परवानगी द्या</string>
+    <string name="done">पूर्ण झाले</string>
+    <string name="next">पुढे</string>
+
+    <!-- Home -->
+    <string name="home_overline">तुमची साधना</string>
+    <string name="home_day_fmt">दिवस %1$d / %2$d</string>
+    <string name="home_streak_fmt">%1$d दिवसांची सलगता</string>
+    <plurals name="home_today_plural">
+        <item quantity="one">आज %1$d वाचन</item>
+        <item quantity="other">आज %1$d वाचने</item>
+    </plurals>
+    <string name="home_protection_ok">संरक्षण सुरू आहे</string>
+    <string name="home_protection_fix">लक्ष द्या — दुरुस्त करण्यासाठी टॅप करा</string>
+    <string name="home_browse_library">ग्रंथसंग्रह पाहा</string>
+
+    <!-- Celebration / next sadhana -->
+    <string name="celebration_overline">प्रवास पूर्ण</string>
+    <string name="celebration_title_fmt">%2$s चे %1$d दिवस</string>
+    <string name="celebration_body">तुम्ही टिकून राहिलात. तीच शिस्त म्हणजे साधना.</string>
+    <string name="celebration_next">तुमची पुढची साधना निवडा</string>
+    <string name="celebration_keep">याच मंत्रासह पुढे चालू ठेवा</string>
+    <string name="next_title">तुमची पुढची साधना</string>
+
+    <!-- Overlay -->
+    <string name="overlay_continue">पुढे चला</string>
+    <string name="overlay_unlocking_in">%1$d मध्ये उघडत आहे…</string>
+    <string name="overlay_label_fmt">तुमची साधना · %1$s</string>
+
+    <!-- Foreground service notification -->
+    <string name="notif_channel_foreground">नियम संरक्षण</string>
+    <string name="notif_text">डूम-स्क्रोलपासून पहारा देत आहे.</string>
+
+    <!-- Completion notification -->
+    <string name="notif_completion_title">प्रवास पूर्ण 🎉</string>
+    <string name="notif_completion_body_fmt">तुम्ही तुमची %1$s साधना पूर्ण केली. साजरं करण्यासाठी टॅप करा.</string>
+
+    <!-- AccessibilityService user-visible description -->
+    <string name="accessibility_service_description">तुम्ही Instagram, Facebook किंवा YouTube कधी उघडता हे ओळखण्यासाठी नियम अ‍ॅक्सेसिबिलिटीचा वापर करतं, म्हणजे आधी तुमचा मंत्र दाखवता येईल. ते तुमच्या स्क्रीनवरील इतर कोणताही मजकूर वाचत नाही.</string>
+
+    <!-- Library -->
+    <string name="library_overline">ग्रंथसंग्रह</string>
+    <string name="library_title">सर्व मंत्र</string>
+    <string name="library_filter_all">सर्व</string>
+    <string name="library_empty">काहीही जुळत नाही — एखादा फिल्टर काढून टाका.</string>
+    <string name="library_current_marker">सध्याचा</string>
+    <string name="library_completed_marker">पूर्ण झालेला</string>
+    <string name="detail_make_current">ही माझी साधना करा</string>
+    <string name="detail_is_current">तुमची सध्याची साधना</string>
+    <string name="detail_practice_again">पुन्हा साधना करा</string>
+    <string name="detail_switch_title">तुमची साधना बदलायची?</string>
+    <plurals name="detail_switch_body_plural">
+        <item quantity="one">तुम्ही %2$s मध्ये %1$d दिवस पुढे आहात. बदललात, तर परत आल्यावर हा प्रवास पुन्हा सुरुवातीपासून सुरू होईल.</item>
+        <item quantity="other">तुम्ही %2$s मध्ये %1$d दिवस पुढे आहात. बदललात, तर परत आल्यावर हा प्रवास पुन्हा सुरुवातीपासून सुरू होईल.</item>
+    </plurals>
+    <string name="detail_switch_body_nocount_fmt">तुम्ही %1$s मध्ये अर्ध्यावर आहात. बदललात, तर परत आल्यावर हा प्रवास पुन्हा सुरुवातीपासून सुरू होईल.</string>
+    <string name="detail_switch_confirm">बदला</string>
+    <string name="detail_switch_cancel">सध्याचाच ठेवा</string>
+
+    <!-- Settings -->
+    <string name="settings_title">सेटिंग्ज</string>
+    <string name="settings_section_sadhana">तुमची साधना</string>
+    <string name="settings_row_current_sadhana">सध्याची साधना</string>
+    <string name="settings_row_language">प्रदर्शन भाषा</string>
+    <string name="settings_row_apps">ब्लॉक केलेले अ‍ॅप्स</string>
+    <string name="settings_row_intention">हेतू</string>
+    <string name="settings_section_app">अ‍ॅप</string>
+    <string name="settings_row_appearance">रूप</string>
+    <string name="settings_appearance_light">उजळ</string>
+    <string name="settings_appearance_dark">गडद</string>
+    <string name="settings_appearance_system">सिस्टमनुसार</string>
+    <string name="settings_row_notify">पूर्तता सूचना</string>
+    <string name="settings_notify_caption">14-दिवसांचा प्रवास पूर्ण झाल्यावर सूचना मिळवा.</string>
+    <string name="settings_notify_blocked">सिस्टम सेटिंग्जमध्ये सूचना ब्लॉक केल्या आहेत.</string>
+    <string name="settings_apps_count_fmt">%1$d ब्लॉक केले</string>
+    <!-- Settings editors -->
+    <string name="settings_save">जतन करा</string>
+    <string name="settings_language_title">प्रदर्शन भाषा</string>
+    <string name="settings_apps_title">ब्लॉक केलेले अ‍ॅप्स</string>
+    <string name="settings_apps_empty_hint">किमान एक अ‍ॅप ब्लॉक ठेवा.</string>
+    <string name="settings_intention_title">हेतू</string>
+    <!-- Settings entry -->
+    <string name="settings_content_desc">सेटिंग्ज</string>
+
+    <!-- Paywall -->
+    <string name="paywall_overline">नियम प्रीमियम</string>
+    <string name="paywall_close_desc">बंद करा</string>
+    <string name="paywall_hero">प्रत्येक मंत्र.\nप्रत्येक भाषा.</string>
+    <plurals name="paywall_trial_left">
+        <item quantity="one">मोफत चाचणीचा %1$d दिवस शिल्लक</item>
+        <item quantity="other">मोफत चाचणीचे %1$d दिवस शिल्लक</item>
+    </plurals>
+    <string name="paywall_benefit_mantras">सर्व 26 मंत्र</string>
+    <string name="paywall_benefit_languages">सर्व 9 भाषा आणि लिपी</string>
+    <string name="paywall_benefit_switching">अमर्याद साधना बदल</string>
+    <string name="paywall_benefit_no_ads">जाहिराती नाहीत</string>
+    <string name="paywall_period_week">आठवडा</string>
+    <string name="paywall_period_month">महिना</string>
+    <string name="paywall_period_year">वर्ष</string>
+    <string name="paywall_best_value">सर्वोत्तम मूल्य</string>
+    <string name="paywall_cta">नियम अनलॉक करा</string>
+    <string name="paywall_footnote">सँडबॉक्स बिल्ड — कोणतेही प्रत्यक्ष पैसे आकारले जात नाहीत.</string>
+
+    <!-- Premium gates -->
+    <string name="detail_unlock_premium">प्रीमियमसह अनलॉक करा</string>
+    <string name="settings_language_premium_suffix">" · प्रीमियम"</string>
+    <string name="settings_section_premium">नियम प्रीमियम</string>
+    <string name="settings_row_premium">प्रीमियम</string>
+    <string name="settings_premium_active">सुरू</string>
+    <string name="settings_premium_free">मोफत योजना</string>
+    <plurals name="settings_premium_trial_left">
+        <item quantity="one">चाचणीचा %1$d दिवस शिल्लक</item>
+        <item quantity="other">चाचणीचे %1$d दिवस शिल्लक</item>
+    </plurals>
+</resources>
