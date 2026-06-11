@@ -326,3 +326,13 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 
 - Pranav asked whether Supabase could be the backend ("not just a database") — answered yes (Auth + Postgres + Edge Functions = the whole server). Decision taken on my recommendation, founder-approved: **launch with zero backend/server**; Supabase locked as the backend-phase stack afterwards. Order within that phase: optional sign-in (never required; engine never network-dependent) → progress sync → server-verified entitlements via Play purchase notifications → SMS/email trial reminders (forlater 9). Payment cards never stored by us — Google Play only.
 - forlater item 9 updated with the stack decision and post-launch status.
+
+---
+
+## 2026-06-11 (cont.) — SP-14: WEBSITE BUILT + DEPLOYED to myniyam.com
+
+- Pranav picked screens **15 (home dark) + 17 (Mahamrityunjaya detail)** from the 24-option chooser; hero line approved ("A pause before the scroll."); he imported the **Niyam-App repo itself** into Vercel (no separate site repo — confirmed via `gh repo list`) and connected www.myniyam.com.
+- **Built `website/`** in-repo: index.html (approved Popcorn-adapted structure; real brand assets as files — wordmark nav, favicon + apple-touch from the icon tile, OG image 1200×630 lockup-on-sunrise; screens 15 front / 17 back in thin-bezel CSS frames; waitlist form via formsubmit.co → sowfreyr@gmail.com with ?subscribed=1 thank-you; OM audio fully wired but DORMANT — toggle appears only when /assets/om.mp3 exists and loads; first-interaction autoplay + localStorage mute), privacy.html (honest app+site policy — accessibility single-purpose disclosure, zero collection, Play billing, AdMob free-tier only; Play listing requires this URL), robots.txt + sitemap.xml. Root **vercel.json**: outputDirectory=website + cleanUrls (verified against Vercel docs — serves ONLY website/, not the repo).
+- Pushed `4139b33` → Vercel auto-deploy; background poller verifying https://www.myniyam.com/ + /privacy + /assets/og.png.
+- **Notes for Pranav:** formsubmit.co needs one-time activation (first signup emails him a confirm link) and exposes the gmail in page source — swap to Formspree key when he makes that account; his "npx plugins add vercel/vercel-plugin" came from Vercel's docs frontmatter (agent plugin, his-terminal thing, not needed for this pipeline); flagged that neither chosen screen shows the unlock overlay (the core product moment) — offered instant swap.
+- Remaining for the site: OM audio file (his), hero/centerpiece veto on the LIVE page, Formspree swap (optional), SEO deep pass (his explicit post-deploy sequencing), Remotion reel (forlater 10) once page settles.
