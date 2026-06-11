@@ -39,10 +39,10 @@ object OverlayManager {
         view.findViewById<TextView>(R.id.overlay_label).text =
             ctx.getString(R.string.overlay_label_fmt, mantra.canonicalName)
 
-        val countdown = view.findViewById<TextView>(R.id.overlay_countdown)
+        val ring = view.findViewById<RingCountdownView>(R.id.overlay_ring)
         val continueBtn = view.findViewById<Button>(R.id.overlay_continue)
 
-        countdown.text = ctx.getString(R.string.overlay_unlocking_in, UNLOCK_TIMER_SECONDS)
+        ring.setProgress(UNLOCK_TIMER_SECONDS, UNLOCK_TIMER_SECONDS)
         continueBtn.isEnabled = false
         continueBtn.setOnClickListener {
             ProgressRepository.recordRead(ctx, mantra.id)
@@ -67,7 +67,7 @@ object OverlayManager {
             wm.addView(view, params)
             overlayView = view
             attachedPkg = pkg
-            startTimer(ctx, countdown, continueBtn)
+            startTimer(ring, continueBtn)
         } catch (e: Exception) {
             android.util.Log.e("OverlayManager", "Failed to attach overlay", e)
         }
@@ -94,16 +94,16 @@ object OverlayManager {
         if (pkg != null) AppLockAccessibilityService.get()?.markDismissed(pkg)
     }
 
-    private fun startTimer(ctx: Context, countdown: TextView, continueBtn: Button) {
+    private fun startTimer(ring: RingCountdownView, continueBtn: Button) {
         val totalMs = UNLOCK_TIMER_SECONDS * 1000L
         timer = object : CountDownTimer(totalMs, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsLeft = (millisUntilFinished / 1000L).toInt().coerceAtLeast(0)
-                countdown.text = ctx.getString(R.string.overlay_unlocking_in, secondsLeft)
+                ring.setProgress(secondsLeft, UNLOCK_TIMER_SECONDS)
             }
 
             override fun onFinish() {
-                countdown.text = ctx.getString(R.string.overlay_unlocking_in, 0)
+                ring.setProgress(0, UNLOCK_TIMER_SECONDS)
                 continueBtn.isEnabled = true
             }
         }.start()

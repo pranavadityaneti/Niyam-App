@@ -10,4 +10,11 @@
     <color name="overlay_chip_fill">#FFECE0D2</color>
     <color name="overlay_chip_text">#FF5F5648</color>
     <color name="overlay_cta">#FFFF6400</color>
+    <!-- SP-8 overlay v2: warm sunrise gradient (3-stop approximation) + ring -->
+    <color name="overlay_grad_top">#FFFFE3C7</color>
+    <color name="overlay_grad_center">#FFFAEEDF</color>
+    <color name="overlay_grad_bottom">#FFF5EBE1</color>
+    <color name="overlay_ring_track">#FFF2E0CC</color>
+    <color name="overlay_ring_progress">#FFFF6400</color>
+    <color name="overlay_label_warm">#FF99511F</color>
 </resources>

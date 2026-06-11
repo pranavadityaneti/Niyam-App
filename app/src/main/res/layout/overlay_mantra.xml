@@ -2,7 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/overlay_scrim"
+    android:background="@drawable/bg_overlay_gradient"
     android:clickable="true"
     android:focusable="true">
 
@@ -12,7 +12,7 @@
         android:orientation="vertical"
         android:paddingStart="28dp"
         android:paddingEnd="28dp"
-        android:paddingTop="64dp"
+        android:paddingTop="56dp"
         android:paddingBottom="28dp">
 
         <ScrollView
@@ -33,27 +33,30 @@
                     android:id="@+id/overlay_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:letterSpacing="0.12"
+                    android:fontFamily="@font/outfit"
+                    android:letterSpacing="0.18"
                     android:text=""
                     android:textAllCaps="true"
-                    android:textColor="@color/overlay_label_muted"
+                    android:textColor="@color/overlay_label_warm"
                     android:textSize="11sp" />
 
                 <TextView
                     android:id="@+id/overlay_devanagari"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="serif"
-                    android:lineSpacingMultiplier="1.6"
+                    android:layout_marginTop="28dp"
+                    android:fontFamily="@font/outfit"
+                    android:lineSpacingMultiplier="1.5"
                     android:textColor="@color/overlay_ink"
-                    android:textSize="22sp" />
+                    android:textSize="28sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/overlay_transliteration"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/outfit"
                     android:textStyle="italic"
                     android:lineSpacingMultiplier="1.4"
                     android:textColor="@color/overlay_roman"
@@ -63,27 +66,21 @@
                     android:id="@+id/overlay_meaning"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="14dp"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/outfit"
                     android:lineSpacingMultiplier="1.5"
                     android:textColor="@color/overlay_ink_muted"
-                    android:textSize="13sp" />
+                    android:textSize="14sp" />
 
             </LinearLayout>
         </ScrollView>
 
-        <TextView
-            android:id="@+id/overlay_countdown"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <com.myniyam.app.overlay.RingCountdownView
+            android:id="@+id/overlay_ring"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/bg_overlay_chip"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            android:textColor="@color/overlay_chip_text"
-            android:textSize="12sp" />
+            android:layout_marginBottom="16dp" />
 
         <Button
             android:id="@+id/overlay_continue"
@@ -91,6 +88,7 @@
             android:layout_height="52dp"
             android:background="@drawable/bg_overlay_cta"
             android:enabled="false"
+            android:fontFamily="@font/outfit"
             android:stateListAnimator="@null"
             android:text="@string/overlay_continue"
             android:textAllCaps="false"
