@@ -28,6 +28,14 @@
 - **Date added:** 2026-06-11
 - **Originated from:** SP-12 paywall v2 approval message.
 
+### 10. Promo reel via Remotion (post-landing-page)
+- **What:** Pranav (2026-06-11): after the landing page ships, build a promotional reel with Remotion (programmatic React video) — the product film: phone gets the block → mantra appears → ring fills → Continue → streak grows. Output = video file(s) for Instagram/YouTube Shorts + a muted-autoplay hero loop for the landing page centerpiece (iteration 2 of the site).
+- **Why:** Founder-requested promotion asset; muted autoplay video is browser-allowed (unlike sound), so it also upgrades the site's "emphasis" without complicating the page.
+- **Scope:** Remotion project (Node/React render pipeline, see remotion.dev/docs/ai/coding-agents), brand-faithful (Sunrise Sans system, real app screens), founder veto on the cut; rendered mp4/webm hosted as static assets.
+- **Status:** Queued — trigger: landing page deployed.
+- **Date added:** 2026-06-11
+- **Originated from:** Website design session.
+
 ## In progress
 
 _(empty)_
