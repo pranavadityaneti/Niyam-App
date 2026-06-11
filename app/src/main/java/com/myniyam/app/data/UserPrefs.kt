@@ -30,6 +30,8 @@ object UserPrefs {
     private val KEY_SADHANA_START = longPreferencesKey("sadhana_start_epoch_day")
     private val KEY_COMPLETED_MANTRAS = stringSetPreferencesKey("completed_mantra_ids")
     private val KEY_PENDING_CELEBRATION = booleanPreferencesKey("pending_celebration")
+    private val KEY_THEME_PREF = stringPreferencesKey("theme_pref")
+    private val KEY_NOTIFY_ON_COMPLETION = booleanPreferencesKey("notify_on_completion")
 
     data class Snapshot(
         val onboardingComplete: Boolean,
@@ -39,7 +41,9 @@ object UserPrefs {
         val selectedIntention: Intention,
         val sadhanaStartEpochDay: Long,
         val completedMantraIds: Set<String>,
-        val pendingCelebration: Boolean
+        val pendingCelebration: Boolean,
+        val themePref: ThemePref,
+        val notifyOnCompletion: Boolean
     ) {
         companion object {
             val DEFAULTS = Snapshot(
@@ -50,7 +54,9 @@ object UserPrefs {
                 selectedIntention = Intention.SADHANA,
                 sadhanaStartEpochDay = 0L,
                 completedMantraIds = emptySet(),
-                pendingCelebration = false
+                pendingCelebration = false,
+                themePref = ThemePref.LIGHT,
+                notifyOnCompletion = true
             )
 
             fun fromRaw(
@@ -61,7 +67,9 @@ object UserPrefs {
                 intention: String? = null,
                 sadhanaStart: Long? = null,
                 completed: Set<String>? = null,
-                pendingCelebration: Boolean? = null
+                pendingCelebration: Boolean? = null,
+                themePref: String? = null,
+                notifyOnCompletion: Boolean? = null
             ): Snapshot = Snapshot(
                 onboardingComplete = onboardingComplete ?: DEFAULTS.onboardingComplete,
                 currentMantraId = mantraId?.takeIf { it.isNotBlank() } ?: DEFAULTS.currentMantraId,
@@ -74,7 +82,11 @@ object UserPrefs {
                 } ?: DEFAULTS.selectedIntention,
                 sadhanaStartEpochDay = sadhanaStart ?: DEFAULTS.sadhanaStartEpochDay,
                 completedMantraIds = completed ?: DEFAULTS.completedMantraIds,
-                pendingCelebration = pendingCelebration ?: DEFAULTS.pendingCelebration
+                pendingCelebration = pendingCelebration ?: DEFAULTS.pendingCelebration,
+                themePref = themePref?.let { raw ->
+                    ThemePref.entries.firstOrNull { it.name == raw }
+                } ?: DEFAULTS.themePref,
+                notifyOnCompletion = notifyOnCompletion ?: DEFAULTS.notifyOnCompletion
             )
         }
     }
@@ -100,7 +112,9 @@ object UserPrefs {
                     intention = p[KEY_SELECTED_INTENTION],
                     sadhanaStart = p[KEY_SADHANA_START],
                     completed = p[KEY_COMPLETED_MANTRAS],
-                    pendingCelebration = p[KEY_PENDING_CELEBRATION]
+                    pendingCelebration = p[KEY_PENDING_CELEBRATION],
+                    themePref = p[KEY_THEME_PREF],
+                    notifyOnCompletion = p[KEY_NOTIFY_ON_COMPLETION]
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load prefs; using defaults", e)
@@ -121,6 +135,16 @@ object UserPrefs {
     suspend fun setIntention(context: Context, intention: Intention) {
         context.niyamDataStore.edit { it[KEY_SELECTED_INTENTION] = intention.name }
         current = current.copy(selectedIntention = intention)
+    }
+
+    suspend fun setThemePref(context: Context, pref: ThemePref) {
+        context.niyamDataStore.edit { it[KEY_THEME_PREF] = pref.name }
+        current = current.copy(themePref = pref)
+    }
+
+    suspend fun setNotifyOnCompletion(context: Context, enabled: Boolean) {
+        context.niyamDataStore.edit { it[KEY_NOTIFY_ON_COMPLETION] = enabled }
+        current = current.copy(notifyOnCompletion = enabled)
     }
 
     suspend fun markCompleted(context: Context, mantraId: String) {
@@ -151,3 +175,6 @@ object UserPrefs {
 
     fun resetForTest() { current = Snapshot.DEFAULTS; loadAttempted = false }
 }
+
+/** Appearance preference (spec §2). Default LIGHT (Pranav's ruling). */
+enum class ThemePref { LIGHT, DARK, SYSTEM }

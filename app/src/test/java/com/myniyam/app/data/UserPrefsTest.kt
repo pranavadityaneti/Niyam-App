@@ -101,4 +101,35 @@ class UserPrefsTest {
             assertEquals(intention, s.selectedIntention)
         }
     }
+
+    @Test
+    fun `theme and notify defaults are LIGHT and on`() {
+        val s = UserPrefs.Snapshot.DEFAULTS
+        assertEquals(ThemePref.LIGHT, s.themePref)
+        assertTrue(s.notifyOnCompletion)
+    }
+
+    @Test
+    fun `themePref round-trips by name`() {
+        ThemePref.entries.forEach { pref ->
+            val s = UserPrefs.Snapshot.fromRaw(null, null, null, null, themePref = pref.name)
+            assertEquals(pref, s.themePref)
+        }
+    }
+
+    @Test
+    fun `unknown themePref falls back to LIGHT`() {
+        val s = UserPrefs.Snapshot.fromRaw(null, null, null, null, themePref = "NEON")
+        assertEquals(ThemePref.LIGHT, s.themePref)
+    }
+
+    @Test
+    fun `notifyOnCompletion round-trips and defaults true when null`() {
+        assertFalse(
+            UserPrefs.Snapshot.fromRaw(null, null, null, null, notifyOnCompletion = false).notifyOnCompletion
+        )
+        assertTrue(
+            UserPrefs.Snapshot.fromRaw(null, null, null, null, notifyOnCompletion = null).notifyOnCompletion
+        )
+    }
 }
