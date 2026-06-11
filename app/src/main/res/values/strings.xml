@@ -81,7 +81,10 @@
     <string name="detail_is_current">Your current sadhana</string>
     <string name="detail_practice_again">Practice again</string>
     <string name="detail_switch_title">Switch your sadhana?</string>
-    <string name="detail_switch_body_fmt">You\'re %1$d days into %2$s. If you switch, this journey will start over when you return to it.</string>
+    <plurals name="detail_switch_body_plural">
+        <item quantity="one">You\'re %1$d day into %2$s. If you switch, this journey will start over when you return to it.</item>
+        <item quantity="other">You\'re %1$d days into %2$s. If you switch, this journey will start over when you return to it.</item>
+    </plurals>
     <string name="detail_switch_body_nocount_fmt">You\'re partway into %1$s. If you switch, this journey will start over when you return to it.</string>
     <string name="detail_switch_confirm">Switch</string>
     <string name="detail_switch_cancel">Keep current</string>

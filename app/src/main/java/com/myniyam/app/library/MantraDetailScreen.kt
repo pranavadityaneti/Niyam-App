@@ -15,6 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
@@ -167,7 +168,7 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
             text = {
                 Text(
                     currentDayN?.takeIf { it > 0 }?.let {
-                        stringResource(R.string.detail_switch_body_fmt, it, currentName)
+                        pluralStringResource(R.plurals.detail_switch_body_plural, it, it, currentName)
                     } ?: stringResource(R.string.detail_switch_body_nocount_fmt, currentName)
                 )
             },

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Niyam — UI Screenshot Gallery (2026-06-11)</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#5a5a5a; --border:#d8d8d8; --bg:#fdfdfb; --accent:#7a3d12; --code-bg:#f3efe9; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; font-size:16px; line-height:1.5; }
+  main { max-width:1280px; margin:0 auto; padding:40px 28px 96px; }
+  h1 { font-size:28px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:14px; margin-bottom:18px; }
+  h2 { font-size:20px; margin:42px 0 14px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+  .grid { display:flex; flex-wrap:wrap; gap:22px; }
+  figure { margin:0; width:280px; }
+  figure img { width:100%; border:1px solid var(--border); border-radius:14px; display:block; }
+  figcaption { font-size:13px; color:var(--muted); padding:7px 2px 0; }
+  figcaption strong { color:var(--ink); display:block; font-size:13.5px; }
+  .note { background:#fff8ec; border-left:3px solid #d4af37; padding:10px 14px; margin:14px 0; font-size:14.5px; border-radius:3px; }
+  .flag { background:#fdeeee; border-left:3px solid #c0392b; }
+  @media print { figure{break-inside:avoid;} }
+</style>
+</head>
+<body>
+<main>
+<h1>Niyam — UI Screenshot Gallery</h1>
+<div class="sub">Captured 2026-06-11 on a Pixel 9 emulator (API 34, headless) · build at commit <code>19068a2</code> · fresh install, real walkthrough (no mockups)</div>
+
+<div class="note"><strong>Known nits visible in these captures, already handled:</strong> the switch dialog says "1 days" — fixed with a proper singular/plural resource right after capture. The duplicated roman line (main text + identical transliteration when language = English) is queued as a polish item.</div>
+
+<h2>Onboarding</h2>
+<div class="grid">
+  <figure><img src="01-welcome.png" alt=""><figcaption><strong>Welcome</strong>Playfair serif, eggshell, orange CTA</figcaption></figure>
+  <figure><img src="02-intention.png" alt=""><figcaption><strong>Step 1 — Intention</strong>Continue disabled until a choice is made</figcaption></figure>
+  <figure><img src="02b-intention-selected.png" alt=""><figcaption><strong>Step 1 — selected state</strong>Orange-tint selection card</figcaption></figure>
+  <figure><img src="03-mantra-picker.png" alt=""><figcaption><strong>Step 2 — Starter mantras</strong>3 picks seeded by intention, read-time chips</figcaption></figure>
+  <figure><img src="04-language.png" alt=""><figcaption><strong>Step 3 — Language</strong>9 options in native script</figcaption></figure>
+  <figure><img src="05-apps.png" alt=""><figcaption><strong>Step 4 — Blocked apps</strong>Instagram/YouTube/Facebook pre-checked</figcaption></figure>
+  <figure><img src="06-permission-usage.png" alt=""><figcaption><strong>Permission flow</strong>One of five grant screens</figcaption></figure>
+  <figure><img src="07-oem.png" alt=""><figcaption><strong>OEM autostart</strong>Copy polish queued in forlater</figcaption></figure>
+</div>
+
+<h2>Home, Library, Detail (light)</h2>
+<div class="grid">
+  <figure><img src="08-home.png" alt=""><figcaption><strong>Home</strong>Gear, mantra card, Day 0 of 14, streak chips, protection row</figcaption></figure>
+  <figure><img src="09-library.png" alt=""><figcaption><strong>Library</strong>4 filter rows + all 26 mantras</figcaption></figure>
+  <figure><img src="10-library-gita-filter.png" alt=""><figcaption><strong>Library — Gita filter</strong>8 Gita entries, selected chip orange-tinted</figcaption></figure>
+  <figure><img src="11-detail.png" alt=""><figcaption><strong>Mantra detail</strong>Chips, full text, meaning, CTA</figcaption></figure>
+  <figure><img src="12b-settings-light.png" alt=""><figcaption><strong>Settings (light)</strong>Practice rows, appearance, notification toggle</figcaption></figure>
+</div>
+
+<h2>Dark mode (bottle green)</h2>
+<div class="grid">
+  <figure><img src="13-settings-dark.png" alt=""><figcaption><strong>Settings — dark</strong>Selected segment = dark orange wash</figcaption></figure>
+  <figure><img src="14-home-dark.png" alt=""><figcaption><strong>Home — dark</strong></figcaption></figure>
+  <figure><img src="15-library-dark.png" alt=""><figcaption><strong>Library — dark</strong>Theme-aware chips (the SP-7 token fix)</figcaption></figure>
+  <figure><img src="18-home-day1-dark.png" alt=""><figcaption><strong>Home after a read — dark</strong>Day 1 of 14, streak + reads live</figcaption></figure>
+  <figure><img src="19-switch-dialog-dark.png" alt=""><figcaption><strong>Honest switch warning</strong>Live day count ("1 days" since fixed)</figcaption></figure>
+</div>
+
+<h2>The core loop — overlay over YouTube</h2>
+<div class="grid">
+  <figure><img src="16-overlay-youtube.png" alt=""><figcaption><strong>Mantra-before-unlock</strong>Gayatri over YouTube, 15s countdown, Continue</figcaption></figure>
+  <figure><img src="17-home-after-read-dark.png" alt=""><figcaption><strong>⚠ Engine finding</strong>Overlay re-shown after Continue and persisting over non-blocked surfaces — see report</figcaption></figure>
+</div>
+
+<div class="note flag"><strong>Engine findings from this walkthrough (not fixed — engine is zero-touch without explicit approval):</strong> (1) Continue grants only ~2 seconds of grace — the next in-app navigation inside YouTube re-triggers the overlay; (2) once re-shown, the overlay stays on top even after leaving the blocked app (home screen, other apps) until Continue is tapped. Details and recommendations in the session report.</div>
+</main>
+</body>
+</html>
