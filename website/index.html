@@ -39,6 +39,8 @@
     background:radial-gradient(ellipse at 50% 62%, #FFD9B8 0%, #FFEDDC 42%, rgba(255,237,220,0) 72%); filter:blur(10px); }
   .hill { position:absolute; left:50%; bottom:-90px; transform:translateX(-50%); width:1100px; height:240px;
     background:radial-gradient(ellipse at 50% 0%, #BCD3C2 0%, rgba(188,211,194,0) 68%); filter:blur(14px); }
+  .stage::after { content:""; position:absolute; left:0; right:0; bottom:0; height:120px; z-index:1;
+    background:linear-gradient(to bottom, rgba(250,246,241,0) 0%, #FAF6F1 92%); pointer-events:none; }
   .phone { position:absolute; left:50%; top:52%; width:228px; background:#101010; border-radius:34px; padding:7px;
     box-shadow:0 34px 70px rgba(60,30,8,.28), 0 6px 18px rgba(60,30,8,.18); }
   .phone .screen { border-radius:27px; overflow:hidden; display:block; position:relative; }
@@ -47,8 +49,8 @@
     border-radius:50%; background:#000; box-shadow:inset 0 0 2px 1px #1e2a33; z-index:3; }
   .phone .reveal { position:absolute; top:0; left:0; width:100%; z-index:2; animation:reveal 8s ease-in-out infinite; }
   @keyframes reveal { 0%,16% { opacity:0; } 30%,84% { opacity:1; } 96%,100% { opacity:0; } }
-  .p-back { transform:translate(-50%,-50%) translateX(-128px) rotate(-6deg); z-index:1; }
-  .p-front { transform:translate(-50%,-50%) translateX(128px) rotate(6deg); z-index:2; }
+  .p-back { transform:translate(-50%,-50%) translateX(-128px) rotate(-6deg); z-index:2; }
+  .p-front { transform:translate(-50%,-50%) translateX(128px) rotate(6deg); z-index:3; }
   .benefits { display:flex; justify-content:center; gap:64px; flex-wrap:wrap; padding:30px 24px 8px; text-align:center; }
   .benefits .b { width:170px; }
   .benefits .ic { width:46px; height:46px; border-radius:50%; background:#fff; box-shadow:0 6px 18px rgba(122,61,18,.12);
@@ -76,7 +78,7 @@
 
 <section class="hero">
   <span class="chip">Launching soon on
-    <svg width="15" height="16" viewBox="0 0 24 26" aria-label="Google Play"><path d="M1.5 1.6v22.8c0 .5.6.9 1 .6l12-6.3-3.4-5.3 3.4-5.3-12-6.3c-.4-.3-1 .1-1 .6z" fill="#00C4FF"/><path d="M14.5 7.4 3.3 1.2l8.4 9.2z" fill="#00E783"/><path d="M14.5 18.6 3.3 24.8l8.4-9.2z" fill="#FF4757"/><path d="m14.5 7.4 4.8 2.6c1.2.7 1.2 2.3 0 3l-4.8 2.6-3.4-4.1z" fill="#FFC400"/></svg></span>
+    <svg width="15" height="16" viewBox="0 0 24 26" aria-label="Google Play"><path d="M1.5 1.6v22.8c0 .5.6.9 1 .6l12-6.3-3.4-5.3 3.4-5.3-12-6.3c-.4-.3-1 .1-1 .6z" fill="#00C4FF"/><path d="M14.5 7.4 3.3 1.2l8.4 9.2z" fill="#00E783"/><path d="M14.5 18.6 3.3 24.8l8.4-9.2z" fill="#FF4757"/><path d="m14.5 7.4 4.8 2.6c1.2.7 1.2 2.3 0 3l-4.8 2.6-3.4-4.1z" fill="#FFC400"/></svg> Google Play</span>
   <h1>A pause<br>before the scroll.</h1>
   <p class="sub">Your chosen mantra appears for 15 seconds before Instagram, YouTube or Facebook opens.
   Discipline through devotion.</p>
@@ -108,7 +110,7 @@
 <button class="sound" id="sound" aria-label="Toggle Om sound">
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6400" stroke-width="2" stroke-linecap="round"><path d="M11 5L6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 010 7M18.5 5.5a9 9 0 010 13"/></svg>
 </button>
-<audio id="om" loop preload="auto" src="/assets/om.mp3"></audio>
+<audio id="om" loop muted autoplay playsinline preload="auto" src="/assets/om.mp3"></audio>
 
 <script>
 (function () {
@@ -118,28 +120,29 @@
   }
   var om = document.getElementById("om");
   var btn = document.getElementById("sound");
-  var ready = false;
-  om.addEventListener("canplaythrough", function () {
-    ready = true;
-    btn.style.display = "flex";
-  });
-  var muted = localStorage.getItem("om-muted") === "1";
-  if (muted) btn.classList.add("muted");
-  function start() {
-    if (ready && !muted && om.paused) om.play().catch(function () {});
-    window.removeEventListener("pointerdown", start);
-    window.removeEventListener("keydown", start);
-    window.removeEventListener("scroll", start);
+  om.addEventListener("canplaythrough", function () { btn.style.display = "flex"; });
+  var userMuted = localStorage.getItem("om-muted") === "1";
+  if (userMuted) btn.classList.add("muted");
+  om.play().catch(function () {});
+  function unlock() {
+    if (!userMuted) {
+      om.muted = false;
+      if (om.paused) om.play().catch(function () {});
+    }
+    ["pointerdown", "touchend", "keydown", "click", "scroll"].forEach(function (ev) {
+      window.removeEventListener(ev, unlock);
+    });
   }
-  window.addEventListener("pointerdown", start);
-  window.addEventListener("keydown", start);
-  window.addEventListener("scroll", start, { passive: true });
+  ["pointerdown", "touchend", "keydown", "click", "scroll"].forEach(function (ev) {
+    window.addEventListener(ev, unlock, { passive: true });
+  });
   btn.addEventListener("click", function (e) {
     e.stopPropagation();
-    muted = !muted;
-    localStorage.setItem("om-muted", muted ? "1" : "0");
-    btn.classList.toggle("muted", muted);
-    if (muted) { om.pause(); } else { om.play().catch(function () {}); }
+    userMuted = !userMuted;
+    localStorage.setItem("om-muted", userMuted ? "1" : "0");
+    btn.classList.toggle("muted", userMuted);
+    om.muted = userMuted;
+    if (!userMuted && om.paused) om.play().catch(function () {});
   });
 })();
 </script>
