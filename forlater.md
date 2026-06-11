@@ -43,6 +43,14 @@
 - **Date added:** 2026-06-11
 - **Originated from:** SP-7 design spec, overlay rule.
 
+### 6. Hide duplicate roman line when display language is English
+- **What:** With language = English (Roman script), the overlay and the mantra detail screen render the same roman text twice (main text + italic transliteration line). Suppress the transliteration line when the chosen script IS roman.
+- **Why:** Cosmetic duplication, visible in the 2026-06-11 screenshot gallery (11-detail, 16-overlay).
+- **Scope:** OverlayManager binding + MantraDetailScreen — one conditional each. Overlay touch is engine-adjacent (view binding only, no detection logic).
+- **Status:** Deferred — polish batch.
+- **Date added:** 2026-06-11
+- **Originated from:** Screenshot walkthrough.
+
 ## In progress
 
 _(empty)_

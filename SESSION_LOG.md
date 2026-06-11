@@ -228,3 +228,13 @@ SP-5 is code-complete. Next: **SP-7** (settings / notifications / dark mode) des
 
 ### Where to pick up
 Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in sandbox mode** (design → plan → build; live billing gated on Pranav's Play Console/RevenueCat answers), then the landing page.
+
+---
+
+## 2026-06-11 (later) — Screenshot walkthrough + two ENGINE FINDINGS
+
+- Captured 21-screenshot gallery on Pixel 9 emulator (fresh install, full walkthrough incl. overlay over YouTube + dark mode): `docs/screenshots/index.html`, commit `31dbdd5`. Theme reset to Light after captures; emulator killed.
+- Fixed during walkthrough: switch-dialog "1 days" → plurals resource (`detail_switch_body_plural`), suite still 83/83. Queued: duplicate roman line when language=English (forlater item 6).
+- **ENGINE FINDING 1 (product decision needed):** Continue grants only the 2s debounce — the next TYPE_WINDOW_STATE_CHANGED inside the same blocked app re-triggers the overlay (AppLockAccessibilityService.kt: debounce check only `< DEBOUNCE_MS`). In real use, in-app navigation after Continue re-blocks almost immediately. Recommendation: per-package grace period (e.g. 5 min) after Continue. NOT touched — engine requires explicit approval.
+- **ENGINE FINDING 2 (bug):** Nothing hides the overlay when the foreground app changes to a NON-blocked app. Empirically: overlay re-shown over YouTube persisted over launcher and over Niyam itself until Continue was tapped (screenshot 17). Recommendation: on window state change to a non-blocked package while overlay is showing → hide. NOT touched — same rule.
+- Pranav's SP-6 answers received: freemium confirmed; sample/test ads OK (AdMob test units); trial per my rec; needs RevenueCat-in-plain-English + account list; landing page after app done.
