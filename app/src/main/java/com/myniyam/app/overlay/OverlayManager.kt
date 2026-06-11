@@ -31,8 +31,12 @@ object OverlayManager {
     private var attachedPkg: String? = null
     private var timer: CountDownTimer? = null
 
-    fun show(ctx: Context, pkg: String) {
+    fun show(rawCtx: Context, pkg: String) {
         if (overlayView != null) return  // already showing — no-op
+
+        // Chrome strings (overline, Continue) follow the in-app language (SP-11) —
+        // purely a resource-resolution wrapper, no flow change.
+        val ctx = com.myniyam.app.ui.LocaleBridge.wrap(rawCtx)
 
         val view = LayoutInflater.from(ctx).inflate(R.layout.overlay_mantra, null, false)
 

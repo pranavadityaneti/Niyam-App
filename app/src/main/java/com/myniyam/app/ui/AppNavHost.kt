@@ -208,8 +208,13 @@ fun AppNavHost(
             )
         }
         composable(NiyamRoutes.SETTINGS_LANGUAGE) {
+            val activity = LocalContext.current as? android.app.Activity
             LanguageSettingScreen(
-                onSaved = { navController.popBackStack() },
+                onSaved = {
+                    navController.popBackStack()
+                    // Chrome locale lives in attachBaseContext — recreate to re-wrap (SP-11).
+                    activity?.recreate()
+                },
                 onPaywall = { navController.navigate(NiyamRoutes.PAYWALL) }
             )
         }

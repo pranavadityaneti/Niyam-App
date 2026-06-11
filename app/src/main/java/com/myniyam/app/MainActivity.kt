@@ -18,6 +18,13 @@ import com.myniyam.app.ui.theme.ThemeState
 
 class MainActivity : ComponentActivity() {
 
+    override fun attachBaseContext(newBase: android.content.Context) {
+        // Chrome language follows the in-app choice (SP-11). ensureLoaded is
+        // idempotent and already the app's blocking warm-up pattern.
+        UserPrefs.ensureLoaded(newBase)
+        super.attachBaseContext(com.myniyam.app.ui.LocaleBridge.wrap(newBase))
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge(
