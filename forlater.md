@@ -11,22 +11,6 @@
 - **Originated from:** Sub-project 2 design discussion (QA-gate question).
 - **Trigger to revisit:** Before public Play Store launch, or when a native reader becomes available — whichever first.
 
-### 4. Align MantraRepository.FALLBACK om fields with the catalog om entry
-- **What:** The hardcoded airbag entry diverges from the catalog's om in two fields (tamil `ஓம்` vs tool-normalized `ௐ`; meaning.en 1 sentence vs 2). Both valid; unreachable unless the asset is corrupt.
-- **Why:** Keep the airbag in sync if the om convention is ever revisited. SP-2 final review: "record, don't fix."
-- **Scope:** One constant in `MantraRepository.kt`.
-- **Status:** Deferred (cosmetic, unreachable on happy path).
-- **Date added:** 2026-06-10
-- **Originated from:** SP-2 final whole-implementation review.
-
-### 2. OEM permission-screen copy polish
-- **What:** The OEM autostart screen copy reads awkwardly on stock devices ("Your phone is Google (GENERIC). So your phone allows us to start when needed."). Rewrite copy per OEM flow.
-- **Why:** Observed during Phase 1 emulator acceptance. Cosmetic, lands naturally with the UI-references pass.
-- **Scope:** strings.xml + OemAutostartScreen copy only.
-- **Status:** Deferred to UI pass.
-- **Date added:** 2026-06-10
-- **Originated from:** Phase 1 acceptance test observations.
-
 ### 3. Phase 2 real-OEM acceptance test
 - **What:** Run the 14 acceptance criteria + 30-min service-survival test on a real OEM phone (ideally MIUI/Redmi; Samsung second-best).
 - **Why:** Emulator cannot reproduce OEM battery-killer behavior; this gates any paid-launch decision per the sub-project 1 spec.
@@ -34,22 +18,6 @@
 - **Status:** Waiting on Pranav's Android phone (expected 2026-06-10).
 - **Date added:** 2026-06-10
 - **Originated from:** Sub-project 1 spec, Phase 2 acceptance section.
-
-### 5. Dark-mode variant of the unlock overlay
-- **What:** The mantra overlay (View XML, `overlay_mantra.xml`) stays eggshell-light in all themes. Add a bottle-green dark variant that follows the user's themePref.
-- **Why:** SP-7 shipped in-app dark mode but deliberately excluded the overlay to preserve the zero-engine-touch rule. A dark-mode user who unlocks Instagram at night gets a bright eggshell flash — acceptable for an interruption surface, but worth revisiting.
-- **Scope:** `overlay_mantra.xml` + `OverlayManager` color binding — **engine-adjacent**, needs its own careful pass + emulator verification.
-- **Status:** Deferred by design (SP-7 spec §2 "Overlay stays light").
-- **Date added:** 2026-06-11
-- **Originated from:** SP-7 design spec, overlay rule.
-
-### 6. Hide duplicate roman line when display language is English
-- **What:** With language = English (Roman script), the overlay and the mantra detail screen render the same roman text twice (main text + italic transliteration line). Suppress the transliteration line when the chosen script IS roman.
-- **Why:** Cosmetic duplication, visible in the 2026-06-11 screenshot gallery (11-detail, 16-overlay).
-- **Scope:** OverlayManager binding + MantraDetailScreen — one conditional each. Overlay touch is engine-adjacent (view binding only, no detection logic).
-- **Status:** Deferred — polish batch.
-- **Date added:** 2026-06-11
-- **Originated from:** Screenshot walkthrough.
 
 ### 7. Niyam launcher icon
 - **What:** The app still ships the default Android robot launcher icon (visible on splash + home screen). Design a Niyam icon — orange/bottle-green, no Om (founder dropped Om from the brand for now).
@@ -73,4 +41,39 @@ _(empty)_
 
 ## Done — archived
 
-_(empty)_
+### 4. Align MantraRepository.FALLBACK om fields with the catalog om entry
+- **What:** The hardcoded airbag entry diverges from the catalog's om in two fields (tamil `ஓம்` vs tool-normalized `ௐ`; meaning.en 1 sentence vs 2). Both valid; unreachable unless the asset is corrupt.
+- **Why:** Keep the airbag in sync if the om convention is ever revisited. SP-2 final review: "record, don't fix."
+- **Scope:** One constant in `MantraRepository.kt`.
+- **Status:** Deferred (cosmetic, unreachable on happy path).
+- **Date added:** 2026-06-10
+- **Originated from:** SP-2 final whole-implementation review.
+- **Completed:** 2026-06-11 (SP-10 polish batch, commit 6c814f8)
+
+### 2. OEM permission-screen copy polish
+- **What:** The OEM autostart screen copy reads awkwardly on stock devices ("Your phone is Google (GENERIC). So your phone allows us to start when needed."). Rewrite copy per OEM flow.
+- **Why:** Observed during Phase 1 emulator acceptance. Cosmetic, lands naturally with the UI-references pass.
+- **Scope:** strings.xml + OemAutostartScreen copy only.
+- **Status:** Deferred to UI pass.
+- **Date added:** 2026-06-10
+- **Originated from:** Phase 1 acceptance test observations.
+- **Completed:** 2026-06-11 (SP-10 polish batch, commit 6c814f8)
+
+### 5. Dark-mode variant of the unlock overlay
+- **What:** The mantra overlay (View XML, `overlay_mantra.xml`) stays eggshell-light in all themes. Add a bottle-green dark variant that follows the user's themePref.
+- **Why:** SP-7 shipped in-app dark mode but deliberately excluded the overlay to preserve the zero-engine-touch rule. A dark-mode user who unlocks Instagram at night gets a bright eggshell flash — acceptable for an interruption surface, but worth revisiting.
+- **Scope:** `overlay_mantra.xml` + `OverlayManager` color binding — **engine-adjacent**, needs its own careful pass + emulator verification.
+- **Status:** Deferred by design (SP-7 spec §2 "Overlay stays light").
+- **Date added:** 2026-06-11
+- **Originated from:** SP-7 design spec, overlay rule.
+- **Completed:** 2026-06-11 (SP-10 polish batch, commit 6c814f8)
+
+### 6. Hide duplicate roman line when display language is English
+- **What:** With language = English (Roman script), the overlay and the mantra detail screen render the same roman text twice (main text + italic transliteration line). Suppress the transliteration line when the chosen script IS roman.
+- **Why:** Cosmetic duplication, visible in the 2026-06-11 screenshot gallery (11-detail, 16-overlay).
+- **Scope:** OverlayManager binding + MantraDetailScreen — one conditional each. Overlay touch is engine-adjacent (view binding only, no detection logic).
+- **Status:** Deferred — polish batch.
+- **Date added:** 2026-06-11
+- **Originated from:** Screenshot walkthrough.
+- **Completed:** 2026-06-11 (SP-10 polish batch, commit 6c814f8)
+
