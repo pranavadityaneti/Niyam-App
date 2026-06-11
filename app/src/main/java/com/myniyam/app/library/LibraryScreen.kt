@@ -43,8 +43,7 @@ import com.myniyam.app.data.MantraRepository
 import com.myniyam.app.data.SourceCategory
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.onboarding.mantraGist
-import com.myniyam.app.ui.theme.BottleGreen
-import com.myniyam.app.ui.theme.OrangeTint
+import com.myniyam.app.ui.theme.NiyamTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -173,8 +172,8 @@ private fun <T> FilterRow(options: List<Pair<T, String>>, selected: T?, onSelect
             onClick = { onSelect(null) },
             label = { Text(stringResource(R.string.library_filter_all)) },
             colors = FilterChipDefaults.filterChipColors(
-                selectedContainerColor = OrangeTint,
-                selectedLabelColor = BottleGreen
+                selectedContainerColor = NiyamTheme.colors.orangeTint,
+                selectedLabelColor = NiyamTheme.colors.onTint
             )
         )
         options.forEach { (value, label) ->
@@ -183,8 +182,8 @@ private fun <T> FilterRow(options: List<Pair<T, String>>, selected: T?, onSelect
                 onClick = { onSelect(if (selected == value) null else value) },
                 label = { Text(label) },
                 colors = FilterChipDefaults.filterChipColors(
-                    selectedContainerColor = OrangeTint,
-                    selectedLabelColor = BottleGreen
+                    selectedContainerColor = NiyamTheme.colors.orangeTint,
+                    selectedLabelColor = NiyamTheme.colors.onTint
                 )
             )
         }

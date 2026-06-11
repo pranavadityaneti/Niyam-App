@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
-import com.myniyam.app.ui.theme.OrangeTint
+import com.myniyam.app.ui.theme.NiyamTheme
 
 /**
  * Shared frame for every onboarding step (spec §5): step overline, serif title,
@@ -110,7 +110,7 @@ fun SelectableCard(
             BorderStroke(1.5.dp, MaterialTheme.colorScheme.outline)
         },
         colors = CardDefaults.cardColors(
-            containerColor = if (selected) OrangeTint else MaterialTheme.colorScheme.surface
+            containerColor = if (selected) NiyamTheme.colors.orangeTint else MaterialTheme.colorScheme.surface
         ),
         modifier = Modifier
             .fillMaxWidth()

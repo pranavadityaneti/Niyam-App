@@ -31,13 +31,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.BuildConfig
 import com.myniyam.app.R
 import com.myniyam.app.data.ThemePref
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.notifications.CompletionNotifier
-import com.myniyam.app.ui.theme.OrangeTint
+import com.myniyam.app.ui.theme.NiyamTheme
 import com.myniyam.app.ui.theme.PumpkinOrange
 import com.myniyam.app.ui.theme.ThemeState
 import kotlinx.coroutines.launch
@@ -204,17 +205,16 @@ private fun AppearanceSegment(
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val dark = ThemeState.pref == ThemePref.DARK ||
-        (ThemeState.pref == ThemePref.SYSTEM && androidx.compose.foundation.isSystemInDarkTheme())
     Text(
         label,
         style = MaterialTheme.typography.labelLarge,
+        textAlign = TextAlign.Center,
         color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = modifier
             .height(44.dp)
             .background(
                 color = if (selected) {
-                    if (dark) com.myniyam.app.ui.theme.DarkOrangeTint else OrangeTint
+                    NiyamTheme.colors.orangeTint
                 } else {
                     MaterialTheme.colorScheme.surfaceVariant
                 },

@@ -5,6 +5,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.graphics.Color
 import com.myniyam.app.data.ThemePref
 
@@ -45,9 +46,11 @@ fun NiyamTheme(content: @Composable () -> Unit) {
         ThemePref.DARK -> true
         ThemePref.SYSTEM -> isSystemInDarkTheme()
     }
-    MaterialTheme(
-        colorScheme = if (dark) NiyamDarkColors else NiyamLightColors,
-        typography = NiyamTypography,
-        content = content
-    )
+    CompositionLocalProvider(LocalNiyamColors provides niyamColorsFor(dark)) {
+        MaterialTheme(
+            colorScheme = if (dark) NiyamDarkColors else NiyamLightColors,
+            typography = NiyamTypography,
+            content = content
+        )
+    }
 }

@@ -26,8 +26,7 @@ import com.myniyam.app.data.Script
 import com.myniyam.app.data.Deity
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.progress.ProgressRepository
-import com.myniyam.app.ui.theme.ChipFill
-import com.myniyam.app.ui.theme.InkMuted
+import com.myniyam.app.ui.theme.NiyamTheme
 import com.myniyam.app.ui.theme.SaladGreen
 import kotlinx.coroutines.launch
 
@@ -191,9 +190,9 @@ private fun InfoChip(label: String) {
     Text(
         label,
         style = MaterialTheme.typography.labelSmall,
-        color = InkMuted,
+        color = NiyamTheme.colors.inkMuted,
         modifier = Modifier
-            .background(ChipFill, RoundedCornerShape(999.dp))
+            .background(NiyamTheme.colors.chipFill, RoundedCornerShape(999.dp))
             .padding(horizontal = 8.dp, vertical = 3.dp)
     )
 }
