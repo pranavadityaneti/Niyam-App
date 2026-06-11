@@ -24,3 +24,7 @@ val DarkInkMuted = Color(0xFFB9C9C2)
 val DarkLabelMuted = Color(0xFF7E948B)
 val DarkChipFill = Color(0xFF1A3F33)
 val DarkOrangeTint = Color(0xFF3A2415)
+
+// Overline accent (SP-8 spec §2) — small-caps warm brown, weight 500.
+val OverlineWarm = Color(0xFF99511F)
+val DarkOverlineWarm = Color(0xFFE0A878)

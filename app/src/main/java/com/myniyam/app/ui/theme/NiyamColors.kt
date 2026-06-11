@@ -21,21 +21,25 @@ data class NiyamExtraColors(
     /** Neutral chip background (info chips). */
     val chipFill: Color,
     /** Muted ink for secondary text on chips. */
-    val inkMuted: Color
+    val inkMuted: Color,
+    /** Small-caps overline accent (warm brown light / soft amber dark). */
+    val overlineWarm: Color
 )
 
 private val LightNiyamColors = NiyamExtraColors(
     orangeTint = OrangeTint,
     onTint = BottleGreen,
     chipFill = ChipFill,
-    inkMuted = InkMuted
+    inkMuted = InkMuted,
+    overlineWarm = OverlineWarm
 )
 
 private val DarkNiyamColors = NiyamExtraColors(
     orangeTint = DarkOrangeTint,
     onTint = DarkInk,
     chipFill = DarkChipFill,
-    inkMuted = DarkInkMuted
+    inkMuted = DarkInkMuted,
+    overlineWarm = DarkOverlineWarm
 )
 
 internal fun niyamColorsFor(dark: Boolean): NiyamExtraColors =
