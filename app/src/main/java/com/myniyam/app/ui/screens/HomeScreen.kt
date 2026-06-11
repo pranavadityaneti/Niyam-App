@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -181,7 +182,9 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
                         highlight = stats.streak >= 2
                     )
                     StatChip(
-                        text = stringResource(R.string.home_today_fmt, stats.todayReads),
+                        text = pluralStringResource(
+                            R.plurals.home_today_plural, stats.todayReads, stats.todayReads
+                        ),
                         highlight = false
                     )
                 }
