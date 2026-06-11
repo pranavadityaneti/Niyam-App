@@ -190,3 +190,29 @@ When Pranav returns: the walking-skeleton **code** is done and on GitHub. The re
 - Or hand it back to me when he's ready and I'll drive the emulator via `mcp__computer-use__*` tools (token-heavy but possible)
 
 No code change is blocked. The next code task (sub-project 2 content model) doesn't start until Phase 1 acceptance passes.
+
+---
+
+## 2026-06-11 — Catch-up + SP-5 EXECUTED
+
+*(The 2026-06-10 sessions ran under interruptions and their log entries were never appended — recorded here from git ground truth.)*
+
+### Catch-up: SP-2 → SP-4 (2026-06-09 → 06-10, all pushed to main)
+- **SP-2 content model:** Mantra data model + DisplayLanguage + MantraRepository + Python generation tool (Aksharamukha, **Python 3.11 venv only**) + 26 mantras in 7 scripts / 8 meaning languages. Overlay renders live content. Spot-check report in `docs/superpowers/test-reports/`.
+- **SP-3 onboarding + brand:** brand theme (Eggshell/BottleGreen/PumpkinOrange, Playfair+Inter), Welcome + 4 onboarding screens + permission flow restyle, selections persisted via UserPrefs DataStore.
+- **SP-4 home + progress:** Room read-events DB, ProgressRepository, ProgressMath (day N of 14, streak), branded Home (mantra card/progress/streak/protection), Celebration + NextSadhana screens, overlay Continue records reads. Suite reached 69 tests. Report: `2026-06-10-sp4-acceptance.md`.
+
+### SP-5 EXECUTED — library + filters + sadhana switching
+- Commits `7dc6542 → efbaefc` (6 commits, all on origin/main). Suite **76/76**; `--check` exit 0; asset 163,590 B; **zero engine-file touches** (verified `git diff 4595149..HEAD`).
+- T1 sourceCategory (model + 26 tags + validation) · T2 LibraryFilters pure function (TDD) · T3 LibraryScreen (4 chip rows, branded FilterChips) · T4 MantraDetailScreen + honest "start over" switch dialog (dayN-gated) · T5 routes + Home "Browse library" button · review fix `efbaefc` (detail chips: category/read-time/deity + green Completed).
+- Two reviews (Opus): T1+T2 pass; T3-T5 pass with 2 flags — chips gap **fixed**, §6 stats-failure path **kept as direct switch** (more honest than a dialog missing its day count; flagged for Pranav).
+- Report: `docs/superpowers/test-reports/2026-06-11-sp5-acceptance.md`. Manual emulator walkthrough + visual eyeball deferred to the standing session.
+
+### Open threads
+1. Standing manual emulator session: SP-2/3/4/5 walkthrough criteria + visual brand eyeball.
+2. Pranav's unanswered 8-question monetization batch (Play Console, RevenueCat, ads, trial, privacy policy, Vercel/DNS, phone, definition of done).
+3. PlaceholderMantra.kt deletion — awaiting explicit confirmation.
+4. `forlater.md`: 4 queued items (native-speaker review, OEM copy, Phase 2 real-device test, FALLBACK-om alignment).
+
+### Where to pick up
+SP-5 is code-complete. Next: **SP-7** (settings / notifications / dark mode) design → plan → build, then SP-6 (paywall sandbox), then landing page.
