@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Niyam — Settings, Completion Notification &amp; Dark Mode Design</title>
+<style>
+  :root { --ink:#1c1c1c; --muted:#5a5a5a; --border:#d8d8d8; --bg:#fdfdfb; --accent:#7a3d12; --code-bg:#f3efe9; }
+  html, body { margin:0; padding:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif; font-size:16px; line-height:1.55; }
+  main { max-width:880px; margin:0 auto; padding:48px 32px 96px; }
+  h1 { font-size:30px; margin:0 0 4px; }
+  .sub { color:var(--muted); font-size:14px; }
+  .meta { margin-top:18px; padding:14px 18px; background:var(--code-bg); border-left:3px solid var(--accent); border-radius:4px; font-size:14px; }
+  h2 { font-size:22px; margin:44px 0 12px; padding-bottom:6px; border-bottom:1px solid var(--border); }
+  p, ul, ol, table { margin:10px 0; }
+  ul, ol { padding-left:26px; }
+  code { background:var(--code-bg); padding:1px 5px; border-radius:3px; font-family:Menlo,Consolas,monospace; font-size:.92em; }
+  table { width:100%; border-collapse:collapse; font-size:13.5px; }
+  th, td { border:1px solid var(--border); padding:7px 9px; text-align:left; vertical-align:top; }
+  th { background:var(--code-bg); }
+  .plain-english { background:#fff8ec; border-left:3px solid #d4af37; padding:10px 14px; margin:12px 0; font-size:14.5px; border-radius:3px; }
+  .status-pill { display:inline-block; background:#FF6400; color:#fff; padding:2px 10px; border-radius:12px; font-size:12px; font-weight:600; text-transform:uppercase; }
+  .swatch { display:inline-block; width:13px; height:13px; border-radius:3px; border:1px solid #999; vertical-align:-2px; margin-right:4px; }
+  @media print { body{background:#fff;} main{padding:24px;max-width:none;} h2{page-break-after:avoid;} table{page-break-inside:avoid;} }
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>Niyam — Settings, Completion Notification &amp; Dark Mode</h1>
+  <div class="sub">Niyam (नियम) · Sub-project 7 of 7 (built before SP-6 paywall)</div>
+  <div class="meta"><div><strong>Date:</strong> 2026-06-11</div>
+  <div><strong>Status:</strong> <span class="status-pill">Full-control grant — spec is the async review gate</span></div></div>
+</header>
+
+<h2>1. Purpose</h2>
+<p>Re-edit every onboarding choice without reinstalling, get a notification when a 14-day journey completes, and a bottle-green dark theme for night use.</p>
+<div class="plain-english"><strong>In plain English:</strong> once you finish onboarding today, your language, blocked apps, and intention are frozen — no door back. SP-7 adds that door (Settings), a "journey complete 🎉" notification so completions don't go unnoticed, and a dark mode so the app isn't a white flashlight at night.</div>
+
+<h2>2. Product rules (locked)</h2>
+<table>
+<tr><th>Rule</th><th>Decision</th></tr>
+<tr><td>Settings entry</td><td>Gear <code>IconButton</code> top-right of Home, BottleGreen tint. Smallest possible Home touch.</td></tr>
+<tr><td>Editable items</td><td>Current sadhana (links into the existing <strong>Library</strong> — no second picker), Display language (9 options), Blocked apps (7-app catalog), Intention (5 options), Appearance, Completion-notification toggle. Version footer.</td></tr>
+<tr><td>Language change</td><td><code>setDisplayLanguage</code>; effective immediately everywhere (overlay reads the volatile snapshot on next show).</td></tr>
+<tr><td>Blocked apps</td><td><code>setBlockedPackages</code>; engine sees it on next launch detection. Guard: cannot save an empty set — at least one app stays blocked.</td></tr>
+<tr><td>Intention</td><td><code>setIntention</code>; affects only future NextSadhana seeding. No journey reset.</td></tr>
+<tr><td>Appearance</td><td>LIGHT / DARK / SYSTEM; <strong>default LIGHT</strong> (Pranav's earlier ruling). New <code>themePref</code> field.</td></tr>
+<tr><td>Completion notification</td><td>Toggle, <strong>default ON</strong>. Posted by <code>ProgressRepository.maybeComplete</code> after <code>markCompleted</code>, only if toggle ON + <code>POST_NOTIFICATIONS</code> granted (already in manifest; runtime grant requested when toggling ON on API 33+). Tap → MainActivity → HOME → existing <code>pendingCelebration</code> effect routes to Celebration. Once per completion by construction.</td></tr>
+<tr><td>Dark palette</td><td>Inverted brand tokens, orange untouched: bg <span class="swatch" style="background:#0A2A20"></span><code>#0A2A20</code>, card <span class="swatch" style="background:#11352A"></span><code>#11352A</code>, hairline <span class="swatch" style="background:#1E4438"></span><code>#1E4438</code>, ink <span class="swatch" style="background:#F5EBE1"></span><code>#F5EBE1</code>, inkMuted <span class="swatch" style="background:#B9C9C2"></span><code>#B9C9C2</code>, labelMuted <span class="swatch" style="background:#7E948B"></span><code>#7E948B</code>, chipFill <span class="swatch" style="background:#1A3F33"></span><code>#1A3F33</code>, orange wash <span class="swatch" style="background:#3A2415"></span><code>#3A2415</code>; <span class="swatch" style="background:#FF6400"></span>PumpkinOrange / <span class="swatch" style="background:#8CC850"></span>SaladGreen unchanged. Async eyeball veto applies.</td></tr>
+<tr><td>Overlay</td><td><strong>Stays light in all themes.</strong> Engine-adjacent View XML — zero engine touches holds. Dark overlay queued in <code>forlater.md</code>.</td></tr>
+</table>
+
+<h2>3. Scope</h2>
+<p><strong>In:</strong> SettingsScreen + 3 editor screens (reusing onboarding's <code>SelectableCard</code>); <code>themePref</code> + <code>notifyOnCompletion</code> prefs; dark scheme + live theme switch in <code>NiyamTheme</code>; CompletionNotifier; Home gear; routes.</p>
+<p><strong>Out:</strong> dark overlay (forlater) · daily reminders (YAGNI) · accounts · paywall hooks (SP-6) · re-running the permission flow from settings (Home's protection row already covers it).</p>
+
+<h2>4. Architecture</h2>
+<ul>
+<li><code>UserPrefs.Snapshot</code> + <code>themePref</code> (LIGHT/DARK/SYSTEM, default LIGHT) and <code>notifyOnCompletion</code> (default true); writers <code>setThemePref</code> / <code>setNotifyOnCompletion</code>. Engine reads neither.</li>
+<li><code>ui/theme</code>: dark tokens in <code>Color.kt</code>; <code>NiyamTheme</code> resolves the pref from a snapshot-backed Compose state, so switching re-themes live.</li>
+<li><code>notifications/CompletionNotifier.kt</code>: channel <code>niyam_completion</code>, PendingIntent → MainActivity; called from <code>maybeComplete</code>, guarded + try/caught (a notification failure never breaks a read).</li>
+<li><code>settings/</code>: SettingsScreen (rows + appearance segmented row + toggle + version footer) and Language/BlockedApps/Intention editor screens — pre-selected from snapshot, save → write → pop. Apps editor disables save at zero selections.</li>
+<li>Routes <code>settings</code>, <code>settings_language</code>, <code>settings_apps</code>, <code>settings_intention</code>; Home gains <code>onOpenSettings</code>.</li>
+</ul>
+
+<h2>5. Error handling</h2>
+<p>Notification failure → caught, read recorded anyway. Permission denied → toggle ON but silent, with a "blocked in system settings" caption. Empty app set → save disabled. Unknown themePref → LIGHT.</p>
+
+<h2>6. Acceptance</h2>
+<ol>
+<li>Unit tests: themePref/notify prefs round-trips; CompletionNotifier guard logic. Suite grows from 76; all green.</li>
+<li>Build green; <strong>zero engine-file changes</strong>.</li>
+<li>Emulator walkthrough (manual, standing session): settings → change language → overlay re-scripts; dark toggle re-themes live; un-blocked app opens freely; completion notification → tap → Celebration.</li>
+<li>Visual brand match incl. dark palette (async eyeball veto).</li>
+</ol>
+</main>
+</body>
+</html>
