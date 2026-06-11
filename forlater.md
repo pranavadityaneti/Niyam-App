@@ -27,14 +27,6 @@
 - **Date added:** 2026-06-11
 - **Originated from:** SP-8 v2 screenshot session.
 
-### 8. Full UI chrome translation (Hindi/Telugu/Tamil/+5)
-- **What:** Today the display-language setting localises the mantra script + meaning only; all chrome (buttons, labels, settings, dialogs — ~80 strings in `strings.xml`) stays English. Translate the chrome into the 8 supported meaning languages via Android `values-<lang>/strings.xml` resources, driven by the same in-app language choice (per-app locale via `AppCompatDelegate.setApplicationLocales` or manual resource resolution).
-- **Why:** India-first product; a Telugu-speaking user who picks తెలుగు reasonably expects "Browse library" to localise too. Pranav saw the gap in the 2026-06-11 language gallery and was told it's a separate, queueable piece.
-- **Scope:** 8 × strings.xml translations + locale plumbing + plurals per language (Indic plural rules) + native-speaker review (ties into item 1).
-- **Status:** Queued — awaiting founder prioritisation (post-SP-6 candidate).
-- **Date added:** 2026-06-11
-- **Originated from:** Hindi/Telugu/Tamil screenshot gallery session ("Good to go" turn).
-
 ### 9. SMS + email trial reminders (founder request, needs backend)
 - **What:** Pranav (2026-06-11, SP-12 approval): "We will remind the customer, we can automate an SMS and email." Automate trial-ending reminders over SMS and email in addition to the on-device notification that SP-12 ships.
 - **Why blocked:** The app collects no phone number or email (privacy feature: zero personal data) and has no backend. Needs: a contact-collection step (likely with sign-in), a server, an SMS provider (e.g. MSG91/Twilio) + email provider (e.g. SES/Resend), and a privacy-policy update.
@@ -48,6 +40,15 @@
 _(empty)_
 
 ## Done — archived
+
+### 8. Full UI chrome translation (Hindi/Telugu/Tamil/+5)
+- **What:** Today the display-language setting localises the mantra script + meaning only; all chrome (buttons, labels, settings, dialogs — ~80 strings in `strings.xml`) stays English. Translate the chrome into the 8 supported meaning languages via Android `values-<lang>/strings.xml` resources, driven by the same in-app language choice (per-app locale via `AppCompatDelegate.setApplicationLocales` or manual resource resolution).
+- **Why:** India-first product; a Telugu-speaking user who picks తెలుగు reasonably expects "Browse library" to localise too. Pranav saw the gap in the 2026-06-11 language gallery and was told it's a separate, queueable piece.
+- **Scope:** 8 × strings.xml translations + locale plumbing + plurals per language (Indic plural rules) + native-speaker review (ties into item 1).
+- **Status:** DONE — shipped as SP-11 (all 7 locale files + LocaleBridge plumbing + paywall-v2 strings in SP-12; review verdict SHIP).
+- **Date added:** 2026-06-11
+- **Originated from:** Hindi/Telugu/Tamil screenshot gallery session ("Good to go" turn).
+- **Completed:** 2026-06-11 (SP-11, commits f1d3b40..f1a2ae7 + SP-12 locale updates)
 
 ### 4. Align MantraRepository.FALLBACK om fields with the catalog om entry
 - **What:** The hardcoded airbag entry diverges from the catalog's om in two fields (tamil `ஓம்` vs tool-normalized `ௐ`; meaning.en 1 sentence vs 2). Both valid; unreachable unless the asset is corrupt.
