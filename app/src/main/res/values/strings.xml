@@ -28,6 +28,8 @@
     <string name="perm_overlay_body">To show your mantra on top of the blocked app.</string>
     <string name="perm_accessibility_title">Detect app launches instantly</string>
     <string name="perm_accessibility_body">To detect the exact moment Instagram, Facebook, or YouTube opens — instantly, with no delay.</string>
+    <string name="perm_accessibility_disclosure">Niyam uses Android\'s AccessibilityService API for one purpose only: to detect when an app you chose to block is opened, so your mantra can appear first. Niyam does not collect, read, store, or transmit screen content, messages, or any personal data through this service. Detection runs entirely on your device. You can turn it off anytime in your phone\'s Accessibility settings.</string>
+    <string name="perm_accessibility_agree">I agree — turn on</string>
     <string name="perm_battery_title">Don\'t shut us off in the background</string>
     <string name="perm_battery_body">So your phone doesn\'t kill Niyam while you\'re using it elsewhere.</string>
     <string name="perm_oem_title">Allow background activity</string>

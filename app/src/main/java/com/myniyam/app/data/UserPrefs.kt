@@ -36,6 +36,7 @@ object UserPrefs {
     private val KEY_PREMIUM_ACTIVE = booleanPreferencesKey("premium_active")
     private val KEY_PREMIUM_PLAN = stringPreferencesKey("premium_plan")
     private val KEY_TRIAL_REMINDER_SHOWN = booleanPreferencesKey("trial_reminder_shown")
+    private val KEY_ACCESSIBILITY_CONSENT_AT = longPreferencesKey("accessibility_consent_at")
 
     data class Snapshot(
         val onboardingComplete: Boolean,
@@ -51,7 +52,8 @@ object UserPrefs {
         val trialStartEpochDay: Long,
         val premiumActive: Boolean,
         val premiumPlan: String?,
-        val trialReminderShown: Boolean
+        val trialReminderShown: Boolean,
+        val accessibilityConsentAt: Long
     ) {
         companion object {
             val DEFAULTS = Snapshot(
@@ -68,7 +70,8 @@ object UserPrefs {
                 trialStartEpochDay = 0L,
                 premiumActive = false,
                 premiumPlan = null,
-                trialReminderShown = false
+                trialReminderShown = false,
+                accessibilityConsentAt = 0L
             )
 
             fun fromRaw(
@@ -85,7 +88,8 @@ object UserPrefs {
                 trialStart: Long? = null,
                 premiumActive: Boolean? = null,
                 premiumPlan: String? = null,
-                trialReminderShown: Boolean? = null
+                trialReminderShown: Boolean? = null,
+                accessibilityConsentAt: Long? = null
             ): Snapshot = Snapshot(
                 onboardingComplete = onboardingComplete ?: DEFAULTS.onboardingComplete,
                 currentMantraId = mantraId?.takeIf { it.isNotBlank() } ?: DEFAULTS.currentMantraId,
@@ -106,7 +110,8 @@ object UserPrefs {
                 trialStartEpochDay = trialStart ?: DEFAULTS.trialStartEpochDay,
                 premiumActive = premiumActive ?: DEFAULTS.premiumActive,
                 premiumPlan = premiumPlan ?: DEFAULTS.premiumPlan,
-                trialReminderShown = trialReminderShown ?: DEFAULTS.trialReminderShown
+                trialReminderShown = trialReminderShown ?: DEFAULTS.trialReminderShown,
+                accessibilityConsentAt = accessibilityConsentAt ?: DEFAULTS.accessibilityConsentAt
             )
         }
     }
@@ -138,7 +143,8 @@ object UserPrefs {
                     trialStart = p[KEY_TRIAL_START],
                     premiumActive = p[KEY_PREMIUM_ACTIVE],
                     premiumPlan = p[KEY_PREMIUM_PLAN],
-                    trialReminderShown = p[KEY_TRIAL_REMINDER_SHOWN]
+                    trialReminderShown = p[KEY_TRIAL_REMINDER_SHOWN],
+                    accessibilityConsentAt = p[KEY_ACCESSIBILITY_CONSENT_AT]
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load prefs; using defaults", e)
@@ -224,6 +230,12 @@ object UserPrefs {
         val backdated = todayEpochDay - 7
         context.niyamDataStore.edit { it[KEY_TRIAL_START] = backdated }
         current = current.copy(trialStartEpochDay = backdated)
+    }
+
+    /** Audit record of the Play-required prominent-disclosure consent (epoch millis). */
+    suspend fun recordAccessibilityConsent(context: Context, atMillis: Long) {
+        context.niyamDataStore.edit { it[KEY_ACCESSIBILITY_CONSENT_AT] = atMillis }
+        current = current.copy(accessibilityConsentAt = atMillis)
     }
 
     suspend fun setTrialReminderShown(context: Context) {

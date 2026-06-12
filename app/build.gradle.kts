@@ -14,10 +14,24 @@ android {
         applicationId = "com.myniyam.app"
         minSdk = 26
         targetSdk = 34
-        versionCode = 1
-        versionName = "0.1.0-skeleton"
+        versionCode = 2
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        // Upload key lives OUTSIDE the repo; credentials come from ~/.gradle/gradle.properties.
+        // Builds stay unsigned-release-capable on machines without them (CI safety).
+        create("upload") {
+            val storeFileProp = providers.gradleProperty("NIYAM_UPLOAD_STORE_FILE").orNull
+            if (storeFileProp != null) {
+                storeFile = file(storeFileProp)
+                storePassword = providers.gradleProperty("NIYAM_UPLOAD_STORE_PASSWORD").orNull
+                keyAlias = providers.gradleProperty("NIYAM_UPLOAD_KEY_ALIAS").orNull
+                keyPassword = providers.gradleProperty("NIYAM_UPLOAD_KEY_PASSWORD").orNull
+            }
+        }
     }
 
     buildTypes {
@@ -27,6 +41,9 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            if (providers.gradleProperty("NIYAM_UPLOAD_STORE_FILE").orNull != null) {
+                signingConfig = signingConfigs.getByName("upload")
+            }
         }
     }
 

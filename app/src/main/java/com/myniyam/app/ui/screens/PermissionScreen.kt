@@ -53,7 +53,12 @@ fun PermissionScreen(
     launchSettings: () -> Unit,
     onGranted: () -> Unit,
     stepIndex: Int = 0,
-    stepCount: Int = 5
+    stepCount: Int = 5,
+    // Play prominent-disclosure variant (SP-16 §A): when set, a highlighted
+    // disclosure card renders and the CTA becomes the affirmative consent.
+    disclosureResId: Int? = null,
+    ctaResId: Int = R.string.grant,
+    onConsent: (() -> Unit)? = null
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     var grantedState by remember { mutableStateOf(isGranted()) }
@@ -92,11 +97,29 @@ fun PermissionScreen(
                     text = stringResource(bodyResId),
                     style = MaterialTheme.typography.bodyLarge
                 )
+                if (disclosureResId != null) {
+                    Spacer(Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(disclosureResId),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .shadow(
+                                elevation = 6.dp,
+                                shape = RoundedCornerShape(20.dp),
+                                ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
+                                spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
+                            )
+                            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(20.dp))
+                            .padding(16.dp)
+                    )
+                }
                 Spacer(Modifier.weight(1f))
                 PermissionDashes(stepIndex = stepIndex, stepCount = stepCount)
                 Spacer(Modifier.height(20.dp))
                 Button(
-                    onClick = { launchSettings() },
+                    onClick = { onConsent?.invoke(); launchSettings() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),

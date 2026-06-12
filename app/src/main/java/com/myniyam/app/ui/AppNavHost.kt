@@ -119,13 +119,22 @@ fun AppNavHost(
 
         composable(NiyamRoutes.PERMISSION_ACCESSIBILITY) {
             val ctx = LocalContext.current
+            val scope = rememberCoroutineScope()
             PermissionScreen(
                 titleResId = R.string.perm_accessibility_title,
                 bodyResId = R.string.perm_accessibility_body,
                 isGranted = { PermissionChecker.isAccessibilityServiceEnabled(ctx) },
                 launchSettings = { PermissionChecker.openAccessibilitySettings(ctx) },
                 onGranted = { navController.navigate(NiyamRoutes.PERMISSION_BATTERY) },
-                stepIndex = 2
+                stepIndex = 2,
+                // Play prominent-disclosure + affirmative consent (SP-16 §A)
+                disclosureResId = R.string.perm_accessibility_disclosure,
+                ctaResId = R.string.perm_accessibility_agree,
+                onConsent = {
+                    scope.launch {
+                        UserPrefs.recordAccessibilityConsent(ctx, System.currentTimeMillis())
+                    }
+                }
             )
         }
 
