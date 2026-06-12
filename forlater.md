@@ -36,19 +36,20 @@
 - **Date added:** 2026-06-11
 - **Originated from:** Website design session.
 
-### 11. Play accessibility prominent-disclosure hardening (pre-submission gate)
-- **What:** Per Google Play's AccessibilityService policy, apps that are NOT accessibility tools must (a) complete the AccessibilityService declaration in Play Console and (b) show an in-app PROMINENT DISCLOSURE with affirmative consent before enabling the service. Our accessibility permission screen describes the use, but the copy should be hardened to name the AccessibilityService explicitly, state what is/isn't accessed, and capture explicit consent before routing to system settings.
-- **Why:** Rejection-proofing the Play review — accessibility misdeclaration is a common rejection/suspension cause.
-- **Scope:** PermissionScreen accessibility step copy + an explicit consent affirmation; Play Console declaration text + possibly a demo video; strings ×8 locales.
-- **Status:** Queued — MUST land before the first Play submission. Trigger: Play Console arrival.
-- **Date added:** 2026-06-12
-- **Originated from:** SEO/legal research session (Play policy lookup).
-
 ## In progress
 
 _(empty)_
 
 ## Done — archived
+
+### 11. Play accessibility prominent-disclosure hardening (pre-submission gate)
+- **What:** Per Google Play's AccessibilityService policy, apps that are NOT accessibility tools must (a) complete the AccessibilityService declaration in Play Console and (b) show an in-app PROMINENT DISCLOSURE with affirmative consent before enabling the service. Our accessibility permission screen describes the use, but the copy should be hardened to name the AccessibilityService explicitly, state what is/isn't accessed, and capture explicit consent before routing to system settings.
+- **Why:** Rejection-proofing the Play review — accessibility misdeclaration is a common rejection/suspension cause.
+- **Scope:** PermissionScreen accessibility step copy + an explicit consent affirmation; Play Console declaration text + possibly a demo video; strings ×8 locales.
+- **Status:** DONE — shipped as SP-16 §A: disclosure card + affirmative consent CTA on the accessibility step, consent timestamp persisted, strings ×8 locales, live-verified; Play Console declaration text drafted in docs/play-listing-kit.html §4e.
+- **Date added:** 2026-06-12
+- **Originated from:** SEO/legal research session (Play policy lookup).
+- **Completed:** 2026-06-12 (SP-16, commits 490177c + e3146d7)
 
 ### 7. Niyam launcher icon
 - **What:** The app still ships the default Android robot launcher icon (visible on splash + home screen). Design a Niyam icon — orange/bottle-green, no Om (founder dropped Om from the brand for now).
