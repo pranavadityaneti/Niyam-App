@@ -125,7 +125,7 @@ fun PermissionScreen(
                         .height(52.dp),
                     shape = RoundedCornerShape(999.dp)
                 ) {
-                    Text(stringResource(R.string.grant), style = MaterialTheme.typography.labelLarge)
+                    Text(stringResource(ctaResId), style = MaterialTheme.typography.labelLarge)
                 }
                 Spacer(Modifier.height(28.dp))
             }

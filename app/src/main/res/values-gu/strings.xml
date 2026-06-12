@@ -27,6 +27,8 @@
     <string name="perm_overlay_body">અવરોધિત એપ ઉપર તમારો મંત્ર બતાવવા માટે.</string>
     <string name="perm_accessibility_title">એપ ખૂલે કે તરત ઓળખો</string>
     <string name="perm_accessibility_body">Instagram, Facebook કે YouTube ખૂલે એ ચોક્કસ ક્ષણ ઓળખવા માટે — તરત, કોઈ વિલંબ વગર.</string>
+    <string name="perm_accessibility_disclosure">નિયમ Android ની AccessibilityService API નો ઉપયોગ ફક્ત એક જ હેતુ માટે કરે છે: તમે જે એપ બ્લોક કરવાનું પસંદ કર્યું છે તે ક્યારે ખૂલે છે તે ઓળખવા માટે, જેથી પહેલાં તમારો મંત્ર દેખાઈ શકે. આ સેવા દ્વારા નિયમ સ્ક્રીનની સામગ્રી, સંદેશા કે કોઈ વ્યક્તિગત ડેટા એકત્ર કરતું નથી, વાંચતું નથી, સંગ્રહતું નથી કે મોકલતું નથી. આ ઓળખ સંપૂર્ણપણે તમારા ઉપકરણ પર જ થાય છે. તમે તેને તમારા ફોનની Accessibility સેટિંગ્સમાં ગમે ત્યારે બંધ કરી શકો છો.</string>
+    <string name="perm_accessibility_agree">હું સંમત છું — ચાલુ કરો</string>
     <string name="perm_battery_title">પૃષ્ઠભૂમિમાં અમને બંધ ન કરો</string>
     <string name="perm_battery_body">જેથી તમે બીજે ક્યાંક વ્યસ્ત હો ત્યારે તમારો ફોન નિયમને બંધ ન કરી દે.</string>
     <string name="perm_oem_title">પૃષ્ઠભૂમિ પ્રવૃત્તિને મંજૂરી આપો</string>

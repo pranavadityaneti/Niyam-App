@@ -27,6 +27,8 @@
     <string name="perm_overlay_body">ब्लॉक किए गए ऐप के ऊपर आपका मंत्र दिखाने के लिए।</string>
     <string name="perm_accessibility_title">ऐप खुलते ही तुरंत पहचानें</string>
     <string name="perm_accessibility_body">यह पहचानने के लिए कि Instagram, Facebook या YouTube ठीक किस पल खुलता है — तुरंत, बिना किसी देरी के।</string>
+    <string name="perm_accessibility_disclosure">नियम, Android की AccessibilityService API का उपयोग केवल एक ही उद्देश्य के लिए करता है: यह पहचानने के लिए कि आपने जिस ऐप को ब्लॉक करना चुना है वह कब खुलता है, ताकि पहले आपका मंत्र दिख सके। नियम इस सेवा के ज़रिए स्क्रीन की सामग्री, संदेश या कोई भी व्यक्तिगत डेटा न तो एकत्र करता है, न पढ़ता है, न संग्रहीत करता है और न ही भेजता है। यह पहचान पूरी तरह आपके डिवाइस पर ही होती है। आप इसे अपने फ़ोन की Accessibility सेटिंग्स में कभी भी बंद कर सकते हैं।</string>
+    <string name="perm_accessibility_agree">मैं सहमत हूँ — चालू करें</string>
     <string name="perm_battery_title">हमें बैकग्राउंड में बंद न करें</string>
     <string name="perm_battery_body">ताकि जब आप कहीं और हों, तब आपका फ़ोन नियम को बंद न कर दे।</string>
     <string name="perm_oem_title">बैकग्राउंड गतिविधि की अनुमति दें</string>

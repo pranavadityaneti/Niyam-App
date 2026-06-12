@@ -27,6 +27,8 @@
     <string name="perm_overlay_body">బ్లాక్ చేసిన యాప్ పైన మీ మంత్రాన్ని చూపడానికి.</string>
     <string name="perm_accessibility_title">యాప్‌లు తెరుచుకున్నది వెంటనే గుర్తించడానికి</string>
     <string name="perm_accessibility_body">Instagram, Facebook లేదా YouTube తెరుచుకునే సరిగ్గా ఆ క్షణాన్ని గుర్తించడానికి — వెంటనే, ఎలాంటి ఆలస్యం లేకుండా.</string>
+    <string name="perm_accessibility_disclosure">నియమ్ Android యొక్క AccessibilityService API ను ఒకే ఒక్క ఉద్దేశ్యం కోసం మాత్రమే ఉపయోగిస్తుంది: మీరు బ్లాక్ చేయాలని ఎంచుకున్న యాప్ ఎప్పుడు తెరుచుకుంటుందో గుర్తించడానికి, తద్వారా ముందుగా మీ మంత్రం కనిపించగలదు. ఈ సేవ ద్వారా నియమ్ స్క్రీన్ కంటెంట్‌ను, సందేశాలను లేదా ఏ వ్యక్తిగత డేటానూ సేకరించదు, చదవదు, నిల్వ చేయదు లేదా పంపదు. ఈ గుర్తింపు పూర్తిగా మీ పరికరంలోనే జరుగుతుంది. మీరు దీన్ని మీ ఫోన్ యొక్క Accessibility సెట్టింగ్‌లలో ఎప్పుడైనా ఆఫ్ చేయవచ్చు.</string>
+    <string name="perm_accessibility_agree">నేను అంగీకరిస్తున్నాను — ఆన్ చేయి</string>
     <string name="perm_battery_title">నేపథ్యంలో మమ్మల్ని ఆపివేయకండి</string>
     <string name="perm_battery_body">మీరు మరెక్కడో ఉన్నప్పుడు మీ ఫోన్ నియమ్‌ను మూసివేయకుండా ఉండటానికి.</string>
     <string name="perm_oem_title">నేపథ్య కార్యకలాపాన్ని అనుమతించండి</string>

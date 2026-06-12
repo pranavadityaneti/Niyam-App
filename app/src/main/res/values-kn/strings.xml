@@ -27,6 +27,8 @@
     <string name="perm_overlay_body">ನಿರ್ಬಂಧಿತ ಆ್ಯಪ್‌ನ ಮೇಲೆ ನಿಮ್ಮ ಮಂತ್ರವನ್ನು ತೋರಿಸಲು.</string>
     <string name="perm_accessibility_title">ಆ್ಯಪ್ ತೆರೆಯುವಿಕೆಯನ್ನು ತಕ್ಷಣ ಗುರುತಿಸಲು</string>
     <string name="perm_accessibility_body">Instagram, Facebook ಅಥವಾ YouTube ತೆರೆಯುವ ನಿಖರ ಕ್ಷಣವನ್ನು ಗುರುತಿಸಲು — ತಕ್ಷಣ, ಯಾವುದೇ ವಿಳಂಬವಿಲ್ಲದೆ.</string>
+    <string name="perm_accessibility_disclosure">ನಿಯಮ Android ನ AccessibilityService API ಅನ್ನು ಕೇವಲ ಒಂದೇ ಉದ್ದೇಶಕ್ಕಾಗಿ ಬಳಸುತ್ತದೆ: ನೀವು ಬ್ಲಾಕ್ ಮಾಡಲು ಆರಿಸಿಕೊಂಡ ಆ್ಯಪ್ ಯಾವಾಗ ತೆರೆಯುತ್ತದೆ ಎಂಬುದನ್ನು ಗುರುತಿಸಲು, ಆ ಮೂಲಕ ಮೊದಲು ನಿಮ್ಮ ಮಂತ್ರ ಕಾಣಿಸಬಹುದು. ಈ ಸೇವೆಯ ಮೂಲಕ ನಿಯಮ ಪರದೆಯ ವಿಷಯ, ಸಂದೇಶಗಳು ಅಥವಾ ಯಾವುದೇ ವೈಯಕ್ತಿಕ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಿಸುವುದಿಲ್ಲ, ಓದುವುದಿಲ್ಲ, ಸಂಗ್ರಹಿಸಿ ಇಡುವುದಿಲ್ಲ ಅಥವಾ ರವಾನಿಸುವುದಿಲ್ಲ. ಈ ಗುರುತಿಸುವಿಕೆ ಸಂಪೂರ್ಣವಾಗಿ ನಿಮ್ಮ ಸಾಧನದಲ್ಲೇ ನಡೆಯುತ್ತದೆ. ನಿಮ್ಮ ಫೋನ್‌ನ Accessibility ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ ನೀವು ಇದನ್ನು ಯಾವಾಗ ಬೇಕಾದರೂ ಆಫ್ ಮಾಡಬಹುದು.</string>
+    <string name="perm_accessibility_agree">ನಾನು ಒಪ್ಪುತ್ತೇನೆ — ಆನ್ ಮಾಡಿ</string>
     <string name="perm_battery_title">ಹಿನ್ನೆಲೆಯಲ್ಲಿ ನಮ್ಮನ್ನು ಮುಚ್ಚಬೇಡಿ</string>
     <string name="perm_battery_body">ನೀವು ಬೇರೆಡೆ ಫೋನ್ ಬಳಸುತ್ತಿರುವಾಗ ಅದು ನಿಯಮವನ್ನು ಮುಚ್ಚದಂತೆ.</string>
     <string name="perm_oem_title">ಹಿನ್ನೆಲೆ ಚಟುವಟಿಕೆಗೆ ಅನುಮತಿಸಿ</string>

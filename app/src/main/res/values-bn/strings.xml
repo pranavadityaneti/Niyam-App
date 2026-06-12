@@ -27,6 +27,8 @@
     <string name="perm_overlay_body">ব্লক করা অ্যাপের উপরে আপনার মন্ত্র দেখানোর জন্য।</string>
     <string name="perm_accessibility_title">অ্যাপ খোলা তৎক্ষণাৎ শনাক্ত করুন</string>
     <string name="perm_accessibility_body">Instagram, Facebook বা YouTube ঠিক যে মুহূর্তে খোলে সেটি শনাক্ত করতে — তৎক্ষণাৎ, কোনো বিলম্ব ছাড়াই।</string>
+    <string name="perm_accessibility_disclosure">নিয়ম Android-এর AccessibilityService API শুধুমাত্র একটি উদ্দেশ্যেই ব্যবহার করে: আপনি যে অ্যাপটি ব্লক করতে বেছে নিয়েছেন তা কখন খোলে তা শনাক্ত করতে, যাতে আগে আপনার মন্ত্র দেখাতে পারে। এই পরিষেবার মাধ্যমে নিয়ম স্ক্রিনের বিষয়বস্তু, বার্তা বা কোনো ব্যক্তিগত তথ্য সংগ্রহ করে না, পড়ে না, সংরক্ষণ করে না বা পাঠায় না। এই শনাক্তকরণ সম্পূর্ণরূপে আপনার ডিভাইসেই হয়। আপনি এটি যেকোনো সময় আপনার ফোনের Accessibility সেটিংসে বন্ধ করতে পারেন।</string>
+    <string name="perm_accessibility_agree">আমি সম্মত — চালু করুন</string>
     <string name="perm_battery_title">পটভূমিতে আমাদের বন্ধ করবেন না</string>
     <string name="perm_battery_body">যাতে আপনি অন্য কোথাও থাকার সময় আপনার ফোন নিয়ম-কে বন্ধ করে না দেয়।</string>
     <string name="perm_oem_title">পটভূমিতে চলার অনুমতি দিন</string>
