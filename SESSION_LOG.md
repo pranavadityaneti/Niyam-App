@@ -443,3 +443,38 @@ Pranav tested onboarding on a Hindi device and gave 6 points. Investigated each 
 **Pending:** T4 (freemium dynamic free-5 locked to onboarding intention — billing, has tests) → T5 (step-2 shows 5, depends on T4) → T6 (per-app locale + reorder picker after sign-in + force-English-until-pick — architectural; then localize new T1/T3/signin/nav strings into 7 locales). After this batch: Phase-3 remainder (sign-in gate for returning users, Settings → Account: email + Sign out + Delete account via Edge Function).
 
 **Observation (mention, not touched):** usage-stats + accessibility permission screens feel redundant to users. Possibly the engine no longer needs usage-stats given AccessibilityService — worth checking whether one permission screen can be dropped. Not actioned.
+
+### 2026-06-16 (cont.) — T6 equivalent SHIPPED (b9572e2, pushed main)
+
+Pranav: "Finish the following at once" — three changes bundled in one commit:
+
+**Task A — Default to English + move language picker:**
+- `UserPrefs.kt`: default `displayLanguage` → `ENGLISH` (was `DEVANAGARI_SANSKRIT`)
+- `LanguageScreen.kt`: step 3 → step 1 (right after sign-in, no back button)
+- `AppNavHost.kt`: sign-in navigates to `ONB_LANGUAGE` (was `ONB_INTENTION`); flow reordered Language→Intention→Mantra→Apps
+- `AppNavHost.kt` OEM done handler: `activity.recreate()` after persisting onboarding+trial → `attachBaseContext` calls `LocaleBridge.wrap()` with chosen locale → Home renders in selected language
+- `UserPrefsTest.kt`: updated default assertion to `ENGLISH`
+
+**Task B — Back button in onboarding:**
+- `OnboardingScaffold.kt`: added optional `onBack: (() -> Unit)?` parameter + `IconButton` with `Icons.AutoMirrored.Filled.ArrowBack`
+- `IntentionScreen.kt`, `MantraPickerScreen.kt`, `AppsScreen.kt`: accept+forward `onBack`; step numbers updated (2, 3, 4)
+- `AppNavHost.kt`: steps 2-4 get `onBack = { navController.popBackStack() }`
+
+**Task C — Official brand logos:**
+- 11 new vector drawable files (`ic_app_*.xml`) for all catalog apps: Instagram, YouTube, Facebook, X, Reddit, Snapchat, TikTok, Free Fire, COD Mobile, Candy Crush, Ludo King
+
+**Verification:** 124/124 tests pass, assembleDebug green, emulator walkthrough confirmed English Welcome + English Sign In. Google Sign-In can't complete on emulator (no Play services account), but code paths verified.
+
+**Next:** Phases 5, 6, 7 per Pranav's instruction.
+
+### 2026-06-16 (cont.) — Phase 3 remainder SHIPPED (sequence locked 3→7→5c→5→6)
+
+Pranav chose ordering **3 → 7 → 5c → 5(sync) → 6** (revenue path early) and said "for step three, don't ask any further permissions" → ran 3a/3b/3c autonomously, commit + push per task, build-verified each.
+
+- **3a (Account section, pushed):** Settings gains an Account `SectionCard` (email via `AuthRepository.currentEmail()` + Sign out with confirm dialog → `signOut()` → route to SignIn, back stack cleared). `onSignedOut` param + nav wiring. Section hidden when no session. `ExitToApp` icon (Logout not in material-icons-core).
+- **3b (Delete account, pushed):** destructive "Delete account" row + strong confirm → new **`delete-account` Supabase Edge Function** (`supabase/functions/delete-account/index.ts`): verifies caller JWT with anon client, deletes auth user with service_role (env-injected, never in app), DB tables cascade. Client: added `functions-kt` dep + `Functions` install; `AuthRepository.deleteAccount()`; `UserPrefs.clearAll()` wipes DataStore → route to Welcome. Errors surface inline, state preserved. **⚠️ ACTION FOR PRANAV: `supabase functions deploy delete-account`** (no secrets to set — URL/anon/service_role auto-provided).
+- **3c (sign-in gate, pushed):** login required. Reactive gate in `AppNavHost` — on RESOLVED `SessionStatus.NotAuthenticated` + onboardingComplete + on a post-onboarding route → redirect to SignIn (back stack cleared). Keyed off resolved state, not the cold-start Initializing window, so signed-in users with a still-loading stored session aren't bounced. Post-sign-in routing branches: returning user → Home; new user → onboarding.
+
+124/124 tests + assembleDebug green throughout. New English-only strings (account/signout/delete) deferred to the end-of-phase locale sweep (same pattern as nav/sign-in strings).
+
+**Next: Phase 7 — real Play Billing** (replace SandboxBillingGateway with Play Billing Library 7; product IDs niyam.premium.weekly/monthly/yearly). Needs Pranav: subscription products created/active in Play Console + a closed-test track to test purchases. Then 5c (Edge Function verifies Play purchase → entitlements) → 5 (state+favourites sync) → 6 (compliance refresh).
