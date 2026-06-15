@@ -163,4 +163,35 @@
         <item quantity="other">சோதனை முடிய %1$d நாட்கள் உள்ளன</item>
     </plurals>
 
+    <!-- Library filters (SP-17) -->
+    <string name="filter_heading">வடிப்பான்கள்</string>
+    <string name="filter_clear_all">அனைத்தையும் அழி</string>
+    <string name="filter_show_count">%1$d ஐக் காட்டு</string>
+    <string name="filter_section_source">மூலம்</string>
+    <string name="filter_section_length">நீளம்</string>
+    <string name="filter_section_intention">நோக்கம்</string>
+    <string name="filter_section_deity">தெய்வம்</string>
+    <string name="cat_vedic">வைதிக</string>
+    <string name="cat_upanishad">உபநிடதங்கள்</string>
+    <string name="cat_gita">பகவத் கீதை</string>
+    <string name="cat_stotra">ஸ்தோத்திரங்கள்</string>
+    <string name="len_under30">30 வி-க்குக் கீழே</string>
+    <string name="len_30to60">30–60 வி</string>
+    <string name="len_over60">1 நிமிடத்துக்கு மேல்</string>
+    <string name="intent_focus">கவனம்</string>
+    <string name="intent_calm">அமைதி</string>
+    <string name="intent_sadhana">சாதனை</string>
+    <string name="intent_dharma">தர்மம்</string>
+    <string name="intent_devotion">பக்தி</string>
+    <string name="deity_shiva">சிவன்</string>
+    <string name="deity_vishnu">விஷ்ணு</string>
+    <string name="deity_devi">தேவி</string>
+    <string name="deity_ganesha">கணேசர்</string>
+    <string name="deity_hanuman">அனுமன்</string>
+    <string name="deity_krishna">கிருஷ்ணர்</string>
+    <string name="deity_rama">ராமர்</string>
+    <string name="deity_saraswati">சரஸ்வதி</string>
+    <string name="deity_lakshmi">லட்சுமி</string>
+    <string name="deity_universal">பொதுவான</string>
+
 </resources>

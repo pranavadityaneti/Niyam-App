@@ -162,4 +162,35 @@
         <item quantity="one">ಪ್ರಯೋಗದ %1$d ದಿನ ಬಾಕಿ</item>
         <item quantity="other">ಪ್ರಯೋಗದ %1$d ದಿನಗಳು ಬಾಕಿ</item>
     </plurals>
+
+    <!-- Library filters (SP-17) -->
+    <string name="filter_heading">ಫಿಲ್ಟರ್‌ಗಳು</string>
+    <string name="filter_clear_all">ಎಲ್ಲವನ್ನೂ ತೆರವುಗೊಳಿಸಿ</string>
+    <string name="filter_show_count">%1$d ತೋರಿಸಿ</string>
+    <string name="filter_section_source">ಮೂಲ</string>
+    <string name="filter_section_length">ಅವಧಿ</string>
+    <string name="filter_section_intention">ಉದ್ದೇಶ</string>
+    <string name="filter_section_deity">ದೇವತೆ</string>
+    <string name="cat_vedic">ವೇದ</string>
+    <string name="cat_upanishad">ಉಪನಿಷತ್ತುಗಳು</string>
+    <string name="cat_gita">ಭಗವದ್ಗೀತೆ</string>
+    <string name="cat_stotra">ಸ್ತೋತ್ರಗಳು</string>
+    <string name="len_under30">30 ಸೆ.ಗಿಂತ ಕಡಿಮೆ</string>
+    <string name="len_30to60">30–60 ಸೆ.</string>
+    <string name="len_over60">1 ನಿಮಿಷಕ್ಕಿಂತ ಹೆಚ್ಚು</string>
+    <string name="intent_focus">ಏಕಾಗ್ರತೆ</string>
+    <string name="intent_calm">ಶಾಂತಿ</string>
+    <string name="intent_sadhana">ಸಾಧನೆ</string>
+    <string name="intent_dharma">ಧರ್ಮ</string>
+    <string name="intent_devotion">ಭಕ್ತಿ</string>
+    <string name="deity_shiva">ಶಿವ</string>
+    <string name="deity_vishnu">ವಿಷ್ಣು</string>
+    <string name="deity_devi">ದೇವಿ</string>
+    <string name="deity_ganesha">ಗಣೇಶ</string>
+    <string name="deity_hanuman">ಹನುಮಂತ</string>
+    <string name="deity_krishna">ಕೃಷ್ಣ</string>
+    <string name="deity_rama">ರಾಮ</string>
+    <string name="deity_saraswati">ಸರಸ್ವತಿ</string>
+    <string name="deity_lakshmi">ಲಕ್ಷ್ಮಿ</string>
+    <string name="deity_universal">ಸಾರ್ವತ್ರಿಕ</string>
 </resources>

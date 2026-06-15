@@ -162,4 +162,35 @@
         <item quantity="one">અજમાયશનો %1$d દિવસ બાકી</item>
         <item quantity="other">અજમાયશના %1$d દિવસ બાકી</item>
     </plurals>
+
+    <!-- Library filters -->
+    <string name="filter_heading">ફિલ્ટર</string>
+    <string name="filter_clear_all">બધાં સાફ કરો</string>
+    <string name="filter_show_count">%1$d બતાવો</string>
+    <string name="filter_section_source">સ્રોત</string>
+    <string name="filter_section_length">લંબાઈ</string>
+    <string name="filter_section_intention">ઉદ્દેશ</string>
+    <string name="filter_section_deity">દેવતા</string>
+    <string name="cat_vedic">વૈદિક</string>
+    <string name="cat_upanishad">ઉપનિષદ</string>
+    <string name="cat_gita">ભગવદ્ગીતા</string>
+    <string name="cat_stotra">સ્તોત્ર</string>
+    <string name="len_under30">30 સેકન્ડથી ઓછું</string>
+    <string name="len_30to60">30–60 સેકન્ડ</string>
+    <string name="len_over60">1 મિનિટથી વધુ</string>
+    <string name="intent_focus">ધ્યાન</string>
+    <string name="intent_calm">શાંતિ</string>
+    <string name="intent_sadhana">સાધના</string>
+    <string name="intent_dharma">ધર્મ</string>
+    <string name="intent_devotion">ભક્તિ</string>
+    <string name="deity_shiva">શિવ</string>
+    <string name="deity_vishnu">વિષ્ણુ</string>
+    <string name="deity_devi">દેવી</string>
+    <string name="deity_ganesha">ગણેશ</string>
+    <string name="deity_hanuman">હનુમાન</string>
+    <string name="deity_krishna">કૃષ્ણ</string>
+    <string name="deity_rama">રામ</string>
+    <string name="deity_saraswati">સરસ્વતી</string>
+    <string name="deity_lakshmi">લક્ષ્મી</string>
+    <string name="deity_universal">સાર્વત્રિક</string>
 </resources>

@@ -162,4 +162,35 @@
         <item quantity="one">ট্রায়ালের %1$d দিন বাকি</item>
         <item quantity="other">ট্রায়ালের %1$d দিন বাকি</item>
     </plurals>
+
+    <!-- Library filters (SP-17) -->
+    <string name="filter_heading">ফিল্টার</string>
+    <string name="filter_clear_all">সব মুছে ফেলুন</string>
+    <string name="filter_show_count">দেখান %1$d</string>
+    <string name="filter_section_source">উৎস</string>
+    <string name="filter_section_length">দৈর্ঘ্য</string>
+    <string name="filter_section_intention">উদ্দেশ্য</string>
+    <string name="filter_section_deity">দেবতা</string>
+    <string name="cat_vedic">বৈদিক</string>
+    <string name="cat_upanishad">উপনিষদ</string>
+    <string name="cat_gita">ভগবদ্গীতা</string>
+    <string name="cat_stotra">স্তোত্র</string>
+    <string name="len_under30">30 সেকেন্ডের কম</string>
+    <string name="len_30to60">30–60 সেকেন্ড</string>
+    <string name="len_over60">1 মিনিটের বেশি</string>
+    <string name="intent_focus">মনোযোগ</string>
+    <string name="intent_calm">প্রশান্তি</string>
+    <string name="intent_sadhana">সাধনা</string>
+    <string name="intent_dharma">ধর্ম</string>
+    <string name="intent_devotion">ভক্তি</string>
+    <string name="deity_shiva">শিব</string>
+    <string name="deity_vishnu">বিষ্ণু</string>
+    <string name="deity_devi">দেবী</string>
+    <string name="deity_ganesha">গণেশ</string>
+    <string name="deity_hanuman">হনুমান</string>
+    <string name="deity_krishna">কৃষ্ণ</string>
+    <string name="deity_rama">রাম</string>
+    <string name="deity_saraswati">সরস্বতী</string>
+    <string name="deity_lakshmi">লক্ষ্মী</string>
+    <string name="deity_universal">সর্বজনীন</string>
 </resources>

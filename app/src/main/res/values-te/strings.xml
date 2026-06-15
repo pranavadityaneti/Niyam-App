@@ -162,4 +162,35 @@
         <item quantity="one">ట్రయల్ %1$d రోజు మిగిలి ఉంది</item>
         <item quantity="other">ట్రయల్ %1$d రోజులు మిగిలి ఉన్నాయి</item>
     </plurals>
+
+    <!-- Library filters (SP-17) -->
+    <string name="filter_heading">ఫిల్టర్‌లు</string>
+    <string name="filter_clear_all">అన్నీ తొలగించు</string>
+    <string name="filter_show_count">చూపించు %1$d</string>
+    <string name="filter_section_source">మూలం</string>
+    <string name="filter_section_length">నిడివి</string>
+    <string name="filter_section_intention">సంకల్పం</string>
+    <string name="filter_section_deity">దైవం</string>
+    <string name="cat_vedic">వైదిక</string>
+    <string name="cat_upanishad">ఉపనిషత్తులు</string>
+    <string name="cat_gita">భగవద్గీత</string>
+    <string name="cat_stotra">స్తోత్రాలు</string>
+    <string name="len_under30">30 సెకన్ల లోపు</string>
+    <string name="len_30to60">30–60 సెకన్లు</string>
+    <string name="len_over60">1 నిమిషం పైగా</string>
+    <string name="intent_focus">దృష్టి</string>
+    <string name="intent_calm">ప్రశాంతత</string>
+    <string name="intent_sadhana">సాధన</string>
+    <string name="intent_dharma">ధర్మం</string>
+    <string name="intent_devotion">భక్తి</string>
+    <string name="deity_shiva">శివ</string>
+    <string name="deity_vishnu">విష్ణు</string>
+    <string name="deity_devi">దేవి</string>
+    <string name="deity_ganesha">గణేశ</string>
+    <string name="deity_hanuman">హనుమాన్</string>
+    <string name="deity_krishna">కృష్ణ</string>
+    <string name="deity_rama">రామ</string>
+    <string name="deity_saraswati">సరస్వతి</string>
+    <string name="deity_lakshmi">లక్ష్మి</string>
+    <string name="deity_universal">విశ్వవ్యాప్త</string>
 </resources>
