@@ -213,7 +213,9 @@
     <string name="paywall_fewer_plans">Fewer plans</string>
     <string name="paywall_restore">Restore purchase</string>
     <string name="paywall_restore_sandbox_toast">Sandbox build — nothing to restore yet.</string>
+    <string name="paywall_restore_none">No active subscription found.</string>
     <string name="paywall_trust_sandbox">Sandbox — no real payment</string>
+    <string name="paywall_trust">Cancel anytime in Google Play</string>
     <string name="paywall_cta">Unlock Niyam</string>
 
     <!-- Trial reminder notification -->

@@ -46,6 +46,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.myniyam.app.BuildConfig
 import com.myniyam.app.R
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.ui.theme.NiyamBackground
@@ -179,11 +180,17 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
                             color = NiyamTheme.colors.overlineWarm,
                             modifier = Modifier
                                 .clickable {
-                                    Toast.makeText(
-                                        ctx,
-                                        ctx.getString(R.string.paywall_restore_sandbox_toast),
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    scope.launch {
+                                        if (Billing.gateway.restorePurchases(ctx)) {
+                                            onUnlocked()
+                                        } else {
+                                            Toast.makeText(
+                                                ctx,
+                                                ctx.getString(R.string.paywall_restore_none),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
                                 }
                                 .padding(vertical = 8.dp)
                         )
@@ -220,7 +227,9 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
 
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Text(
-                        text = stringResource(R.string.paywall_trust_sandbox),
+                        text = stringResource(
+                            if (BuildConfig.DEBUG) R.string.paywall_trust_sandbox else R.string.paywall_trust
+                        ),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier
@@ -238,7 +247,7 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
                 Button(
                     onClick = {
                         scope.launch {
-                            if (SandboxBillingGateway.purchase(ctx, selectedPlan)) onUnlocked()
+                            if (Billing.gateway.purchase(ctx, selectedPlan)) onUnlocked()
                         }
                     },
                     shape = RoundedCornerShape(999.dp),
