@@ -27,7 +27,6 @@ object AppCatalog {
         CatalogApp("Snapchat", "com.snapchat.android", "snapchat"),
         CatalogApp("TikTok", "com.zhiliaoapp.musically", "tiktok"),
         // Games
-        CatalogApp("BGMI", "com.pubg.imobile", "bgmi"),
         CatalogApp("Free Fire", "com.dts.freefireth", "freefire"),
         CatalogApp("Call of Duty Mobile", "com.activision.callofduty.shooter", "codmobile"),
         CatalogApp("Candy Crush Saga", "com.king.candycrushsaga", "candycrush"),
