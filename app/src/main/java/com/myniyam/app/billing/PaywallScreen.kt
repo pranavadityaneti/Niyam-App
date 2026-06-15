@@ -72,7 +72,7 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
     var selectedPlan by remember { mutableStateOf(Plan.YEARLY) }
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { padding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()

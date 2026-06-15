@@ -51,7 +51,7 @@ fun NextSadhanaScreen(onDone: () -> Unit) {
     var selectedId by remember { mutableStateOf<String?>(null) }
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { innerPadding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { innerPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -75,7 +75,7 @@ fun NextSadhanaScreen(onDone: () -> Unit) {
                 options.forEach { mantra ->
                     SelectableCard(
                         text = mantra.canonicalName,
-                        supportingText = mantraGist(mantra.meaning.en),
+                        supportingText = mantraGist(mantra.meaning.forLang(snap.displayLanguage.meaningLang)),
                         trailingChip = stringResource(R.string.onb_read_time_fmt, mantra.estimatedReadSeconds),
                         selected = selectedId == mantra.id,
                         onClick = { selectedId = mantra.id }

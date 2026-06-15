@@ -46,7 +46,7 @@ fun IntentionSettingScreen(onSaved: () -> Unit) {
     )
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { padding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
             Column(
                 Modifier
                     .fillMaxSize()

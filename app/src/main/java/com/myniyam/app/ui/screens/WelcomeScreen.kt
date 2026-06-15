@@ -27,7 +27,7 @@ import com.myniyam.app.ui.theme.NiyamBackground
 @Composable
 fun WelcomeScreen(onGetStarted: () -> Unit) {
     NiyamBackground {
-    Scaffold(containerColor = Color.Transparent) { padding ->
+    Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()

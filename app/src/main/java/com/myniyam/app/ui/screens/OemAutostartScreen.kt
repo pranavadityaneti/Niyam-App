@@ -29,7 +29,7 @@ fun OemAutostartScreen(onDone: () -> Unit) {
     val flow = OemAutostartHelper.flowFor(Build.MANUFACTURER)
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { padding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()

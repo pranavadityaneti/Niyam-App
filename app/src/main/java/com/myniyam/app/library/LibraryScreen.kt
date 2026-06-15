@@ -66,7 +66,7 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
     val results = remember(selection, all) { LibraryFilters.apply(all, selection) }
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { padding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
             Column(
                 Modifier
                     .fillMaxSize()
@@ -163,7 +163,7 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
                                     }
                                     Spacer(Modifier.height(4.dp))
                                     Text(
-                                        mantraGist(mantra.meaning.en),
+                                        mantraGist(mantra.meaning.forLang(snap.displayLanguage.meaningLang)),
                                         style = MaterialTheme.typography.bodyMedium,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                                         maxLines = 2,

@@ -48,7 +48,7 @@ fun BlockedAppsSettingScreen(onSaved: () -> Unit) {
     var selected by remember { mutableStateOf(UserPrefs.snapshot().blockedPackages) }
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { padding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
             Column(
                 Modifier
                     .fillMaxSize()

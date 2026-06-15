@@ -49,7 +49,7 @@ fun CelebrationScreen(
     val mantra = MantraRepository.displayMantra(CurrentSadhana.MANTRA_ID)
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { innerPadding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { innerPadding ->
             Box(modifier = Modifier.fillMaxSize()) {
                 // One-shot petal scatter, drawn behind the content.
                 PetalScatter(modifier = Modifier.fillMaxSize())

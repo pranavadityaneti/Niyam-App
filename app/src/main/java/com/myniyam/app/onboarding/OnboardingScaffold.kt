@@ -54,7 +54,7 @@ fun OnboardingScaffold(
     content: @Composable ColumnScope.() -> Unit
 ) {
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { innerPadding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { innerPadding ->
             Column(
                 modifier = Modifier
                     .fillMaxSize()

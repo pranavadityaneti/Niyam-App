@@ -53,7 +53,7 @@ fun LanguageSettingScreen(onSaved: () -> Unit, onPaywall: () -> Unit) {
     var selected by remember { mutableStateOf(snap.displayLanguage) }
 
     NiyamBackground {
-        Scaffold(containerColor = Color.Transparent) { padding ->
+        Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
             Column(
                 Modifier
                     .fillMaxSize()
