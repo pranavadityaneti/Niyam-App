@@ -158,7 +158,7 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
                         .padding(20.dp)
                 ) {
                     Text(
-                        text = mantra.canonicalName,
+                        text = mantra.name.forScript(CurrentSadhana.LANGUAGE.script),
                         style = MaterialTheme.typography.headlineMedium,
                         color = MaterialTheme.colorScheme.onSurface
                     )

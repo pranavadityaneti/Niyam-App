@@ -23,6 +23,10 @@ object MantraRepository {
     val FALLBACK = Mantra(
         id = "om",
         canonicalName = "Om (Pranava)",
+        name = MantraText(
+            devanagari = "ॐ", telugu = "ఓం", tamil = "ௐ",
+            kannada = "ಓಂ", bengali = "ওঁ", gujarati = "ૐ", roman = "Om (Pranava)"
+        ),
         originalLanguage = OriginalLanguage.SANSKRIT,
         text = MantraText(
             devanagari = "ॐ", telugu = "ఓం", tamil = "ௐ",
@@ -40,6 +44,11 @@ object MantraRepository {
             gu = "બ્રહ્માંડનો આદિ નાદ."
         ),
         source = "Mandukya Upanishad",
+        sourceLabel = MantraText(
+            devanagari = "माण्डूक्य उपनिषद्", telugu = "మాండూక్య ఉపనిషద్", tamil = "மாண்டூக்ய உபநிஷத்",
+            kannada = "ಮಾಂಡೂಕ್ಯ ಉಪನಿಷದ್", bengali = "মাণ্ডূক্য উপনিষদ্", gujarati = "માણ્ડૂક્ય ઉપનિષદ્",
+            roman = "Mandukya Upanishad"
+        ),
         sourceRefs = listOf("https://sanskritdocuments.org/doc_upanishhat/mandukya.html"),
         deity = Deity.UNIVERSAL,
         intentions = listOf(Intention.CALM, Intention.SADHANA),

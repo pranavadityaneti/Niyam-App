@@ -54,7 +54,7 @@ object OverlayManager {
         }
         view.findViewById<TextView>(R.id.overlay_meaning).text = mantra.meaning.forLang(lang.meaningLang)
         view.findViewById<TextView>(R.id.overlay_label).text =
-            ctx.getString(R.string.overlay_label_fmt, mantra.canonicalName)
+            ctx.getString(R.string.overlay_label_fmt, mantra.name.forScript(lang.script))
 
         applyTheme(ctx, view)
 

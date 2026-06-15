@@ -65,7 +65,7 @@ object ProgressRepository {
                 if (CompletionNotifier.shouldPost(notifyOn, CompletionNotifier.hasPostPermission(context))) {
                     CompletionNotifier.notifyCompletion(
                         context,
-                        MantraRepository.displayMantra(mantraId).canonicalName
+                        MantraRepository.displayMantra(mantraId).name.forScript(snap.displayLanguage.script)
                     )
                 }
             } catch (e: Exception) {

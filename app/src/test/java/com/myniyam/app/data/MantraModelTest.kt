@@ -15,6 +15,10 @@ class MantraModelTest {
       "mantras": [{
         "id": "om",
         "canonicalName": "Om (Pranava)",
+        "name": {
+          "devanagari": "ॐ", "telugu": "ఓం", "tamil": "ஓம்",
+          "kannada": "ಓಂ", "bengali": "ওঁ", "gujarati": "ૐ", "roman": "Om (Pranava)"
+        },
         "originalLanguage": "sanskrit",
         "text": {
           "devanagari": "ॐ", "telugu": "ఓం", "tamil": "ஓம்",
@@ -25,6 +29,10 @@ class MantraModelTest {
           "kn": "k", "mr": "m", "bn": "b", "gu": "g"
         },
         "source": "Mandukya Upanishad",
+        "sourceLabel": {
+          "devanagari": "माण्डूक्य उपनिषद्", "telugu": "మాండూక్య ఉపనిషద్", "tamil": "மாண்டூக்ய உபநிஷத்",
+          "kannada": "ಮಾಂಡೂಕ್ಯ ಉಪನಿಷದ್", "bengali": "মাণ্ডূক্য উপনিষদ্", "gujarati": "માણ્ડૂક্য ઉপনিষদ্", "roman": "Mandukya Upanishad"
+        },
         "sourceRefs": ["https://example.org/om"],
         "deity": "universal",
         "intentions": ["calm", "sadhana"],

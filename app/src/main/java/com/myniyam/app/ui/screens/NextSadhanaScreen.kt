@@ -74,7 +74,7 @@ fun NextSadhanaScreen(onDone: () -> Unit) {
             ) {
                 options.forEach { mantra ->
                     SelectableCard(
-                        text = mantra.canonicalName,
+                        text = mantra.name.forScript(snap.displayLanguage.script),
                         supportingText = mantraGist(mantra.meaning.forLang(snap.displayLanguage.meaningLang)),
                         trailingChip = stringResource(R.string.onb_read_time_fmt, mantra.estimatedReadSeconds),
                         selected = selectedId == mantra.id,

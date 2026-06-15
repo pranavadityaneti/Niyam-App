@@ -57,6 +57,16 @@ class ContentValidationTest {
     }
 
     @Test
+    fun `every entry has localized name and sourceLabel in all scripts`() {
+        catalog.mantras.forEach { m ->
+            Script.entries.forEach { s ->
+                assertTrue("${m.id}: blank name script $s", m.name.forScript(s).isNotBlank())
+                assertTrue("${m.id}: blank sourceLabel script $s", m.sourceLabel.forScript(s).isNotBlank())
+            }
+        }
+    }
+
+    @Test
     fun `every entry has all meanings non-empty`() {
         catalog.mantras.forEach { m ->
             MeaningLang.entries.forEach { l ->

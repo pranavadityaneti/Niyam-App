@@ -36,7 +36,25 @@
         "sadhana"
       ],
       "estimatedReadSeconds": 5,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "ॐ",
+        "telugu": "ఓం",
+        "tamil": "ௐ",
+        "kannada": "ಓಂ",
+        "bengali": "ওঁ",
+        "gujarati": "ૐ",
+        "roman": "Om (Pranava)"
+      },
+      "sourceLabel": {
+        "devanagari": "माण्डूक्य उपनिषद्",
+        "telugu": "మాండూక్య ఉపనిషద్",
+        "tamil": "மாண்டூக்ய உபநிஷத்",
+        "kannada": "ಮಾಂಡೂಕ್ಯ ಉಪನಿಷದ್",
+        "bengali": "মাণ্ডূক্য উপনিষদ্",
+        "gujarati": "માણ્ડૂક્ય ઉપનિષદ્",
+        "roman": "Mandukya Upanishad"
+      }
     },
     {
       "id": "gita-2-47",
@@ -73,7 +91,25 @@
         "dharma"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "कर्मण्येवाधिकारस्ते",
+        "telugu": "కర్మణ్యేవాధికారస్తే",
+        "tamil": "கர்மண்யேவாதிகாரஸ்தே",
+        "kannada": "ಕರ್ಮಣ್ಯೇವಾಧಿಕಾರಸ್ತೇ",
+        "bengali": "কর্মণ্যেবাধিকারস্তে",
+        "gujarati": "કર્મણ્યેવાધિકારસ્તે",
+        "roman": "Karmanyevadhikaraste"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 2.47",
+        "telugu": "భగవద్గీతా 2.47",
+        "tamil": "பகவத்கீதா 2.47",
+        "kannada": "ಭಗವದ್ಗೀತಾ 2.47",
+        "bengali": "ভগবদ্গীতা 2.47",
+        "gujarati": "ભગવદ્ગીતા 2.47",
+        "roman": "Bhagavad Gita 2.47"
+      }
     },
     {
       "id": "gita-6-5",
@@ -109,7 +145,25 @@
         "focus"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "उद्धरेदात्मनात्मानम्",
+        "telugu": "ఉద్ధరేదాత్మనాత్మానం",
+        "tamil": "உத்தரேதாத்மனாத்மானம்",
+        "kannada": "ಉದ್ಧರೇದಾತ್ಮನಾತ್ಮಾನಂ",
+        "bengali": "উদ্ধরেদাত্মনাত্মানম্",
+        "gujarati": "ઉદ્ધરેદાત્મનાત્માનમ્",
+        "roman": "Uddhared Atmanatmanam"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 6.5",
+        "telugu": "భగవద్గీతా 6.5",
+        "tamil": "பகவத்கீதா 6.5",
+        "kannada": "ಭಗವದ್ಗೀತಾ 6.5",
+        "bengali": "ভগবদ্গীতা 6.5",
+        "gujarati": "ભગવદ્ગીતા 6.5",
+        "roman": "Bhagavad Gita 6.5"
+      }
     },
     {
       "id": "gita-2-14",
@@ -146,7 +200,25 @@
         "calm"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "मात्रास्पर्शास्तु",
+        "telugu": "మాత్రాస్పర్శాస్తు",
+        "tamil": "மாத்ராஸ்பர்ஶாஸ்து",
+        "kannada": "ಮಾತ್ರಾಸ್ಪರ್ಶಾಸ್ತು",
+        "bengali": "মাত্রাস্পর্শাস্তু",
+        "gujarati": "માત્રાસ્પર્શાસ્તુ",
+        "roman": "Matra-sparshas Tu"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 2.14",
+        "telugu": "భగవద్గీతా 2.14",
+        "tamil": "பகவத்கீதா 2.14",
+        "kannada": "ಭಗವದ್ಗೀತಾ 2.14",
+        "bengali": "ভগবদ্গীতা 2.14",
+        "gujarati": "ભગવદ્ગીતા 2.14",
+        "roman": "Bhagavad Gita 2.14"
+      }
     },
     {
       "id": "asato-ma",
@@ -183,7 +255,25 @@
         "sadhana"
       ],
       "estimatedReadSeconds": 15,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "असतो मा सद्गमय",
+        "telugu": "అసతో మా సద్గమయ",
+        "tamil": "அஸதோ மா ஸத்கமய",
+        "kannada": "ಅಸತೋ ಮಾ ಸದ್ಗಮಯ",
+        "bengali": "অসতো মা সদ্গময়",
+        "gujarati": "અસતો મા સદ્ગમય",
+        "roman": "Asato Ma Sadgamaya"
+      },
+      "sourceLabel": {
+        "devanagari": "बृहदारण्यक उपनिषद् 1.3.28",
+        "telugu": "బృహదారణ్యక ఉపనిషద్ 1.3.28",
+        "tamil": "ப்ருஹதாரண்யக உபநிஷத் 1.3.28",
+        "kannada": "ಬೃಹದಾರಣ್ಯಕ ಉಪನಿಷದ್ 1.3.28",
+        "bengali": "বৃহদারণ্যক উপনিষদ্ 1.3.28",
+        "gujarati": "બૃહદારણ્યક ઉપનિષદ્ 1.3.28",
+        "roman": "Brihadaranyaka Upanishad 1.3.28"
+      }
     },
     {
       "id": "gita-6-6",
@@ -219,7 +309,25 @@
         "focus"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "बन्धुरात्मात्मनः",
+        "telugu": "బంధురాత్మాత్మనః",
+        "tamil": "பந்துராத்மாத்மன꞉",
+        "kannada": "ಬಂಧುರಾತ್ಮಾತ್ಮನಃ",
+        "bengali": "বন্ধুরাত্মাত্মনঃ",
+        "gujarati": "બન્ધુરાત્માત્મનઃ",
+        "roman": "Bandhur Atmatmanas"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 6.6",
+        "telugu": "భగవద్గీతా 6.6",
+        "tamil": "பகவத்கீதா 6.6",
+        "kannada": "ಭಗವದ್ಗೀತಾ 6.6",
+        "bengali": "ভগবদ্গীতা 6.6",
+        "gujarati": "ભગવદ્ગીતા 6.6",
+        "roman": "Bhagavad Gita 6.6"
+      }
     },
     {
       "id": "mahamrityunjaya",
@@ -257,7 +365,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 25,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "महामृत्युञ्जय मन्त्र",
+        "telugu": "మహామృత్యుంజయ మంత్ర",
+        "tamil": "மஹாம்ருத்யுஞ்ஜய மந்த்ர",
+        "kannada": "ಮಹಾಮೃತ್ಯುಂಜಯ ಮಂತ್ರ",
+        "bengali": "মহামৃত্যুঞ্জয় মন্ত্র",
+        "gujarati": "મહામૃત્યુઞ્જય મન્ત્ર",
+        "roman": "Mahamrityunjaya Mantra"
+      },
+      "sourceLabel": {
+        "devanagari": "ऋग्वेद 7.59.12",
+        "telugu": "ఋగ్వేద 7.59.12",
+        "tamil": "ருக்வேத 7.59.12",
+        "kannada": "ಋಗ್ವೇದ 7.59.12",
+        "bengali": "ঋগ্বেদ 7.59.12",
+        "gujarati": "ઋગ્વેદ 7.59.12",
+        "roman": "Rig Veda 7.59.12"
+      }
     },
     {
       "id": "om-sahanavavatu",
@@ -294,7 +420,25 @@
         "sadhana"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "ॐ सह नाववतु",
+        "telugu": "ఓం సహ నావవతు",
+        "tamil": "ௐ ஸஹ நாவவது",
+        "kannada": "ಓಂ ಸಹ ನಾವವತು",
+        "bengali": "ওঁ সহ নাববতু",
+        "gujarati": "ૐ સહ નાવવતુ",
+        "roman": "Om Sahanavavatu (Shanti Mantra)"
+      },
+      "sourceLabel": {
+        "devanagari": "तैत्तिरीय उपनिषद्",
+        "telugu": "తైత్తిరీయ ఉపనిషద్",
+        "tamil": "தைத்திரீய உபநிஷத்",
+        "kannada": "ತೈತ್ತಿರೀಯ ಉಪನಿಷದ್",
+        "bengali": "তৈত্তিরীয় উপনিষদ্",
+        "gujarati": "તૈત્તિરીય ઉપનિષદ્",
+        "roman": "Taittiriya Upanishad (invocation)"
+      }
     },
     {
       "id": "om-namah-shivaya",
@@ -331,7 +475,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 10,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "ॐ नमः शिवाय",
+        "telugu": "ఓం నమః శివాయ",
+        "tamil": "ௐ நம꞉ ஶிவாய",
+        "kannada": "ಓಂ ನಮಃ ಶಿವಾಯ",
+        "bengali": "ওঁ নমঃ শিবায়",
+        "gujarati": "ૐ નમઃ શિવાય",
+        "roman": "Om Namah Shivaya"
+      },
+      "sourceLabel": {
+        "devanagari": "श्री रुद्रम् (यजुर्वेद)",
+        "telugu": "శ్రీ రుద్రం (యజుర్వేద)",
+        "tamil": "ஶ்ரீ ருத்ரம் (யஜுர்வேத)",
+        "kannada": "ಶ್ರೀ ರುದ್ರಂ (ಯಜುರ್ವೇದ)",
+        "bengali": "শ্রী রুদ্রম্ (যজুর্বেদ)",
+        "gujarati": "શ્રી રુદ્રમ્ (યજુર્વેદ)",
+        "roman": "Panchakshara — Sri Rudram (Yajur Veda)"
+      }
     },
     {
       "id": "gita-2-70",
@@ -367,7 +529,25 @@
         "calm"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "आपूर्यमाणम्",
+        "telugu": "ఆపూర్యమాణం",
+        "tamil": "ஆபூர்யமாணம்",
+        "kannada": "ಆಪೂರ್ಯಮಾಣಂ",
+        "bengali": "আপূর্যমাণম্",
+        "gujarati": "આપૂર્યમાણમ્",
+        "roman": "Apuryamanam"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 2.70",
+        "telugu": "భగవద్గీతా 2.70",
+        "tamil": "பகவத்கீதா 2.70",
+        "kannada": "ಭಗವದ್ಗೀತಾ 2.70",
+        "bengali": "ভগবদ্গীতা 2.70",
+        "gujarati": "ભગવદ્ગીતા 2.70",
+        "roman": "Bhagavad Gita 2.70"
+      }
     },
     {
       "id": "twameva-mata",
@@ -404,7 +584,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 15,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "त्वमेव माता",
+        "telugu": "త్వమేవ మాతా",
+        "tamil": "த்வமேவ மாதா",
+        "kannada": "ತ್ವಮೇವ ಮಾತಾ",
+        "bengali": "ত্বমেব মাতা",
+        "gujarati": "ત્વમેવ માતા",
+        "roman": "Twameva Mata"
+      },
+      "sourceLabel": {
+        "devanagari": "पाण्डव गीता",
+        "telugu": "పాండవ గీతా",
+        "tamil": "பாண்டவ கீதா",
+        "kannada": "ಪಾಂಡವ ಗೀತಾ",
+        "bengali": "পাণ্ডব গীতা",
+        "gujarati": "પાણ્ડવ ગીતા",
+        "roman": "Traditional prayer (Pandava Gita)"
+      }
     },
     {
       "id": "gayatri",
@@ -442,7 +640,25 @@
         "focus"
       ],
       "estimatedReadSeconds": 30,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "गायत्री मन्त्र",
+        "telugu": "గాయత్రీ మంత్ర",
+        "tamil": "காயத்ரீ மந்த்ர",
+        "kannada": "ಗಾಯತ್ರೀ ಮಂತ್ರ",
+        "bengali": "গায়ত্রী মন্ত্র",
+        "gujarati": "ગાયત્રી મન્ત્ર",
+        "roman": "Gayatri Mantra"
+      },
+      "sourceLabel": {
+        "devanagari": "ऋग्वेद 3.62.10",
+        "telugu": "ఋగ్వేద 3.62.10",
+        "tamil": "ருக்வேத 3.62.10",
+        "kannada": "ಋಗ್ವೇದ 3.62.10",
+        "bengali": "ঋগ্বেদ 3.62.10",
+        "gujarati": "ઋગ્વેદ 3.62.10",
+        "roman": "Rig Veda 3.62.10"
+      }
     },
     {
       "id": "vakratunda",
@@ -479,7 +695,25 @@
         "focus"
       ],
       "estimatedReadSeconds": 15,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "वक्रतुण्ड महाकाय",
+        "telugu": "వక్రతుండ మహాకాయ",
+        "tamil": "வக்ரதுண்ட மஹாகாய",
+        "kannada": "ವಕ್ರತುಂಡ ಮಹಾಕಾಯ",
+        "bengali": "বক্রতুণ্ড মহাকায়",
+        "gujarati": "વક્રતુણ્ડ મહાકાય",
+        "roman": "Vakratunda Mahakaya"
+      },
+      "sourceLabel": {
+        "devanagari": "गणेश वन्दना",
+        "telugu": "గణేశ వందనా",
+        "tamil": "கணேஶ வந்தனா",
+        "kannada": "ಗಣೇಶ ವಂದನಾ",
+        "bengali": "গণেশ বন্দনা",
+        "gujarati": "ગણેશ વન્દના",
+        "roman": "Traditional Ganesha Vandana"
+      }
     },
     {
       "id": "saraswati-vandana",
@@ -516,7 +750,25 @@
         "focus"
       ],
       "estimatedReadSeconds": 30,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "या कुन्देन्दुतुषारहारधवला",
+        "telugu": "యా కుందేందుతుషారహారధవలా",
+        "tamil": "யா குந்தேந்துதுஷாரஹாரதவலா",
+        "kannada": "ಯಾ ಕುಂದೇಂದುತುಷಾರಹಾರಧವಲಾ",
+        "bengali": "যা কুন্দেন্দুতুষারহারধবলা",
+        "gujarati": "યા કુન્દેન્દુતુષારહારધવલા",
+        "roman": "Ya Kundendu Tushara Hara Dhavala"
+      },
+      "sourceLabel": {
+        "devanagari": "सरस्वती स्तोत्रम्",
+        "telugu": "సరస్వతీ స్తోత్రం",
+        "tamil": "ஸரஸ்வதீ ஸ்தோத்ரம்",
+        "kannada": "ಸರಸ್ವತೀ ಸ್ತೋತ್ರಂ",
+        "bengali": "সরস্বতী স্তোত্রম্",
+        "gujarati": "સરસ્વતી સ્તોત્રમ્",
+        "roman": "Saraswati Stotram (traditional)"
+      }
     },
     {
       "id": "guru-brahma",
@@ -553,7 +805,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 15,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "गुरुर्ब्रह्मा गुरुर्विष्णुः",
+        "telugu": "గురుర్బ్రహ్మా గురుర్విష్ణుః",
+        "tamil": "குருர்ப்ரஹ்மா குருர்விஷ்ணு꞉",
+        "kannada": "ಗುರುರ್ಬ್ರಹ್ಮಾ ಗುರುರ್ವಿಷ್ಣುಃ",
+        "bengali": "গুরুর্ব্রহ্মা গুরুর্বিষ্ণুঃ",
+        "gujarati": "ગુરુર્બ્રહ્મા ગુરુર્વિષ્ણુઃ",
+        "roman": "Guru Brahma Guru Vishnu"
+      },
+      "sourceLabel": {
+        "devanagari": "गुरु स्तोत्रम्",
+        "telugu": "గురు స్తోత్రం",
+        "tamil": "குரு ஸ்தோத்ரம்",
+        "kannada": "ಗುರು ಸ್ತೋತ್ರಂ",
+        "bengali": "গুরু স্তোত্রম্",
+        "gujarati": "ગુરુ સ્તોત્રમ્",
+        "roman": "Guru Stotram (traditional)"
+      }
     },
     {
       "id": "hare-krishna",
@@ -590,7 +860,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "हरे कृष्ण महामन्त्र",
+        "telugu": "హరే కృష్ణ మహామంత్ర",
+        "tamil": "ஹரே க்ருஷ்ண மஹாமந்த்ர",
+        "kannada": "ಹರೇ ಕೃಷ್ಣ ಮಹಾಮಂತ್ರ",
+        "bengali": "হরে কৃষ্ণ মহামন্ত্র",
+        "gujarati": "હરે કૃષ્ણ મહામન્ત્ર",
+        "roman": "Hare Krishna Mahamantra"
+      },
+      "sourceLabel": {
+        "devanagari": "कलिसन्तरण उपनिषद्",
+        "telugu": "కలిసంతరణ ఉపనిషద్",
+        "tamil": "கலிஸந்தரண உபநிஷத்",
+        "kannada": "ಕಲಿಸಂತರಣ ಉಪನಿಷದ್",
+        "bengali": "কলিসন্তরণ উপনিষদ্",
+        "gujarati": "કલિસન્તરણ ઉપનિષદ્",
+        "roman": "Kali-Santarana Upanishad"
+      }
     },
     {
       "id": "gita-4-7-8",
@@ -627,7 +915,25 @@
         "dharma"
       ],
       "estimatedReadSeconds": 35,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "यदा यदा हि धर्मस्य",
+        "telugu": "యదా యదా హి ధర్మస్య",
+        "tamil": "யதா யதா ஹி தர்மஸ்ய",
+        "kannada": "ಯದಾ ಯದಾ ಹಿ ಧರ್ಮಸ್ಯ",
+        "bengali": "যদা যদা হি ধর্মস্য",
+        "gujarati": "યદા યદા હિ ધર્મસ્ય",
+        "roman": "Yada Yada Hi Dharmasya"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 4.7-8",
+        "telugu": "భగవద్గీతా 4.7-8",
+        "tamil": "பகவத்கீதா 4.7-8",
+        "kannada": "ಭಗವದ್ಗೀತಾ 4.7-8",
+        "bengali": "ভগবদ্গীতা 4.7-8",
+        "gujarati": "ભગવદ્ગીતા 4.7-8",
+        "roman": "Bhagavad Gita 4.7-8"
+      }
     },
     {
       "id": "gita-18-66",
@@ -664,7 +970,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "सर्वधर्मान्परित्यज्य",
+        "telugu": "సర్వధర్మాన్పరిత్యజ్య",
+        "tamil": "ஸர்வதர்மான்பரித்யஜ்ய",
+        "kannada": "ಸರ್ವಧರ್ಮಾನ್ಪರಿತ್ಯಜ್ಯ",
+        "bengali": "সর্বধর্মান্পরিত্যজ্য",
+        "gujarati": "સર્વધર્માન્પરિત્યજ્ય",
+        "roman": "Sarva-dharman Parityajya"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 18.66",
+        "telugu": "భగవద్గీతా 18.66",
+        "tamil": "பகவத்கீதா 18.66",
+        "kannada": "ಭಗವದ್ಗೀತಾ 18.66",
+        "bengali": "ভগবদ্গীতা 18.66",
+        "gujarati": "ભગવદ્ગીતા 18.66",
+        "roman": "Bhagavad Gita 18.66"
+      }
     },
     {
       "id": "gita-3-35",
@@ -701,7 +1025,25 @@
         "focus"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "श्रेयान्स्वधर्मो",
+        "telugu": "శ్రేయాన్స్వధర్మో",
+        "tamil": "ஶ்ரேயான்ஸ்வதர்மோ",
+        "kannada": "ಶ್ರೇಯಾನ್ಸ್ವಧರ್ಮೋ",
+        "bengali": "শ্রেয়ান্স্বধর্মো",
+        "gujarati": "શ્રેયાન્સ્વધર્મો",
+        "roman": "Shreyan Svadharmo"
+      },
+      "sourceLabel": {
+        "devanagari": "भगवद्गीता 3.35",
+        "telugu": "భగవద్గీతా 3.35",
+        "tamil": "பகவத்கீதா 3.35",
+        "kannada": "ಭಗವದ್ಗೀತಾ 3.35",
+        "bengali": "ভগবদ্গীতা 3.35",
+        "gujarati": "ભગવદ્ગીતા 3.35",
+        "roman": "Bhagavad Gita 3.35"
+      }
     },
     {
       "id": "purusha-suktam",
@@ -739,7 +1081,25 @@
         "sadhana"
       ],
       "estimatedReadSeconds": 25,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "पुरुष सूक्तम्",
+        "telugu": "పురుష సూక్తం",
+        "tamil": "புருஷ ஸூக்தம்",
+        "kannada": "ಪುರುಷ ಸೂಕ್ತಂ",
+        "bengali": "পুরুষ সূক্তম্",
+        "gujarati": "પુરુષ સૂક્તમ્",
+        "roman": "Purusha Suktam (opening verse)"
+      },
+      "sourceLabel": {
+        "devanagari": "ऋग्वेद 10.90.1",
+        "telugu": "ఋగ్వేద 10.90.1",
+        "tamil": "ருக்வேத 10.90.1",
+        "kannada": "ಋಗ್ವೇದ 10.90.1",
+        "bengali": "ঋগ্বেদ 10.90.1",
+        "gujarati": "ઋગ્વેદ 10.90.1",
+        "roman": "Rig Veda 10.90.1"
+      }
     },
     {
       "id": "nasadiya-suktam",
@@ -775,7 +1135,25 @@
         "dharma"
       ],
       "estimatedReadSeconds": 25,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "नासदीय सूक्तम्",
+        "telugu": "నాసదీయ సూక్తం",
+        "tamil": "நாஸதீய ஸூக்தம்",
+        "kannada": "ನಾಸದೀಯ ಸೂಕ್ತಂ",
+        "bengali": "নাসদীয় সূক্তম্",
+        "gujarati": "નાસદીય સૂક્તમ્",
+        "roman": "Nasadiya Suktam (opening verse)"
+      },
+      "sourceLabel": {
+        "devanagari": "ऋग्वेद 10.129.1",
+        "telugu": "ఋగ్వేద 10.129.1",
+        "tamil": "ருக்வேத 10.129.1",
+        "kannada": "ಋಗ್ವೇದ 10.129.1",
+        "bengali": "ঋগ্বেদ 10.129.1",
+        "gujarati": "ઋગ્વેદ 10.129.1",
+        "roman": "Rig Veda 10.129.1"
+      }
     },
     {
       "id": "hanuman-chalisa-opening",
@@ -812,7 +1190,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 90,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "हनुमान चालीसा",
+        "telugu": "హనుమాన చాలీసా",
+        "tamil": "ஹனுமான சாலீஸா",
+        "kannada": "ಹನುಮಾನ ಚಾಲೀಸಾ",
+        "bengali": "হনুমান চালীসা",
+        "gujarati": "હનુમાન ચાલીસા",
+        "roman": "Hanuman Chalisa (Doha + chaupais 1-5)"
+      },
+      "sourceLabel": {
+        "devanagari": "हनुमान चालीसा — तुलसीदास",
+        "telugu": "హనుమాన చాలీసా — తులసీదాస",
+        "tamil": "ஹனுமான சாலீஸா — துலஸீதாஸ",
+        "kannada": "ಹನುಮಾನ ಚಾಲೀಸಾ — ತುಲಸೀದಾಸ",
+        "bengali": "হনুমান চালীসা — তুলসীদাস",
+        "gujarati": "હનુમાન ચાલીસા — તુલસીદાસ",
+        "roman": "Hanuman Chalisa — Tulsidas"
+      }
     },
     {
       "id": "vishnu-sahasranama-opening",
@@ -848,7 +1244,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 120,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "विष्णु सहस्रनाम",
+        "telugu": "విష్ణు సహస్రనామ",
+        "tamil": "விஷ்ணு ஸஹஸ்ரநாம",
+        "kannada": "ವಿಷ್ಣು ಸಹಸ್ರನಾಮ",
+        "bengali": "বিষ্ণু সহস্রনাম",
+        "gujarati": "વિષ્ણુ સહસ્રનામ",
+        "roman": "Vishnu Sahasranama (verses 1-8)"
+      },
+      "sourceLabel": {
+        "devanagari": "महाभारत, अनुशासन पर्व",
+        "telugu": "మహాభారత, అనుశాసన పర్వ",
+        "tamil": "மஹாபாரத, அனுஶாஸன பர்வ",
+        "kannada": "ಮಹಾಭಾರತ, ಅನುಶಾಸನ ಪರ್ವ",
+        "bengali": "মহাভারত, অনুশাসন পর্ব",
+        "gujarati": "મહાભારત, અનુશાસન પર્વ",
+        "roman": "Mahabharata, Anushasana Parva"
+      }
     },
     {
       "id": "lalita-sahasranama-opening",
@@ -884,7 +1298,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 120,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "ललिता सहस्रनाम",
+        "telugu": "లలితా సహస్రనామ",
+        "tamil": "லலிதா ஸஹஸ்ரநாம",
+        "kannada": "ಲಲಿತಾ ಸಹಸ್ರನಾಮ",
+        "bengali": "ললিতা সহস্রনাম",
+        "gujarati": "લલિતા સહસ્રનામ",
+        "roman": "Lalita Sahasranama (verses 1-8)"
+      },
+      "sourceLabel": {
+        "devanagari": "ब्रह्माण्ड पुराण",
+        "telugu": "బ్రహ్మాండ పురాణ",
+        "tamil": "ப்ரஹ்மாண்ட புராண",
+        "kannada": "ಬ್ರಹ್ಮಾಂಡ ಪುರಾಣ",
+        "bengali": "ব্রহ্মাণ্ড পুরাণ",
+        "gujarati": "બ્રહ્માણ્ડ પુરાણ",
+        "roman": "Brahmanda Purana"
+      }
     },
     {
       "id": "krishna-ashtakam",
@@ -920,7 +1352,25 @@
         "devotion"
       ],
       "estimatedReadSeconds": 20,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "कृष्ण अष्टकम्",
+        "telugu": "కృష్ణ అష్టకం",
+        "tamil": "க்ருஷ்ண அஷ்டகம்",
+        "kannada": "ಕೃಷ್ಣ ಅಷ್ಟಕಂ",
+        "bengali": "কৃষ্ণ অষ্টকম্",
+        "gujarati": "કૃષ્ણ અષ્ટકમ્",
+        "roman": "Krishna Ashtakam (verse 1)"
+      },
+      "sourceLabel": {
+        "devanagari": "आदि शङ्कराचार्य",
+        "telugu": "ఆది శంకరాచార్య",
+        "tamil": "ஆதி ஶங்கராசார்ய",
+        "kannada": "ಆದಿ ಶಂಕರಾಚಾರ್ಯ",
+        "bengali": "আদি শঙ্করাচার্য",
+        "gujarati": "આદિ શઙ્કરાચાર્ય",
+        "roman": "Traditional (attr. Adi Shankaracharya)"
+      }
     },
     {
       "id": "ram-raksha-opening",
@@ -957,7 +1407,25 @@
         "calm"
       ],
       "estimatedReadSeconds": 30,
-      "completionThresholdDays": 14
+      "completionThresholdDays": 14,
+      "name": {
+        "devanagari": "राम रक्षा स्तोत्र",
+        "telugu": "రామ రక్షా స్తోత్ర",
+        "tamil": "ராம ரக்ஷா ஸ்தோத்ர",
+        "kannada": "ರಾಮ ರಕ್ಷಾ ಸ್ತೋತ್ರ",
+        "bengali": "রাম রক্ষা স্তোত্র",
+        "gujarati": "રામ રક્ષા સ્તોત્ર",
+        "roman": "Ram Raksha Stotra (opening)"
+      },
+      "sourceLabel": {
+        "devanagari": "बुध कौशिक",
+        "telugu": "బుధ కౌశిక",
+        "tamil": "புத கௌஶிக",
+        "kannada": "ಬುಧ ಕೌಶಿಕ",
+        "bengali": "বুধ কৌশিক",
+        "gujarati": "બુધ કૌશિક",
+        "roman": "Budha Kaushika"
+      }
     }
   ]
 }

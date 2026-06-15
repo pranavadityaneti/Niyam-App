@@ -14,10 +14,14 @@ data class MantraCatalog(
 data class Mantra(
     val id: String,
     val canonicalName: String,
+    /** Localized display name per script (SP-P-B). roman = curated canonicalName. */
+    val name: MantraText,
     val originalLanguage: OriginalLanguage,
     val text: MantraText,
     val meaning: MantraMeaning,
     val source: String,
+    /** Localized scripture citation per script (SP-P-B). roman = curated source. */
+    val sourceLabel: MantraText,
     val sourceRefs: List<String>,
     val deity: Deity,
     val sourceCategory: SourceCategory = SourceCategory.STOTRA,

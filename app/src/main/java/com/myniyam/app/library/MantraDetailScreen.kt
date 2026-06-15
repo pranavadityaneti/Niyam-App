@@ -73,12 +73,12 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
             ) {
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    "${stringResource(mantra.sourceCategory.labelRes()).uppercase()} · ${mantra.source.uppercase()}",
+                    "${stringResource(mantra.sourceCategory.labelRes()).uppercase()} · ${mantra.sourceLabel.forScript(lang.script).uppercase()}",
                     style = MaterialTheme.typography.labelSmall,
                     color = NiyamTheme.colors.overlineWarm
                 )
                 Spacer(Modifier.height(10.dp))
-                Text(mantra.canonicalName, style = MaterialTheme.typography.headlineMedium)
+                Text(mantra.name.forScript(lang.script), style = MaterialTheme.typography.headlineMedium)
                 Spacer(Modifier.height(12.dp))
                 Row(
                     Modifier.horizontalScroll(rememberScrollState()),
@@ -192,7 +192,7 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
     }
 
     if (showDialog) {
-        val currentName = MantraRepository.displayMantra(snap.currentMantraId).canonicalName
+        val currentName = MantraRepository.displayMantra(snap.currentMantraId).name.forScript(lang.script)
         AlertDialog(
             onDismissRequest = { showDialog = false },
             title = { Text(stringResource(R.string.detail_switch_title)) },

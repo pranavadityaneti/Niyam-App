@@ -138,7 +138,7 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
                                 Column(Modifier.padding(horizontal = 16.dp, vertical = 14.dp)) {
                                     Row(verticalAlignment = Alignment.CenterVertically) {
                                         Text(
-                                            mantra.canonicalName,
+                                            mantra.name.forScript(snap.displayLanguage.script),
                                             style = MaterialTheme.typography.titleLarge,
                                             modifier = Modifier.weight(1f),
                                             maxLines = 1,

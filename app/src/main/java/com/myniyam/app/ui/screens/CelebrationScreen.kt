@@ -83,7 +83,7 @@ fun CelebrationScreen(
                         text = stringResource(
                             R.string.celebration_title_fmt,
                             mantra.completionThresholdDays,
-                            mantra.canonicalName
+                            mantra.name.forScript(CurrentSadhana.LANGUAGE.script)
                         ),
                         style = MaterialTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center,
