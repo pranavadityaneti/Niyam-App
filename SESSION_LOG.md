@@ -511,3 +511,16 @@ Debug + release compile; 124/124 tests; engine files untouched (all work in `bac
 4. (Phase 7) Create + activate the 3 subscription products and a closed-test track.
 
 **Next: Phase 5 — practice/favourites sync** (push-local-then-sync per the P2 spec; no external infra). Then Phase 6 — compliance refresh.
+
+### 2026-06-16 (cont.) — Phase 5 practice + favourites sync SHIPPED (5-1/5-2 pushed)
+
+Design fork resolved by Pranav: **seed from server + skip onboarding** on a fresh device.
+
+- **5-1 (pushed):** `PracticeSync` — `push()` upserts practice_state (current mantra, sadhana start, completed ids, intention, language) + replaces the user's favourites rows; `seedFromServerIfPresent()` pulls practice + favourites into local. `UserPrefs.applyServerPractice()` adopts them and marks onboarding complete. `AuthRepository.currentUserId()`. Streak left device-local (derived from read-events Room DB, not synced).
+- **5-2 (pushed):** sign-in seeds from server first — returning user on a fresh device gets practice restored and lands on Home via `recreate()` (seeded language applies); new users still onboard. `MainActivity.onStop` pushes local practice+favourites (one wiring point captures all in-session changes). Both best-effort + signed-out-safe.
+
+Debug + release compile; 124/124 tests; engine untouched (work in `backend/` + UserPrefs prefs layer + nav/activity glue). Sync behaviour needs a signed-in device + the deployed Supabase schema to verify live.
+
+**Model:** device is the working copy; server is backup + fresh-device seed. Push-on-stop, seed-at-sign-in. Two established devices used simultaneously won't cross-update mid-session (no live merge) — acceptable; matches push-local-then-sync.
+
+**ALL APP-SIDE BACKEND PHASES (3/7/5c/5) NOW CODE-COMPLETE.** Remaining: Phase 6 compliance refresh (privacy/website/Data Safety — now that we collect email + synced practice; gates the next signed release) + the deferred locale sweep for new English strings (account/delete/paywall) + Pranav's deploys/Play Console/device testing.
