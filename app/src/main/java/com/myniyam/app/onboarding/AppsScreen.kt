@@ -4,16 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.myniyam.app.R
-
-private val APP_CATALOG: List<Pair<String, String>> = listOf(
-    "Instagram" to "com.instagram.android",
-    "YouTube" to "com.google.android.youtube",
-    "Facebook" to "com.facebook.katana",
-    "X" to "com.twitter.android",
-    "Reddit" to "com.reddit.frontpage",
-    "Snapchat" to "com.snapchat.android",
-    "TikTok" to "com.zhiliaoapp.musically"
-)
+import com.myniyam.app.data.AppCatalog
 
 @Composable
 fun AppsScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
@@ -27,12 +18,12 @@ fun AppsScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
             onContinue()
         }
     ) {
-        APP_CATALOG.forEach { (name, pkg) ->
+        AppCatalog.APPS.forEach { app ->
             SelectableCard(
-                text = name,
-                selected = pkg in vm.selectedPackages,
-                onClick = { vm.togglePackage(pkg) },
-                leading = { AppIcon(pkg = pkg, name = name) }
+                text = app.name,
+                selected = app.pkg in vm.selectedPackages,
+                onClick = { vm.togglePackage(app.pkg) },
+                leading = { AppIcon(pkg = app.pkg, name = app.name, logoSlug = app.logoSlug) }
             )
         }
     }

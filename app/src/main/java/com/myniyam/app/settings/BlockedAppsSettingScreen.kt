@@ -25,21 +25,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
+import com.myniyam.app.data.AppCatalog
 import com.myniyam.app.data.UserPrefs
 import com.myniyam.app.onboarding.AppIcon
 import com.myniyam.app.onboarding.SelectableCard
 import com.myniyam.app.ui.theme.NiyamBackground
 import kotlinx.coroutines.launch
-
-private val APP_CATALOG: List<Pair<String, String>> = listOf(
-    "Instagram" to "com.instagram.android",
-    "YouTube" to "com.google.android.youtube",
-    "Facebook" to "com.facebook.katana",
-    "X" to "com.twitter.android",
-    "Reddit" to "com.reddit.frontpage",
-    "Snapchat" to "com.snapchat.android",
-    "TikTok" to "com.zhiliaoapp.musically"
-)
 
 @Composable
 fun BlockedAppsSettingScreen(onSaved: () -> Unit, onBack: () -> Unit) {
@@ -69,14 +60,14 @@ fun BlockedAppsSettingScreen(onSaved: () -> Unit, onBack: () -> Unit) {
                         .weight(1f)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    APP_CATALOG.forEach { (name, pkg) ->
+                    AppCatalog.APPS.forEach { app ->
                         SelectableCard(
-                            text = name,
-                            selected = pkg in selected,
+                            text = app.name,
+                            selected = app.pkg in selected,
                             onClick = {
-                                selected = if (pkg in selected) selected - pkg else selected + pkg
+                                selected = if (app.pkg in selected) selected - app.pkg else selected + app.pkg
                             },
-                            leading = { AppIcon(pkg = pkg, name = name) }
+                            leading = { AppIcon(pkg = app.pkg, name = app.name, logoSlug = app.logoSlug) }
                         )
                     }
                 }

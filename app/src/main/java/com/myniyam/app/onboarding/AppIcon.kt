@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
 import com.myniyam.app.ui.theme.NiyamTheme
@@ -30,29 +31,41 @@ private fun loadIconBitmap(context: Context, pkg: String): ImageBitmap? = try {
     null
 }
 
+/** Resolves a bundled brand drawable `ic_app_<slug>`, or 0 if none is bundled. */
+private fun bundledLogoRes(context: Context, slug: String?): Int {
+    if (slug.isNullOrBlank()) return 0
+    return context.resources.getIdentifier("ic_app_$slug", "drawable", context.packageName)
+}
+
 /**
- * Leading app glyph for blocked-app rows (SP-8 spec §2). Shows the real launcher
- * icon when the app is installed; otherwise an initial-letter circle in ChipFill.
- * No bundled brand assets — looks native, avoids trademark logos.
+ * Leading app glyph for blocked-app rows. Resolution order:
+ *   1. Bundled brand logo `ic_app_<slug>` (consistent look across all devices),
+ *   2. the installed app's real launcher icon,
+ *   3. an initial-letter circle in ChipFill.
  */
 @Composable
-fun AppIcon(pkg: String, name: String, modifier: Modifier = Modifier) {
+fun AppIcon(pkg: String, name: String, modifier: Modifier = Modifier, logoSlug: String? = null) {
     val context = LocalContext.current
-    val bitmap = remember(pkg) { loadIconBitmap(context, pkg) }
+    val logoRes = remember(logoSlug) { bundledLogoRes(context, logoSlug) }
+    val bitmap = remember(pkg, logoRes) { if (logoRes != 0) null else loadIconBitmap(context, pkg) }
     Box(
         modifier = modifier
             .size(40.dp)
             .background(NiyamTheme.colors.chipFill, CircleShape),
         contentAlignment = Alignment.Center
     ) {
-        if (bitmap != null) {
-            Image(
+        when {
+            logoRes != 0 -> Image(
+                painter = painterResource(logoRes),
+                contentDescription = name,
+                modifier = Modifier.size(40.dp)
+            )
+            bitmap != null -> Image(
                 bitmap = bitmap,
                 contentDescription = name,
                 modifier = Modifier.size(40.dp)
             )
-        } else {
-            Text(
+            else -> Text(
                 text = name.take(1).uppercase(),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
