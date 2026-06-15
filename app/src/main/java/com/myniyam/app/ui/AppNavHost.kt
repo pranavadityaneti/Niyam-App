@@ -41,11 +41,13 @@ import com.myniyam.app.ui.screens.HomeScreen
 import com.myniyam.app.ui.screens.NextSadhanaScreen
 import com.myniyam.app.ui.screens.OemAutostartScreen
 import com.myniyam.app.ui.screens.PermissionScreen
+import com.myniyam.app.ui.screens.SignInScreen
 import com.myniyam.app.ui.screens.WelcomeScreen
 import kotlinx.coroutines.launch
 
 object NiyamRoutes {
     const val WELCOME = "welcome"
+    const val SIGN_IN = "sign_in"
     const val ONB_INTENTION = "onboarding_intention"
     const val ONB_MANTRA = "onboarding_mantra"
     const val ONB_LANGUAGE = "onboarding_language"
@@ -89,7 +91,15 @@ fun AppNavHost(
     ) {
 
         composable(NiyamRoutes.WELCOME) {
-            WelcomeScreen(onGetStarted = { navController.navigate(NiyamRoutes.ONB_INTENTION) })
+            WelcomeScreen(onGetStarted = { navController.navigate(NiyamRoutes.SIGN_IN) })
+        }
+
+        composable(NiyamRoutes.SIGN_IN) {
+            SignInScreen(onSignedIn = {
+                navController.navigate(NiyamRoutes.ONB_INTENTION) {
+                    popUpTo(NiyamRoutes.SIGN_IN) { inclusive = true }
+                }
+            })
         }
 
         composable(NiyamRoutes.ONB_INTENTION) {

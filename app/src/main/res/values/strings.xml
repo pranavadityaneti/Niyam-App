@@ -7,6 +7,13 @@
     <string name="welcome_subtitle">A pause before the scroll.</string>
     <string name="welcome_cta">Get started</string>
 
+    <!-- Sign-in (SP-P3 — required Google Sign-In) -->
+    <string name="signin_title">Begin your sadhana</string>
+    <string name="signin_subtitle">Sign in with Google to save your practice and sync it across your devices.</string>
+    <string name="signin_google">Continue with Google</string>
+    <string name="signin_error">Sign-in didn\'t complete. Please try again.</string>
+    <string name="signin_privacy_note">We store only your practice — never your activity in other apps.</string>
+
     <!-- Onboarding -->
     <string name="onb_step_fmt">Step %1$d of 4</string>
     <string name="onb_continue">Continue</string>

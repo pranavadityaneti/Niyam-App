@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.myniyam.app"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.myniyam.app"
@@ -102,7 +102,12 @@ dependencies {
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.auth)
     implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.compose.auth)
     implementation(libs.ktor.client.okhttp)
+    // Native Google sign-in (SP-P3): Credential Manager + Google ID.
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.play.services.auth)
+    implementation(libs.googleid)
 
     debugImplementation(libs.androidx.ui.tooling)
 

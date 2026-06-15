@@ -3,6 +3,8 @@ package com.myniyam.app.backend
 import com.myniyam.app.BuildConfig
 import io.github.jan.supabase.SupabaseClient
 import io.github.jan.supabase.auth.Auth
+import io.github.jan.supabase.compose.auth.ComposeAuth
+import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.postgrest.Postgrest
 
@@ -25,6 +27,9 @@ object SupabaseClientProvider {
         ) {
             install(Auth)
             install(Postgrest)
+            install(ComposeAuth) {
+                googleNativeLogin(serverClientId = BuildConfig.GOOGLE_WEB_CLIENT_ID)
+            }
         }
     }
 }
