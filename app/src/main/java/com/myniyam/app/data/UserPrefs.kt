@@ -259,6 +259,19 @@ object UserPrefs {
         return nowFav
     }
 
+    /**
+     * Wipe ALL persisted preferences and reset the in-memory snapshot to
+     * defaults (P3b — account deletion). The device returns to a brand-new
+     * state (onboarding not complete, no premium, no favourites). Does not
+     * touch the Room read-events DB; callers that need a full wipe clear that
+     * separately. Not on the engine hot path.
+     */
+    suspend fun clearAll(context: Context) {
+        context.niyamDataStore.edit { it.clear() }
+        current = Snapshot.DEFAULTS
+        loadAttempted = false
+    }
+
     fun setSnapshotForTest(snapshot: Snapshot) { current = snapshot }
 
     fun resetForTest() { current = Snapshot.DEFAULTS; loadAttempted = false }

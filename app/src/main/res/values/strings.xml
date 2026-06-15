@@ -150,6 +150,11 @@
     <string name="settings_signout_confirm_title">Sign out?</string>
     <string name="settings_signout_confirm_body">Your practice stays on this device. You can sign back in anytime to sync it.</string>
     <string name="settings_signout_confirm_cta">Sign out</string>
+    <string name="settings_row_delete">Delete account</string>
+    <string name="settings_delete_confirm_title">Delete your account?</string>
+    <string name="settings_delete_confirm_body">This permanently deletes your Niyam account and all synced practice. It cannot be undone. The app will reset on this device.</string>
+    <string name="settings_delete_confirm_cta">Delete</string>
+    <string name="settings_delete_error">Couldn\'t delete your account. Check your connection and try again.</string>
     <string name="action_cancel">Cancel</string>
     <string name="settings_section_sadhana">Your practice</string>
     <string name="settings_row_current_sadhana">Current sadhana</string>

@@ -6,6 +6,7 @@ import io.github.jan.supabase.auth.Auth
 import io.github.jan.supabase.compose.auth.ComposeAuth
 import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
+import io.github.jan.supabase.functions.Functions
 import io.github.jan.supabase.postgrest.Postgrest
 
 /**
@@ -27,6 +28,7 @@ object SupabaseClientProvider {
         ) {
             install(Auth)
             install(Postgrest)
+            install(Functions)
             install(ComposeAuth) {
                 googleNativeLogin(serverClientId = BuildConfig.GOOGLE_WEB_CLIENT_ID)
             }

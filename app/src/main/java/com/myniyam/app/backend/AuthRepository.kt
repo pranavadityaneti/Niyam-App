@@ -2,6 +2,7 @@ package com.myniyam.app.backend
 
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.status.SessionStatus
+import io.github.jan.supabase.functions.functions
 import kotlinx.coroutines.flow.StateFlow
 
 /**
@@ -20,6 +21,19 @@ object AuthRepository {
     fun currentEmail(): String? = auth.currentUserOrNull()?.email
 
     suspend fun signOut() {
+        auth.signOut()
+    }
+
+    /**
+     * Permanently delete the signed-in user's server account (P3b). Invokes the
+     * `delete-account` Edge Function, which verifies the caller's JWT and uses
+     * the service_role key (server-only) to delete the auth user; the DB tables
+     * cascade-delete via their FK to auth.users. The function call carries the
+     * session bearer token automatically. After a successful return the caller
+     * must wipe local state and sign out. Throws on failure (caller handles).
+     */
+    suspend fun deleteAccount() {
+        SupabaseClientProvider.client.functions.invoke("delete-account")
         auth.signOut()
     }
 }

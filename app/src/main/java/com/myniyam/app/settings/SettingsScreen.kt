@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
@@ -72,12 +73,16 @@ fun SettingsScreen(
     onOpenApps: () -> Unit,
     onOpenIntention: () -> Unit,
     onOpenPaywall: () -> Unit,
-    onSignedOut: () -> Unit
+    onSignedOut: () -> Unit,
+    onAccountDeleted: () -> Unit
 ) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val email = remember { AuthRepository.currentEmail() }
     var showSignOutConfirm by remember { mutableStateOf(false) }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
+    var deleting by remember { mutableStateOf(false) }
+    var deleteError by remember { mutableStateOf(false) }
     val snap = UserPrefs.snapshot()
     var snapState by remember { mutableStateOf(UserPrefs.snapshot()) }
     LaunchedEffect(Unit) { snapState = UserPrefs.snapshot() }
@@ -133,6 +138,20 @@ fun SettingsScreen(
                             onClick = { showSignOutConfirm = true },
                             leading = Icons.AutoMirrored.Filled.ExitToApp
                         )
+                        NavRow(
+                            stringResource(R.string.settings_row_delete),
+                            onClick = { deleteError = false; showDeleteConfirm = true },
+                            leading = Icons.Default.Delete,
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                        if (deleteError) {
+                            Text(
+                                stringResource(R.string.settings_delete_error),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.error,
+                                modifier = Modifier.padding(bottom = 12.dp)
+                            )
+                        }
                     }
                     Spacer(Modifier.height(20.dp))
                 }
@@ -318,6 +337,45 @@ fun SettingsScreen(
             }
         )
     }
+
+    if (showDeleteConfirm) {
+        AlertDialog(
+            onDismissRequest = { if (!deleting) showDeleteConfirm = false },
+            title = { Text(stringResource(R.string.settings_delete_confirm_title)) },
+            text = { Text(stringResource(R.string.settings_delete_confirm_body)) },
+            confirmButton = {
+                TextButton(
+                    enabled = !deleting,
+                    onClick = {
+                        deleting = true
+                        scope.launch {
+                            try {
+                                AuthRepository.deleteAccount()
+                                UserPrefs.clearAll(ctx)
+                                showDeleteConfirm = false
+                                onAccountDeleted()
+                            } catch (e: Exception) {
+                                deleteError = true
+                                showDeleteConfirm = false
+                            } finally {
+                                deleting = false
+                            }
+                        }
+                    }
+                ) {
+                    Text(
+                        stringResource(R.string.settings_delete_confirm_cta),
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            dismissButton = {
+                TextButton(enabled = !deleting, onClick = { showDeleteConfirm = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            }
+        )
+    }
 }
 
 /**
@@ -359,7 +417,8 @@ private fun NavRow(
     label: String,
     onClick: () -> Unit,
     trailing: String? = null,
-    leading: ImageVector? = null
+    leading: ImageVector? = null,
+    tint: Color? = null
 ) {
     Row(
         Modifier
@@ -372,11 +431,16 @@ private fun NavRow(
             Icon(
                 imageVector = leading,
                 contentDescription = null,
-                tint = NiyamTheme.colors.overlineWarm,
+                tint = tint ?: NiyamTheme.colors.overlineWarm,
                 modifier = Modifier.padding(end = 14.dp)
             )
         }
-        Text(label, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+        Text(
+            label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = tint ?: Color.Unspecified,
+            modifier = Modifier.weight(1f)
+        )
         if (trailing != null) {
             Text(
                 trailing,

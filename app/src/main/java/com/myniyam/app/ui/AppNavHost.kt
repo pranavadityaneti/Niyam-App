@@ -256,6 +256,11 @@ fun AppNavHost(
                     navController.navigate(NiyamRoutes.SIGN_IN) {
                         popUpTo(0) { inclusive = true }
                     }
+                },
+                onAccountDeleted = {
+                    navController.navigate(NiyamRoutes.WELCOME) {
+                        popUpTo(0) { inclusive = true }
+                    }
                 }
             )
         }

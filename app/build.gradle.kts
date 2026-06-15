@@ -102,6 +102,7 @@ dependencies {
     implementation(platform(libs.supabase.bom))
     implementation(libs.supabase.auth)
     implementation(libs.supabase.postgrest)
+    implementation(libs.supabase.functions)
     implementation(libs.supabase.compose.auth)
     implementation(libs.ktor.client.okhttp)
     // Native Google sign-in (SP-P3): Credential Manager + Google ID.
