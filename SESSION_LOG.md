@@ -32,6 +32,12 @@
 - 124/124 tests; assembleDebug OK (15MB debug APK).
 - **Next: Phase 2 — Supabase.** Have URL + anon key. Will need from Pranav: Supabase project ready (he created it), **Google OAuth web client ID + Android client + app SHA-1** for required Google Sign-In, and a decision on schema (profiles/streaks/journeys/favourites/entitlements). Engine must stay offline after one-time sign-in.
 
+### 2026-06-16 — Google OAuth config (Phase 2 prep)
+- Debug SHA-1: `D3:96:A6:07:3B:71:91:09:AE:97:63:AF:96:2B:A0:2E:7C:E6:7A:61` (release SHA-1 TBD from upload keystore).
+- **Web OAuth client ID** (serverClientId for the app, NOT secret — ships in client): `253678460582-6aivjl4mj3cuhpghrcu2r9gqfp2c8d5j.apps.googleusercontent.com`
+- Google provider enabled in Supabase with Web client ID + secret (secret stays in Supabase only). Web client redirect URI = `https://hvyhhxzzqqexfzlgmtjd.supabase.co/auth/v1/callback`.
+- TODO confirm: Android OAuth client (pkg com.myniyam.app + debug SHA-1) created in Google Cloud.
+
 ---
 
 ## 2026-06-10 — SP-4 EXECUTED — home + sadhana progress + streak code-complete
