@@ -27,6 +27,7 @@ import androidx.navigation.navArgument
 import com.myniyam.app.R
 import com.myniyam.app.backend.AuthRepository
 import com.myniyam.app.backend.EntitlementSync
+import com.myniyam.app.backend.PracticeSync
 import com.myniyam.app.billing.PaywallScreen
 import io.github.jan.supabase.auth.status.SessionStatus
 import com.myniyam.app.library.FavouritesScreen
@@ -135,15 +136,26 @@ fun AppNavHost(
         }
 
         composable(NiyamRoutes.SIGN_IN) {
+            val signInScope = rememberCoroutineScope()
+            val signInCtx = LocalContext.current
             SignInScreen(onSignedIn = {
-                // Returning user (onboarding already done) → Home; new user → onboarding.
-                val dest = if (UserPrefs.snapshot().onboardingComplete) {
-                    NiyamRoutes.HOME
-                } else {
-                    NiyamRoutes.ONB_LANGUAGE
-                }
-                navController.navigate(dest) {
-                    popUpTo(0) { inclusive = true }
+                signInScope.launch {
+                    // Returning user on a fresh device → seed practice from the server
+                    // and skip onboarding (P5). recreate() lets the seeded display
+                    // language apply and recomputes the start destination to Home.
+                    val seeded = PracticeSync.seedFromServerIfPresent(signInCtx)
+                    if (seeded) {
+                        (signInCtx as? android.app.Activity)?.recreate()
+                    } else {
+                        val dest = if (UserPrefs.snapshot().onboardingComplete) {
+                            NiyamRoutes.HOME
+                        } else {
+                            NiyamRoutes.ONB_LANGUAGE
+                        }
+                        navController.navigate(dest) {
+                            popUpTo(0) { inclusive = true }
+                        }
+                    }
                 }
             })
         }

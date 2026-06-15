@@ -8,8 +8,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.SideEffect
 import androidx.core.view.WindowCompat
+import androidx.lifecycle.lifecycleScope
+import com.myniyam.app.backend.PracticeSync
 import com.myniyam.app.data.ThemePref
 import com.myniyam.app.data.UserPrefs
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import com.myniyam.app.ui.AppNavHost
 import com.myniyam.app.ui.NiyamRoutes
@@ -52,5 +55,13 @@ class MainActivity : ComponentActivity() {
                 AppNavHost(startDestination = start)
             }
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Push local practice + favourites to the server when leaving the app
+        // (P5). One wiring point captures all in-session changes. Best-effort;
+        // no-op when signed out. Never on the engine path.
+        lifecycleScope.launch { PracticeSync.push(this@MainActivity) }
     }
 }
