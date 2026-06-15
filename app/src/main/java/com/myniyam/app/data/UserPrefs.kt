@@ -286,6 +286,46 @@ object UserPrefs {
         loadAttempted = false
     }
 
+    /**
+     * Adopt server practice_state + favourites into local prefs (P5 — seed a
+     * fresh device for a returning user). Marks onboarding complete so they land
+     * on Home instead of re-onboarding. Unknown enum strings fall back to the
+     * current value. The engine reads these locally afterwards.
+     */
+    suspend fun applyServerPractice(
+        context: Context,
+        currentMantraId: String?,
+        sadhanaStartEpochDay: Long,
+        completedMantraIds: Set<String>,
+        intention: String?,
+        displayLanguage: String?,
+        favourites: Set<String>
+    ) {
+        val resolvedMantra = currentMantraId?.takeIf { it.isNotBlank() } ?: current.currentMantraId
+        val resolvedIntention = intention?.let { raw -> Intention.entries.firstOrNull { it.name == raw } }
+            ?: current.selectedIntention
+        val resolvedLang = displayLanguage?.let { raw -> DisplayLanguage.entries.firstOrNull { it.name == raw } }
+            ?: current.displayLanguage
+        context.niyamDataStore.edit {
+            it[KEY_ONBOARDING_COMPLETE] = true
+            it[KEY_CURRENT_MANTRA_ID] = resolvedMantra
+            it[KEY_SADHANA_START] = sadhanaStartEpochDay
+            it[KEY_COMPLETED_MANTRAS] = completedMantraIds
+            it[KEY_SELECTED_INTENTION] = resolvedIntention.name
+            it[KEY_DISPLAY_LANGUAGE] = resolvedLang.name
+            it[KEY_FAVOURITE_MANTRAS] = favourites
+        }
+        current = current.copy(
+            onboardingComplete = true,
+            currentMantraId = resolvedMantra,
+            sadhanaStartEpochDay = sadhanaStartEpochDay,
+            completedMantraIds = completedMantraIds,
+            selectedIntention = resolvedIntention,
+            displayLanguage = resolvedLang,
+            favouriteMantraIds = favourites
+        )
+    }
+
     fun setSnapshotForTest(snapshot: Snapshot) { current = snapshot }
 
     fun resetForTest() { current = Snapshot.DEFAULTS; loadAttempted = false }

@@ -20,6 +20,8 @@ object AuthRepository {
 
     fun currentEmail(): String? = auth.currentUserOrNull()?.email
 
+    fun currentUserId(): String? = auth.currentUserOrNull()?.id
+
     suspend fun signOut() {
         auth.signOut()
     }
