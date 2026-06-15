@@ -38,6 +38,15 @@
 - **Date added:** 2026-06-11
 - **Originated from:** Website design session.
 
+### 12. RTDN — real-time subscription updates (Pub/Sub)
+- **What:** Add Google Play Real-time Developer Notifications so renew/cancel/refund/grace events push to a Pub/Sub topic and a Supabase Edge Function updates the `entitlements` row within seconds — even if the app is never opened. This is the real-time upgrade over Phase 5c's verify-on-demand (which only re-checks on app launch / after purchase).
+- **Why deferred:** 5c (verify-on-demand) closes the trial-reinstall loophole and gives cross-device premium with just a Google service account — no Pub/Sub. For a daily-use blocker, a cancelled user keeping premium until their next app open is acceptable at launch stage. RTDN is the polish once revenue justifies the extra plumbing.
+- **Scope:** GCP Pub/Sub topic + push subscription → new Edge Function (`play-rtdn`) verifying the message and upserting entitlements; Play Console → Monetization setup → enter the topic name; handle SUBSCRIPTION_* + VOIDED notification types. No app-client change (server-only).
+- **Status:** Deferred — chosen 2026-06-16 (Pranav picked verify-on-demand for 5c, RTDN queued).
+- **Date added:** 2026-06-16
+- **Originated from:** Phase 5c design spec (docs/superpowers/specs/2026-06-16-5c-server-entitlements-design.html §2).
+- **Trigger to revisit:** After 5c ships + real purchases flow, when faster cancel/refund reflection matters.
+
 ## In progress
 
 _(empty)_
