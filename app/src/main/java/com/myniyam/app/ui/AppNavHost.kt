@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,7 +23,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.myniyam.app.R
+import com.myniyam.app.backend.AuthRepository
 import com.myniyam.app.billing.PaywallScreen
+import io.github.jan.supabase.auth.status.SessionStatus
 import com.myniyam.app.library.FavouritesScreen
 import com.myniyam.app.library.LibraryScreen
 import com.myniyam.app.library.MantraDetailScreen
@@ -80,6 +84,26 @@ fun AppNavHost(
     val currentRoute = backStackEntry?.destination?.route
     val topLevel = setOf(NiyamRoutes.HOME, NiyamRoutes.LIBRARY, NiyamRoutes.FAVOURITES, NiyamRoutes.SETTINGS)
 
+    // Sign-in gate (P3c): login is required. A returning user whose session is
+    // gone (signed out, or refresh token expired/revoked) must re-authenticate
+    // before reaching any post-onboarding surface. We react to the RESOLVED
+    // NotAuthenticated state (never the Initializing window), so a signed-in
+    // user whose stored session is still loading at cold start is not bounced.
+    val onboardingDone = remember { UserPrefs.snapshot().onboardingComplete }
+    val sessionStatus by AuthRepository.sessionStatus.collectAsState()
+    LaunchedEffect(sessionStatus, currentRoute) {
+        if (sessionStatus is SessionStatus.NotAuthenticated &&
+            onboardingDone &&
+            currentRoute != null &&
+            currentRoute != NiyamRoutes.WELCOME &&
+            currentRoute != NiyamRoutes.SIGN_IN
+        ) {
+            navController.navigate(NiyamRoutes.SIGN_IN) {
+                popUpTo(0) { inclusive = true }
+            }
+        }
+    }
+
     Box(Modifier.fillMaxSize()) {
     NavHost(
         navController = navController,
@@ -96,8 +120,14 @@ fun AppNavHost(
 
         composable(NiyamRoutes.SIGN_IN) {
             SignInScreen(onSignedIn = {
-                navController.navigate(NiyamRoutes.ONB_LANGUAGE) {
-                    popUpTo(NiyamRoutes.SIGN_IN) { inclusive = true }
+                // Returning user (onboarding already done) → Home; new user → onboarding.
+                val dest = if (UserPrefs.snapshot().onboardingComplete) {
+                    NiyamRoutes.HOME
+                } else {
+                    NiyamRoutes.ONB_LANGUAGE
+                }
+                navController.navigate(dest) {
+                    popUpTo(0) { inclusive = true }
                 }
             })
         }
