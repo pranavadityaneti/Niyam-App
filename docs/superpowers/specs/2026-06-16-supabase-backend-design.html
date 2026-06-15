@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Niyam — Supabase Backend &amp; Required Sign-In (Design Spec)</title>
+<style>
+  body { font-family: -apple-system, "Segoe UI", sans-serif; max-width: 880px; margin: 0 auto; padding: 40px 24px 80px; color: #1c1917; line-height: 1.6; }
+  h1 { font-size: 27px; margin-bottom: 2px; } .sub { color:#99511F; margin-bottom: 22px; }
+  h2 { font-size: 20px; color: #003223; margin: 30px 0 8px; border-bottom: 2px solid #FF6400; padding-bottom: 4px; }
+  h3 { font-size: 15.5px; color: #99511F; margin: 18px 0 4px; }
+  pre { background: #f6f2ec; padding: 12px 14px; border-radius: 8px; font-size: 13px; white-space: pre-wrap; font-family: ui-monospace, Menlo, monospace; line-height:1.45; }
+  code { background:#f0ebe3; padding:1px 5px; border-radius:4px; font-size:13px; }
+  td, th { font-size: 13.5px; padding: 6px 10px; border-bottom: 1px solid #eee; text-align: left; vertical-align: top; }
+  table { border-collapse: collapse; width: 100%; }
+  .note { background:#fff7ec; border-left:4px solid #FF6400; padding:10px 14px; font-size:14px; margin:12px 0; }
+  .warn { background:#fdecec; border-left:4px solid #c0392b; padding:10px 14px; font-size:14px; margin:12px 0; }
+  ol li, ul li { margin-bottom: 5px; font-size: 14.5px; }
+  .toc { background:#f6f2ec; border-radius:10px; padding:12px 20px; font-size:14px; }
+  @media print { body { padding: 0; } a { color: inherit; text-decoration: none; } }
+</style>
+</head>
+<body>
+<h1>Supabase backend + required Google Sign-In</h1>
+<p class="sub">Design spec · 2026-06-16 · Phases 2–5 of the backend push (P6 compliance covered separately)</p>
+
+<div class="toc">
+<b>Contents</b>
+<ol>
+  <li><a href="#goal">Goal &amp; scope</a></li>
+  <li><a href="#arch">Architecture</a></li>
+  <li><a href="#auth">Auth flow &amp; sign-in placement</a></li>
+  <li><a href="#offline">The offline rule (non-negotiable)</a></li>
+  <li><a href="#schema">Database schema + RLS</a></li>
+  <li><a href="#sync">What syncs, when, and conflict handling</a></li>
+  <li><a href="#deps">Dependencies &amp; config</a></li>
+  <li><a href="#phasing">Phasing &amp; task breakdown</a></li>
+  <li><a href="#privacy">Privacy / compliance fallout</a></li>
+  <li><a href="#open">Open questions for you</a></li>
+</ol>
+</div>
+
+<h2 id="goal">1. Goal &amp; scope</h2>
+<p>Give Niyam a real identity + cloud-synced practice, with <b>required Google Sign-In</b>, without ever making the blocking engine depend on the network. Payment stays with Google Play. This spec covers:</p>
+<ul>
+  <li><b>Phase 2 — Foundation:</b> Supabase SDK + client singleton + DB schema + RLS. No visible change yet.</li>
+  <li><b>Phase 3 — Required sign-in:</b> native Google sign-in gate after Welcome; logout in Settings; session caching.</li>
+  <li><b>Phase 4 — Favourites sync</b> and <b>Phase 5 — streaks/journey sync + server-side entitlement check.</b></li>
+</ul>
+<p>Founder decisions locked: sign-in gate sits <b>after Welcome, before onboarding</b>; on first sign-in we <b>push local state up to the account, then sync</b> (nothing lost).</p>
+
+<h2 id="arch">2. Architecture</h2>
+<table>
+<tr><th>Layer</th><th>Choice</th></tr>
+<tr><td>Backend</td><td>Supabase — Auth (Google), Postgres (+ Row-Level Security), later Edge Functions for Play purchase verification (P5).</td></tr>
+<tr><td>App SDK</td><td><code>supabase-kt</code> (Auth + Postgrest modules) on a Ktor/OkHttp engine.</td></tr>
+<tr><td>Sign-in</td><td>Native <b>Credential Manager</b> (androidx.credentials + Google ID) → Google ID token → <code>supabase.auth.signInWithIdToken(Google, idToken)</code>. No browser redirect.</td></tr>
+<tr><td>Local store</td><td><b>UserPrefs (DataStore) stays the engine's source of truth.</b> Supabase is a sync mirror, never in the hot path.</td></tr>
+</table>
+<p>New package <code>com.myniyam.app.backend</code>: <code>SupabaseClientProvider</code> (lazy singleton), <code>AuthRepository</code> (sign-in/out, session state), <code>SyncRepository</code> (push/pull). The engine packages (<code>service/</code>, <code>overlay/</code>) are NOT touched.</p>
+
+<h2 id="auth">3. Auth flow &amp; sign-in placement</h2>
+<p><b>Placement (locked):</b> <code>Welcome → SignIn → onboarding (intention/mantra/language/apps) → permissions → Home</code>. Returning users with a cached session skip straight past SignIn.</p>
+<h3>Sign-in sequence</h3>
+<pre>1. SignInScreen shows "Continue with Google".
+2. Credential Manager requests a Google ID token (serverClientId = Web client ID).
+3. supabase.auth.signInWithIdToken(provider=Google, idToken, nonce).
+4. On success: session persisted by supabase-kt (encrypted DataStore); ensure a profiles row exists; proceed to onboarding.
+5. On cancel/failure: stay on SignInScreen with a retry; the user cannot proceed (sign-in is required).</pre>
+<h3>Logout</h3>
+<p>Settings → new "Account" section showing the signed-in email + <b>Sign out</b>. Sign out clears the Supabase session and returns to SignInScreen. Local practice data is left on device (re-synced on next sign-in).</p>
+
+<h2 id="offline">4. The offline rule (non-negotiable)</h2>
+<div class="warn"><b>The blocking engine must never wait on the network.</b> The AccessibilityService, overlay, grace timer, and streak-on-Continue all read/write <b>local UserPrefs only</b>. Sign-in is a one-time gate at first run; after that the cached session means the app opens straight to Home with no network call required. Sync is a background best-effort mirror. If Supabase is unreachable, nothing in the core loop breaks.</div>
+<p><b>Engine-touch rule still applies:</b> no changes to <code>service/</code> or the overlay detection logic. Sync hooks live in repositories and ViewModels, not the engine.</p>
+
+<h2 id="schema">5. Database schema + RLS</h2>
+<p>Four tables, all keyed by <code>auth.uid()</code>, all protected by RLS so a user can only read/write their own rows. SQL you'll run in the Supabase SQL editor (after you approve this spec — I won't run migrations for you):</p>
+<pre>-- profiles: one row per user
+create table public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  email text,
+  created_at timestamptz default now()
+);
+
+-- practice_state: the single synced practice snapshot (1 row per user)
+create table public.practice_state (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  current_mantra_id text,
+  sadhana_start_epoch_day bigint,
+  completed_mantra_ids text[] default '{}',
+  selected_intention text,
+  display_language text,
+  streak_count int default 0,
+  updated_at timestamptz default now()
+);
+
+-- favourites: one row per (user, mantra)
+create table public.favourites (
+  user_id uuid references auth.users(id) on delete cascade,
+  mantra_id text not null,
+  created_at timestamptz default now(),
+  primary key (user_id, mantra_id)
+);
+
+-- entitlements: server-trusted premium state (written by Edge Function in P5)
+create table public.entitlements (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  premium_active boolean default false,
+  premium_plan text,
+  trial_start_epoch_day bigint,
+  source text,            -- 'play' once server verification lands
+  updated_at timestamptz default now()
+);
+
+alter table public.profiles       enable row level security;
+alter table public.practice_state enable row level security;
+alter table public.favourites     enable row level security;
+alter table public.entitlements   enable row level security;
+
+-- Each user sees and writes only their own rows.
+create policy "own profile"  on public.profiles
+  for all using (auth.uid() = id)       with check (auth.uid() = id);
+create policy "own state"    on public.practice_state
+  for all using (auth.uid() = user_id)  with check (auth.uid() = user_id);
+create policy "own favs"     on public.favourites
+  for all using (auth.uid() = user_id)  with check (auth.uid() = user_id);
+-- entitlements: user may READ own; writes restricted to service role (Edge Function).
+create policy "read own entitlements" on public.entitlements
+  for select using (auth.uid() = user_id);</pre>
+<div class="note">Reads/writes from the app use the <b>anon key + the user's session JWT</b>; RLS enforces per-user isolation. The <b>service_role</b> key (full bypass) lives only in Edge Functions on the server — never in the app.</div>
+
+<h2 id="sync">6. What syncs, when, conflict handling</h2>
+<table>
+<tr><th>Data</th><th>Direction</th><th>Trigger</th></tr>
+<tr><td>practice_state (streak, journey, intention, language)</td><td>two-way</td><td>push on change (debounced); pull on sign-in &amp; app resume</td></tr>
+<tr><td>favourites</td><td>two-way</td><td>push on toggle; pull on sign-in</td></tr>
+<tr><td>entitlements</td><td>pull only (P5)</td><td>app resume; server writes via Play webhook</td></tr>
+</table>
+<h3>First sign-in (locked: push-then-sync)</h3>
+<p>On the very first successful sign-in, the app uploads whatever is already on-device (streak, current journey, completed list, favourites) to the new account, then flips to normal two-way sync.</p>
+<h3>Conflict rule</h3>
+<p><b>Last-write-wins on <code>updated_at</code>, with a max() merge for monotonic fields</b> (streak count, completed set is a union). Practical for a single-user-multi-device app; no fancy CRDT needed. Engine never blocks on a sync result.</p>
+
+<h2 id="deps">7. Dependencies &amp; config</h2>
+<ul>
+  <li><code>io.github.jan-tennert.supabase:auth-kt</code>, <code>:postgrest-kt</code>, <code>:bom</code> + a Ktor engine (<code>ktor-client-okhttp</code>).</li>
+  <li><code>androidx.credentials:credentials</code> + <code>credentials-play-services-auth</code> + <code>com.google.android.libraries.identity.googleid:googleid</code> for the native Google sign-in.</li>
+  <li>Config (anon key + URL are client-safe → BuildConfig fields from <code>gradle.properties</code>, mirroring the keystore pattern): <code>SUPABASE_URL=https://hvyhhxzzqqexfzlgmtjd.supabase.co</code>, <code>SUPABASE_ANON_KEY=…</code>, <code>GOOGLE_WEB_CLIENT_ID=253678460582-…apps.googleusercontent.com</code>.</li>
+</ul>
+
+<h2 id="phasing">8. Phasing &amp; task breakdown</h2>
+<ol>
+  <li><b>P2 Foundation:</b> add deps + BuildConfig config; <code>SupabaseClientProvider</code>; <b>you run the schema SQL above</b>; verify client initializes. No UI.</li>
+  <li><b>P3 Sign-in:</b> <code>SignInScreen</code> + Credential Manager flow + <code>AuthRepository</code>; insert the gate after Welcome; session-aware start destination; logout in Settings. Privacy/onboarding copy updated to mention the account.</li>
+  <li><b>P4 Favourites sync:</b> SyncRepository favourites push/pull + first-login push.</li>
+  <li><b>P5 practice_state sync + entitlements:</b> two-way state sync; Edge Function for Play purchase verification (separate mini-spec when we get there).</li>
+</ol>
+<p>Each phase: its own diff + build + tests, committed separately. I give you the SQL/console steps; you run anything that touches the live database.</p>
+
+<h2 id="privacy">9. Privacy / compliance fallout (Phase 6)</h2>
+<ul>
+  <li>Play <b>Data safety</b>: now collecting <b>email + user ID</b> (account), and app activity (synced practice). Must be re-declared.</li>
+  <li>Privacy policy + website: replace "no account, no data ever" with the account model (what's stored, why, deletion path). Account deletion must cascade (the <code>on delete cascade</code> above handles the DB side; we add an in-app "delete account" later).</li>
+  <li>These land in Phase 6 before submission — flagged, not done here.</li>
+</ul>
+
+<h2 id="open">10. Open questions for you</h2>
+<ol>
+  <li><b>Account deletion in-app:</b> Play requires an in-app + web account-deletion path for apps with accounts. OK to add a "Delete account" action in Settings during P3 (calls an Edge Function)? (Recommended yes.)</li>
+  <li><b>Sign-in failure with no internet at first run:</b> since sign-in is required and needs network, a brand-new install with no connectivity can't get past SignIn. Acceptable? (Standard for account-required apps; the engine still can't run without setup anyway.)</li>
+  <li><b>Trial/premium today is local sandbox.</b> Until P5's server verification, entitlements stay local; the <code>entitlements</code> table is created now but written later. Fine?</li>
+</ol>
+
+<p class="sub" style="margin-top:28px">Once you've reviewed this, I'll turn it into a task-by-task plan and start <b>P2 (foundation)</b> — the only thing needing you mid-build is running the schema SQL.</p>
+</body>
+</html>
