@@ -1,5 +1,25 @@
 # Niyam — Session Log
 
+## 2026-06-15 — BACKEND PHASE kicked off + Phase 0 polish shipped
+
+**Major pivot.** After Pranav real-device-tested the build (Android Studio), he reversed the zero-backend launch decision. New locked direction (memory `project_niyam_backend_phase`, forlater #9 → In progress):
+- **Supabase backend + REQUIRED Google Sign-In** (reverses the "no account, ever" positioning). Engine must stay offline-capable after one-time sign-in; payment stays with Google Play.
+- **Play launch HELD** until backend ships (signed v1.0.0 AAB shelved). Was mid-way through Play Console submission (kept hitting an un-editable first app entry — Pranav to create a fresh app entry; name "Niyam — Mantra App Blocker", pkg com.myniyam.app, Free is permanent).
+- **Same push adds:** 4-tab bottom nav (Today/Library/Favourites/Settings) per a founder-supplied pill-nav reference (active pill → brand orange unless he says black); user-favourite-mantras feature; logout.
+
+**Agreed phased roadmap:** P0 quick fixes → P1 nav shell → P2 Supabase foundation → P3 required Google Sign-In + logout → P4 favourites → P5 sync + server entitlements → P6 compliance refresh (privacy/website/Data Safety) → P7 real Play Billing.
+
+**Phase 0 SHIPPED** (commit `d2d2883`, pushed origin/main; 123/123 tests green):
+- Dark-mode text contrast — all 14 `Scaffold(containerColor=Transparent)` given explicit `contentColor=onBackground` (un-colored text was falling back to black; Settings worst-hit). Whole bug class fixed.
+- Library + NextSadhana meaning previews now follow display language (`forLang(displayLanguage.meaningLang)`) instead of hardcoded `.en` (the Telugu bug). MantraPicker left on `.en` (pre-language onboarding step).
+- Launcher icon "cut" fixed — square n-tile corners were sliced by circular masks; inset mark to 78% on transparent foreground + adaptive background set to tile-black `#222` so the white motif stays full/centered on all masks. Verified by rendering before/after composites.
+
+**Device-test items still OPEN / by-design:** "no signout/login" → being built in P3/P4 (was by-design until today). "System appearance turns light" → working as intended (follows phone theme). Daily progress = on-device counters in UserPrefs (streak/dayN/todayReads), recorded on overlay Continue.
+
+**Next:** Phase 1 — nav shell + back arrows (light spec). Then P2/P3 need Pranav: Supabase account, Google OAuth client + app SHA-1.
+
+---
+
 ## 2026-06-10 — SP-4 EXECUTED — home + sadhana progress + streak code-complete
 
 **Sub-project 4 of 7 shipped as code** under the full-control grant. Range `0f4da3f..b734bf6`.
