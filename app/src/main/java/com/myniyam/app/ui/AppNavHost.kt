@@ -280,10 +280,17 @@ fun AppNavHost(
                 NiyamBottomBar(
                     currentRoute = currentRoute,
                     onSelect = { route ->
-                        navController.navigate(route) {
-                            popUpTo(NiyamRoutes.HOME) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
+                        if (route == NiyamRoutes.HOME) {
+                            // HOME is the back-stack root and also the popUpTo target,
+                            // so navigate(HOME){popUpTo(HOME)} no-ops (Compose-Nav quirk).
+                            // Pop everything above HOME to land on it reliably.
+                            navController.popBackStack(NiyamRoutes.HOME, inclusive = false)
+                        } else {
+                            navController.navigate(route) {
+                                popUpTo(NiyamRoutes.HOME) { saveState = true }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
                         }
                     }
                 )
