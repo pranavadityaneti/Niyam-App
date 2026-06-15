@@ -193,4 +193,50 @@
     <string name="deity_saraswati">সরস্বতী</string>
     <string name="deity_lakshmi">লক্ষ্মী</string>
     <string name="deity_universal">সর্বজনীন</string>
+
+    <!-- Navigation -->
+    <string name="nav_today">আজ</string>
+    <string name="nav_library">গ্রন্থাগার</string>
+    <string name="nav_favourites">প্রিয়</string>
+    <string name="nav_settings">সেটিংস</string>
+
+    <!-- Common actions -->
+    <string name="action_cancel">বাতিল করুন</string>
+    <string name="back">পিছনে</string>
+
+    <!-- Favourites -->
+    <string name="favourites_overline">প্রিয়</string>
+    <string name="favourites_title">সংরক্ষিত মন্ত্র</string>
+    <string name="favourites_empty">এখনও কোনো প্রিয় নেই। এখানে সংরক্ষণ করতে যেকোনো মন্ত্রের হৃদয়-চিহ্নে ট্যাপ করুন।</string>
+    <string name="detail_favourite_add">প্রিয় তালিকায় যোগ করুন</string>
+    <string name="detail_favourite_remove">প্রিয় তালিকা থেকে সরান</string>
+
+    <!-- Sign-in -->
+    <string name="signin_title">আপনার সাধনা শুরু করুন</string>
+    <string name="signin_subtitle">আপনার অভ্যাস সংরক্ষণ করতে এবং সব ডিভাইসে সিঙ্ক করতে Google দিয়ে সাইন ইন করুন।</string>
+    <string name="signin_google">Google দিয়ে চালিয়ে যান</string>
+    <string name="signin_privacy_note">আমরা শুধু আপনার অভ্যাস সংরক্ষণ করি — অন্য অ্যাপে আপনার কার্যকলাপ কখনও নয়।</string>
+    <string name="signin_error">সাইন-ইন সম্পূর্ণ হয়নি। অনুগ্রহ করে আবার চেষ্টা করুন।</string>
+
+    <!-- Settings — account -->
+    <string name="settings_section_account">অ্যাকাউন্ট</string>
+    <string name="settings_row_email">সাইন ইন করেছেন</string>
+    <string name="settings_row_signout">সাইন আউট করুন</string>
+    <string name="settings_row_delete">অ্যাকাউন্ট মুছুন</string>
+    <string name="settings_signout_confirm_title">সাইন আউট করবেন?</string>
+    <string name="settings_signout_confirm_body">আপনার অভ্যাস এই ডিভাইসেই থাকবে। সিঙ্ক করতে আপনি যেকোনো সময় আবার সাইন ইন করতে পারেন।</string>
+    <string name="settings_signout_confirm_cta">সাইন আউট করুন</string>
+    <string name="settings_delete_confirm_title">আপনার অ্যাকাউন্ট মুছবেন?</string>
+    <string name="settings_delete_confirm_body">এটি আপনার নিয়ম অ্যাকাউন্ট এবং সমস্ত সিঙ্ক করা অভ্যাস স্থায়ীভাবে মুছে ফেলে। এটি পূর্বাবস্থায় ফেরানো যায় না। এই ডিভাইসে অ্যাপটি রিসেট হয়ে যাবে।</string>
+    <string name="settings_delete_confirm_cta">মুছুন</string>
+    <string name="settings_delete_error">আপনার অ্যাকাউন্ট মোছা যায়নি। আপনার সংযোগ দেখে নিন এবং আবার চেষ্টা করুন।</string>
+    <string name="settings_version_fmt">নিয়ম v%1$s</string>
+
+    <!-- Paywall — additions -->
+    <string name="paywall_trust">Google Play-তে যেকোনো সময় বাতিল করুন</string>
+    <string name="paywall_restore_none">কোনো সক্রিয় সাবস্ক্রিপশন পাওয়া যায়নি।</string>
+
+    <!-- Settings — debug (sandbox only) -->
+    <string name="settings_debug_clear_premium">স্যান্ডবক্স: প্রিমিয়াম + ট্রায়াল মুছুন</string>
+    <string name="settings_debug_expire_trial">স্যান্ডবক্স: ট্রায়াল এখনই শেষ করুন</string>
 </resources>

@@ -193,4 +193,50 @@
     <string name="deity_saraswati">सरस्वती</string>
     <string name="deity_lakshmi">लक्ष्मी</string>
     <string name="deity_universal">सार्वत्रिक</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_today">आज</string>
+    <string name="nav_library">ग्रंथसंग्रह</string>
+    <string name="nav_favourites">आवडते</string>
+    <string name="nav_settings">सेटिंग्ज</string>
+
+    <!-- Favourites -->
+    <string name="favourites_overline">आवडते</string>
+    <string name="favourites_title">जतन केलेले मंत्र</string>
+    <string name="favourites_empty">अजून एकही आवडता नाही. इथे जतन करण्यासाठी कोणत्याही मंत्रावरील हृदयावर टॅप करा.</string>
+    <string name="detail_favourite_add">आवडत्यांमध्ये जोडा</string>
+    <string name="detail_favourite_remove">आवडत्यांमधून काढा</string>
+
+    <!-- Common actions -->
+    <string name="action_cancel">रद्द करा</string>
+    <string name="back">मागे</string>
+
+    <!-- Sign-in -->
+    <string name="signin_title">तुमची साधना सुरू करा</string>
+    <string name="signin_subtitle">तुमची साधना जतन करण्यासाठी आणि तुमच्या सर्व डिव्हाइसवर सिंक करण्यासाठी Google ने साइन इन करा.</string>
+    <string name="signin_google">Google सह पुढे चला</string>
+    <string name="signin_privacy_note">आम्ही फक्त तुमची साधना साठवतो — इतर अ‍ॅप्समधील तुमची हालचाल कधीही नाही.</string>
+    <string name="signin_error">साइन-इन पूर्ण झाले नाही. कृपया पुन्हा प्रयत्न करा.</string>
+
+    <!-- Settings — account -->
+    <string name="settings_section_account">खाते</string>
+    <string name="settings_row_email">यांच्या नावे साइन इन</string>
+    <string name="settings_row_signout">साइन आउट करा</string>
+    <string name="settings_row_delete">खाते हटवा</string>
+    <string name="settings_version_fmt">नियम v%1$s</string>
+    <string name="settings_signout_confirm_title">साइन आउट करायचे?</string>
+    <string name="settings_signout_confirm_body">तुमची साधना याच डिव्हाइसवर राहील. ती सिंक करण्यासाठी तुम्ही कधीही पुन्हा साइन इन करू शकता.</string>
+    <string name="settings_signout_confirm_cta">साइन आउट करा</string>
+    <string name="settings_delete_confirm_title">तुमचे खाते हटवायचे?</string>
+    <string name="settings_delete_confirm_body">यामुळे तुमचे नियम खाते आणि सिंक केलेली सर्व साधना कायमची हटवली जाईल. हे पूर्ववत करता येणार नाही. या डिव्हाइसवर अ‍ॅप रीसेट होईल.</string>
+    <string name="settings_delete_confirm_cta">हटवा</string>
+    <string name="settings_delete_error">तुमचे खाते हटवता आले नाही. तुमचे कनेक्शन तपासा आणि पुन्हा प्रयत्न करा.</string>
+
+    <!-- Paywall — additions -->
+    <string name="paywall_restore_none">कोणतेही सुरू असलेले सबस्क्रिप्शन सापडले नाही.</string>
+    <string name="paywall_trust">Google Play मध्ये कधीही रद्द करा</string>
+
+    <!-- Debug / sandbox -->
+    <string name="settings_debug_clear_premium">सँडबॉक्स: प्रीमियम + चाचणी काढून टाका</string>
+    <string name="settings_debug_expire_trial">सँडबॉक्स: चाचणी आत्ताच संपवा</string>
 </resources>

@@ -193,4 +193,48 @@
     <string name="deity_saraswati">सरस्वती</string>
     <string name="deity_lakshmi">लक्ष्मी</string>
     <string name="deity_universal">सार्वभौमिक</string>
+
+    <!-- Common actions / nav -->
+    <string name="action_cancel">रद्द करें</string>
+    <string name="back">वापस</string>
+    <string name="nav_today">आज</string>
+    <string name="nav_library">पुस्तकालय</string>
+    <string name="nav_favourites">पसंदीदा</string>
+    <string name="nav_settings">सेटिंग्स</string>
+
+    <!-- Favourites -->
+    <string name="detail_favourite_add">पसंदीदा में जोड़ें</string>
+    <string name="detail_favourite_remove">पसंदीदा से हटाएँ</string>
+    <string name="favourites_overline">पसंदीदा</string>
+    <string name="favourites_title">सहेजे गए मंत्र</string>
+    <string name="favourites_empty">अभी कोई पसंदीदा नहीं। किसी भी मंत्र पर दिल के निशान को टैप करके उसे यहाँ सहेजें।</string>
+
+    <!-- Sign-in -->
+    <string name="signin_title">अपनी साधना आरंभ करें</string>
+    <string name="signin_subtitle">अपनी साधना सहेजने और उसे अपने सभी डिवाइस पर सिंक करने के लिए Google से साइन इन करें।</string>
+    <string name="signin_google">Google के साथ जारी रखें</string>
+    <string name="signin_privacy_note">हम केवल आपकी साधना सहेजते हैं — दूसरे ऐप्स में आपकी गतिविधि कभी नहीं।</string>
+    <string name="signin_error">साइन-इन पूरा नहीं हुआ। कृपया फिर से प्रयास करें।</string>
+
+    <!-- Settings — account -->
+    <string name="settings_section_account">खाता</string>
+    <string name="settings_row_email">साइन इन हैं</string>
+    <string name="settings_row_signout">साइन आउट करें</string>
+    <string name="settings_row_delete">खाता हटाएँ</string>
+    <string name="settings_version_fmt">Niyam v%1$s</string>
+    <string name="settings_signout_confirm_title">साइन आउट करें?</string>
+    <string name="settings_signout_confirm_body">आपकी साधना इसी डिवाइस पर बनी रहेगी। उसे सिंक करने के लिए आप कभी भी दोबारा साइन इन कर सकते हैं।</string>
+    <string name="settings_signout_confirm_cta">साइन आउट करें</string>
+    <string name="settings_delete_confirm_title">अपना खाता हटाएँ?</string>
+    <string name="settings_delete_confirm_body">इससे आपका Niyam खाता और सिंक की गई सारी साधना स्थायी रूप से हट जाएगी। इसे वापस नहीं लाया जा सकता। इस डिवाइस पर ऐप रीसेट हो जाएगा।</string>
+    <string name="settings_delete_confirm_cta">हटाएँ</string>
+    <string name="settings_delete_error">आपका खाता हटाया नहीं जा सका। अपना कनेक्शन जाँचें और फिर से प्रयास करें।</string>
+
+    <!-- Paywall — additional -->
+    <string name="paywall_restore_none">कोई सक्रिय सदस्यता नहीं मिली।</string>
+    <string name="paywall_trust">Google Play में कभी भी रद्द करें</string>
+
+    <!-- Settings — debug (sandbox) -->
+    <string name="settings_debug_clear_premium">सैंडबॉक्स: प्रीमियम + ट्रायल हटाएँ</string>
+    <string name="settings_debug_expire_trial">सैंडबॉक्स: ट्रायल अभी समाप्त करें</string>
 </resources>

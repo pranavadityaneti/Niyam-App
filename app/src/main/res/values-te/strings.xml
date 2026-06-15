@@ -193,4 +193,38 @@
     <string name="deity_saraswati">సరస్వతి</string>
     <string name="deity_lakshmi">లక్ష్మి</string>
     <string name="deity_universal">విశ్వవ్యాప్త</string>
+
+    <!-- Navigation + favourites + sign-in + account (SP-18) -->
+    <string name="action_cancel">రద్దు చేయి</string>
+    <string name="back">వెనుకకు</string>
+    <string name="detail_favourite_add">ఇష్టమైనవాటికి జోడించు</string>
+    <string name="detail_favourite_remove">ఇష్టమైనవాటి నుండి తీసివేయి</string>
+    <string name="favourites_empty">ఇంకా ఇష్టమైనవి ఏవీ లేవు. ఇక్కడ భద్రపరచడానికి ఏదైనా మంత్రంపై ఉన్న హృదయాన్ని నొక్కండి.</string>
+    <string name="favourites_overline">ఇష్టమైనవి</string>
+    <string name="favourites_title">భద్రపరచిన మంత్రాలు</string>
+    <string name="nav_favourites">ఇష్టమైనవి</string>
+    <string name="nav_library">లైబ్రరీ</string>
+    <string name="nav_settings">సెట్టింగ్‌లు</string>
+    <string name="nav_today">ఈరోజు</string>
+    <string name="paywall_restore_none">చురుకైన సబ్‌స్క్రిప్షన్ ఏదీ కనబడలేదు.</string>
+    <string name="paywall_trust">Google Playలో ఎప్పుడైనా రద్దు చేయండి</string>
+    <string name="settings_delete_confirm_body">ఇది మీ నియమ్ ఖాతాను మరియు సింక్ చేసిన మొత్తం సాధనను శాశ్వతంగా తొలగిస్తుంది. దీన్ని తిరిగి పొందలేరు. ఈ పరికరంలో యాప్ రీసెట్ అవుతుంది.</string>
+    <string name="settings_delete_confirm_cta">తొలగించు</string>
+    <string name="settings_delete_confirm_title">మీ ఖాతాను తొలగించాలా?</string>
+    <string name="settings_delete_error">మీ ఖాతాను తొలగించలేకపోయాం. మీ కనెక్షన్‌ను తనిఖీ చేసి, మళ్లీ ప్రయత్నించండి.</string>
+    <string name="settings_row_delete">ఖాతాను తొలగించు</string>
+    <string name="settings_row_email">ఇలా సైన్ ఇన్ అయ్యారు</string>
+    <string name="settings_row_signout">సైన్ అవుట్</string>
+    <string name="settings_section_account">ఖాతా</string>
+    <string name="settings_signout_confirm_body">మీ సాధన ఈ పరికరంలోనే ఉంటుంది. దాన్ని సింక్ చేయడానికి మీరు ఎప్పుడైనా మళ్లీ సైన్ ఇన్ చేయవచ్చు.</string>
+    <string name="settings_signout_confirm_cta">సైన్ అవుట్</string>
+    <string name="settings_signout_confirm_title">సైన్ అవుట్ చేయాలా?</string>
+    <string name="settings_version_fmt">నియమ్ v%1$s</string>
+    <string name="signin_error">సైన్-ఇన్ పూర్తి కాలేదు. దయచేసి మళ్లీ ప్రయత్నించండి.</string>
+    <string name="signin_google">Googleతో కొనసాగించండి</string>
+    <string name="signin_privacy_note">మేము మీ సాధనను మాత్రమే నిల్వ చేస్తాం — ఇతర యాప్‌లలో మీ కార్యకలాపాన్ని ఎప్పటికీ కాదు.</string>
+    <string name="signin_subtitle">మీ సాధనను భద్రపరచి, మీ పరికరాల మధ్య సింక్ చేయడానికి Googleతో సైన్ ఇన్ చేయండి.</string>
+    <string name="signin_title">మీ సాధనను ప్రారంభించండి</string>
+    <string name="settings_debug_clear_premium">శాండ్‌బాక్స్: ప్రీమియం + ట్రయల్ క్లియర్ చేయి</string>
+    <string name="settings_debug_expire_trial">శాండ్‌బాక్స్: ట్రయల్‌ను ఇప్పుడే ముగించు</string>
 </resources>

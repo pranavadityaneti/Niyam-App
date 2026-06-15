@@ -193,4 +193,48 @@
     <string name="deity_saraswati">ಸರಸ್ವತಿ</string>
     <string name="deity_lakshmi">ಲಕ್ಷ್ಮಿ</string>
     <string name="deity_universal">ಸಾರ್ವತ್ರಿಕ</string>
+
+    <!-- Common actions / navigation (SP-18 Kannada) -->
+    <string name="action_cancel">ರದ್ದುಗೊಳಿಸಿ</string>
+    <string name="back">ಹಿಂದೆ</string>
+    <string name="nav_today">ಇಂದು</string>
+    <string name="nav_library">ಗ್ರಂಥಾಲಯ</string>
+    <string name="nav_favourites">ಮೆಚ್ಚಿನವು</string>
+    <string name="nav_settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+
+    <!-- Favourites -->
+    <string name="detail_favourite_add">ಮೆಚ್ಚಿನವುಗಳಿಗೆ ಸೇರಿಸಿ</string>
+    <string name="detail_favourite_remove">ಮೆಚ್ಚಿನವುಗಳಿಂದ ತೆಗೆದುಹಾಕಿ</string>
+    <string name="favourites_overline">ಮೆಚ್ಚಿನವು</string>
+    <string name="favourites_title">ಉಳಿಸಿದ ಮಂತ್ರಗಳು</string>
+    <string name="favourites_empty">ಇನ್ನೂ ಮೆಚ್ಚಿನವು ಇಲ್ಲ. ಇಲ್ಲಿ ಉಳಿಸಲು ಯಾವುದೇ ಮಂತ್ರದ ಹೃದಯ ಚಿಹ್ನೆಯನ್ನು ಒತ್ತಿ.</string>
+
+    <!-- Paywall additions -->
+    <string name="paywall_restore_none">ಯಾವುದೇ ಸಕ್ರಿಯ ಚಂದಾದಾರಿಕೆ ಸಿಗಲಿಲ್ಲ.</string>
+    <string name="paywall_trust">Google Play ನಲ್ಲಿ ಯಾವಾಗ ಬೇಕಾದರೂ ರದ್ದುಗೊಳಿಸಿ</string>
+
+    <!-- Sign-in -->
+    <string name="signin_title">ನಿಮ್ಮ ಸಾಧನೆ ಆರಂಭಿಸಿ</string>
+    <string name="signin_subtitle">ನಿಮ್ಮ ಅಭ್ಯಾಸವನ್ನು ಉಳಿಸಲು ಮತ್ತು ನಿಮ್ಮ ಸಾಧನಗಳ ನಡುವೆ ಸಿಂಕ್ ಮಾಡಲು Google ನೊಂದಿಗೆ ಸೈನ್ ಇನ್ ಮಾಡಿ.</string>
+    <string name="signin_google">Google ನೊಂದಿಗೆ ಮುಂದುವರಿಯಿರಿ</string>
+    <string name="signin_privacy_note">ನಾವು ನಿಮ್ಮ ಅಭ್ಯಾಸವನ್ನು ಮಾತ್ರ ಉಳಿಸುತ್ತೇವೆ — ಇತರ ಆ್ಯಪ್‌ಗಳಲ್ಲಿ ನಿಮ್ಮ ಚಟುವಟಿಕೆಯನ್ನು ಎಂದಿಗೂ ಅಲ್ಲ.</string>
+    <string name="signin_error">ಸೈನ್ ಇನ್ ಪೂರ್ಣಗೊಳ್ಳಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+
+    <!-- Settings — account section -->
+    <string name="settings_section_account">ಖಾತೆ</string>
+    <string name="settings_row_email">ಸೈನ್ ಇನ್ ಆಗಿರುವವರು</string>
+    <string name="settings_row_signout">ಸೈನ್ ಔಟ್</string>
+    <string name="settings_row_delete">ಖಾತೆ ಅಳಿಸಿ</string>
+    <string name="settings_signout_confirm_title">ಸೈನ್ ಔಟ್ ಮಾಡುವುದೇ?</string>
+    <string name="settings_signout_confirm_body">ನಿಮ್ಮ ಅಭ್ಯಾಸ ಈ ಸಾಧನದಲ್ಲೇ ಉಳಿಯುತ್ತದೆ. ಅದನ್ನು ಸಿಂಕ್ ಮಾಡಲು ನೀವು ಯಾವಾಗ ಬೇಕಾದರೂ ಮತ್ತೆ ಸೈನ್ ಇನ್ ಮಾಡಬಹುದು.</string>
+    <string name="settings_signout_confirm_cta">ಸೈನ್ ಔಟ್</string>
+    <string name="settings_delete_confirm_title">ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಅಳಿಸುವುದೇ?</string>
+    <string name="settings_delete_confirm_body">ಇದು ನಿಮ್ಮ ನಿಯಮ ಖಾತೆ ಮತ್ತು ಸಿಂಕ್ ಆದ ಎಲ್ಲಾ ಅಭ್ಯಾಸವನ್ನು ಶಾಶ್ವತವಾಗಿ ಅಳಿಸುತ್ತದೆ. ಇದನ್ನು ಹಿಂಪಡೆಯಲಾಗದು. ಈ ಸಾಧನದಲ್ಲಿ ಆ್ಯಪ್ ಮರುಹೊಂದಿಸಲಾಗುತ್ತದೆ.</string>
+    <string name="settings_delete_confirm_cta">ಅಳಿಸಿ</string>
+    <string name="settings_delete_error">ನಿಮ್ಮ ಖಾತೆಯನ್ನು ಅಳಿಸಲಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</string>
+    <string name="settings_version_fmt">ನಿಯಮ v%1$s</string>
+
+    <!-- Debug / sandbox -->
+    <string name="settings_debug_clear_premium">ಸ್ಯಾಂಡ್‌ಬಾಕ್ಸ್: ಪ್ರೀಮಿಯಂ + ಪ್ರಯೋಗ ತೆರವುಗೊಳಿಸಿ</string>
+    <string name="settings_debug_expire_trial">ಸ್ಯಾಂಡ್‌ಬಾಕ್ಸ್: ಈಗ ಪ್ರಯೋಗ ಮುಗಿಸಿ</string>
 </resources>

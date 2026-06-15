@@ -194,4 +194,50 @@
     <string name="deity_lakshmi">லட்சுமி</string>
     <string name="deity_universal">பொதுவான</string>
 
+    <!-- Sign-in (Google) -->
+    <string name="signin_title">உங்கள் சாதனையைத் தொடங்குங்கள்</string>
+    <string name="signin_subtitle">உங்கள் பயிற்சியைச் சேமித்து, உங்கள் சாதனங்கள் முழுவதும் ஒத்திசைக்க Google மூலம் உள்நுழையுங்கள்.</string>
+    <string name="signin_google">Google மூலம் தொடரவும்</string>
+    <string name="signin_privacy_note">உங்கள் பயிற்சியை மட்டுமே நாங்கள் சேமிக்கிறோம் — மற்ற செயலிகளில் உங்கள் செயல்பாட்டை ஒருபோதும் இல்லை.</string>
+    <string name="signin_error">உள்நுழைவு முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
+
+    <!-- Bottom navigation -->
+    <string name="nav_today">இன்று</string>
+    <string name="nav_library">நூலகம்</string>
+    <string name="nav_favourites">பிடித்தவை</string>
+    <string name="nav_settings">அமைப்புகள்</string>
+
+    <!-- Favourites -->
+    <string name="favourites_overline">பிடித்தவை</string>
+    <string name="favourites_title">சேமித்த மந்திரங்கள்</string>
+    <string name="favourites_empty">இன்னும் பிடித்தவை எதுவும் இல்லை. எந்த மந்திரத்திலும் இதயத்தைத் தட்டி இங்கே சேமிக்கவும்.</string>
+    <string name="detail_favourite_add">பிடித்தவையில் சேர்</string>
+    <string name="detail_favourite_remove">பிடித்தவையிலிருந்து அகற்று</string>
+
+    <!-- Settings — account -->
+    <string name="settings_section_account">கணக்கு</string>
+    <string name="settings_row_email">இவராக உள்நுழைந்துள்ளீர்கள்</string>
+    <string name="settings_row_signout">வெளியேறு</string>
+    <string name="settings_row_delete">கணக்கை நீக்கு</string>
+    <string name="settings_version_fmt">நியம் v%1$s</string>
+    <string name="settings_signout_confirm_title">வெளியேறவா?</string>
+    <string name="settings_signout_confirm_body">உங்கள் பயிற்சி இந்தச் சாதனத்திலேயே இருக்கும். ஒத்திசைக்க எப்போது வேண்டுமானாலும் மீண்டும் உள்நுழையலாம்.</string>
+    <string name="settings_signout_confirm_cta">வெளியேறு</string>
+    <string name="settings_delete_confirm_title">உங்கள் கணக்கை நீக்கவா?</string>
+    <string name="settings_delete_confirm_body">இது உங்கள் நியம் கணக்கையும் ஒத்திசைக்கப்பட்ட அனைத்து பயிற்சியையும் நிரந்தரமாக நீக்கிவிடும். இதை மீட்க முடியாது. இந்தச் சாதனத்தில் செயலி மீட்டமைக்கப்படும்.</string>
+    <string name="settings_delete_confirm_cta">நீக்கு</string>
+    <string name="settings_delete_error">உங்கள் கணக்கை நீக்க முடியவில்லை. உங்கள் இணைப்பைச் சரிபார்த்து மீண்டும் முயற்சிக்கவும்.</string>
+
+    <!-- Paywall — additional -->
+    <string name="paywall_restore_none">செயலில் உள்ள சந்தா எதுவும் கிடைக்கவில்லை.</string>
+    <string name="paywall_trust">Google Play-இல் எப்போது வேண்டுமானாலும் ரத்து செய்யலாம்</string>
+
+    <!-- Generic actions -->
+    <string name="action_cancel">ரத்து செய்</string>
+    <string name="back">பின்செல்</string>
+
+    <!-- Debug / sandbox -->
+    <string name="settings_debug_clear_premium">சாண்ட்பாக்ஸ்: ப்ரீமியம் + சோதனையை அழி</string>
+    <string name="settings_debug_expire_trial">சாண்ட்பாக்ஸ்: சோதனையை இப்போதே முடிவுறச் செய்</string>
+
 </resources>
