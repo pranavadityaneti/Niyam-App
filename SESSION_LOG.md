@@ -478,3 +478,17 @@ Pranav chose ordering **3 → 7 → 5c → 5(sync) → 6** (revenue path early) 
 124/124 tests + assembleDebug green throughout. New English-only strings (account/signout/delete) deferred to the end-of-phase locale sweep (same pattern as nav/sign-in strings).
 
 **Next: Phase 7 — real Play Billing** (replace SandboxBillingGateway with Play Billing Library 7; product IDs niyam.premium.weekly/monthly/yearly). Needs Pranav: subscription products created/active in Play Console + a closed-test track to test purchases. Then 5c (Edge Function verifies Play purchase → entitlements) → 5 (state+favourites sync) → 6 (compliance refresh).
+
+### 2026-06-16 (cont.) — Phase 7 real Play Billing — CLIENT CODE-COMPLETE (7a/7b pushed)
+
+Gave Pranav the Edge Function deploy steps (Supabase CLI: install → login → `link --project-ref hvyhhxzzqqexfzlgmtjd` → `functions deploy delete-account`).
+
+- **7a (pushed):** Play Billing Library 7 (`billing-ktx 7.1.1`). New `PlayBillingGateway` (subscriptions): connect (suspendCancellableCoroutine over BillingClientStateListener) → `queryProductDetails` (ktx suspend) → launch flow → bridge async `PurchasesUpdatedListener` to a per-flow `CompletableDeferred` → on PURCHASED persist `setPremium` + `acknowledgePurchase`; `restorePurchases` re-grants from owned SUBS via `queryPurchasesAsync`. `Plan` gained `productId` + `fromProductId()`. `Billing.gateway` selects Sandbox in debug (emulator-testable), Play in release.
+- **7b (pushed):** Paywall purchase + Restore now route through `Billing.gateway`; restore unlocks or toasts "No active subscription found." Trust pill copy build-aware (sandbox in debug / "Cancel anytime in Google Play" in release).
+- Debug + release variants compile; tests green; `com.android.vending.BILLING` permission auto-merges from the billing library (not added to app manifest — correct).
+
+**Phase 7 is code-complete but NOT testable here** — real purchases require Pranav's Play Console: (1) the 3 subscription products `niyam.premium.weekly/monthly/yearly` created + **active** with a base plan; (2) a **closed-test track** (signed AAB uploaded) with his account as a licensed tester. Debug builds keep using Sandbox, so emulator paywall flow is unaffected.
+
+**Note:** launch-time entitlement reconciliation (auto-restore on app start / new device) intentionally deferred to **5c** (server-verified entitlements), the agreed next step.
+
+**Next: Phase 5c** — Edge Function to verify Play purchase tokens → write the `entitlements` table (server-trusted); client trusts server entitlement + reconciles on launch. Needs Pranav infra (Google Play service account / RTDN Pub/Sub) — checkpoint before building.
