@@ -539,3 +539,14 @@ Spec: docs/superpowers/specs/2026-06-16-6-compliance-refresh-design.html (Pranav
 1. **Locale sweep** — new English-only strings (settings_section_account, signout/delete confirms, action_cancel, paywall_restore_none, paywall_trust) need the 7-language treatment in values-*/strings.xml. Last app-code remnant.
 2. **Pranav infra:** deploy the 3 Edge Functions (delete-account, verify-entitlement, sync-trial); `GOOGLE_PLAY_SA_KEY` secret already set; create + activate the 3 Play subscription products + closed-test track.
 3. **Device testing:** sign-in, delete-account, real purchase + restore, cross-device sync seed, trial-reinstall loophole — none testable on emulator/local.
+
+### 2026-06-16 (cont.) — Locale sweep SHIPPED (i18n commit pushed)
+
+Key-diff found each of the 7 locale files missing the **same 32 chrome keys** — this session's account/delete/paywall strings PLUS earlier English-only ones (bottom nav, sign-in screen, favourites, detail favourite toggles, `back`, `action_cancel`) that had been flagged for a sweep but never done. Dispatched **one Opus subagent per language** (hi/mr/te/ta/kn/bn/gu), each editing only its own file and matching its existing register.
+- Brand rendered in each file's established in-script form (नियम/నియమ్/நியம்/ನಿಯಮ/নিয়ম/નિયમ) for consistency — translators correctly overrode the "keep Latin" instruction and flagged it; the wordmark is an image anyway.
+- `app_name` intentionally not added (falls back to brand). `%1$s` preserved in settings_version_fmt everywhere. Parity verified (only app_name falls through); assembleDebug green.
+- Per-language native-review flags (favourites term choice, "Signed in as" label phrasing, `back` content-desc, brand-script consistency) captured in the translator outputs → ride the existing **forlater #1** native-review gate.
+
+**App is now fully translated across all chrome.** No remaining app-code i18n debt.
+
+**TRULY REMAINING (all external to code): Pranav's 3 function deploys · Play Console products + closed-test track · on-device testing of the whole backend flow.** The next signed AAB (v1.0.1+) will bundle everything above.
