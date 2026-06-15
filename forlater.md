@@ -47,6 +47,18 @@
 - **Originated from:** Phase 5c design spec (docs/superpowers/specs/2026-06-16-5c-server-entitlements-design.html §2).
 - **Trigger to revisit:** After 5c ships + real purchases flow, when faster cancel/refund reflection matters.
 
+### 13. User profile fields — display name, profile photo, (maybe) DOB
+- **What:** Pranav (2026-06-16): "in settings, at least later, we should enable options for the user to add their user name, date of birth, and a profile photo." Add Account section editors for display name, profile photo, and DOB; persist on `profiles` table; render in Home header / Settings.
+- **My recommendation (recorded for the future-me reading this):**
+  - **Display name — DO IT.** Cheapest, lowest risk. One `display_name` column; Settings row editor; Data Safety adds Personal info → Name.
+  - **Profile photo — RECONSIDER.** Storage bucket + RLS, image picker/crop/compression, content moderation question, Data Safety adds Photos. Stronger UX if it's a curated set of devotional avatars (saint glyphs, geometric mandalas) rather than free upload — no moderation, no Storage bucket. Flag before building.
+  - **DOB — STRONGLY DEFER / SKIP.** DPDP Act 2023 makes <18 a "child" needing verifiable parental consent. Today we *state* 18+ without verifying; collecting DOB forces an age gate and reject path. Product upside is tiny ("happy birthday"?). Skip unless there's a concrete reason.
+- **When this lands, do not forget:** (a) update Play Data Safety (re-submit) — tick Personal info → Name (+ Photos if applicable); (b) update privacy.html §"Your account & synced practice" to add the new fields; (c) if profile photo: extend `delete-account` Edge Function to also delete the user's Storage objects (currently DB cascade only).
+- **Status:** Deferred — backend phase complete, focus on launch first.
+- **Date added:** 2026-06-16
+- **Originated from:** Pranav's Play Console fill-out session.
+- **Trigger to revisit:** After launch + first user feedback.
+
 ## In progress
 
 _(empty)_
