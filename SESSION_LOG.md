@@ -18,6 +18,13 @@
 
 **Next:** Phase 1 — nav shell + back arrows (light spec). Then P2/P3 need Pranav: Supabase account, Google OAuth client + app SHA-1.
 
+### 2026-06-15 (cont.) — Library/Home polish + Content-localization shipped
+- **`6ba863f`** Library filter **bottom-sheet** redesign (replaced 4 scroll rows) + label resource plumbing; Home **stat-pill icons** (flame/book vector drawables, no icons-extended dep) + smoother 700ms progress fill.
+- **`d553761`** Content-loc **Part A**: 29 filter/category/deity/intention/length labels localized into all 7 languages (one Opus subagent per language; native-review-flagged).
+- **`a932fcb`** Content-loc **Part B**: mantra **names + scripture refs in-script** — new `tools/generate_names.py` (aksharamukha) derives 7 scripts from 26 Devanagari masters; `name`+`sourceLabel` added to model + FALLBACK + 9 display sites (incl. overlay label binding, completion notification); in-script titles drop English scope-notes, roman keeps curated titles; 124/124 tests (added a contract test). Native-review scope expanded in forlater #1.
+- **Content-localization COMPLETE.** Supabase creds received (URL + anon key — anon is client-safe; service_role must never ship). 
+- **Next:** Phase 1 nav bar (Today/Library/Favourites/Settings, orange active pill, + Favourites feature + back arrows) → Phase 2 Supabase (client + RLS schema).
+
 ---
 
 ## 2026-06-10 — SP-4 EXECUTED — home + sadhana progress + streak code-complete
