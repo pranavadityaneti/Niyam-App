@@ -18,6 +18,17 @@ android {
         versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Supabase config (SP-P2). All three are CLIENT-SAFE — they ship in every APK
+        // and data is protected by Row-Level Security. The service_role key must NEVER
+        // appear here. Values come from ~/.gradle/gradle.properties (out of the repo);
+        // empty fallback keeps CI builds compiling.
+        buildConfigField("String", "SUPABASE_URL",
+            "\"${providers.gradleProperty("NIYAM_SUPABASE_URL").getOrElse("")}\"")
+        buildConfigField("String", "SUPABASE_ANON_KEY",
+            "\"${providers.gradleProperty("NIYAM_SUPABASE_ANON_KEY").getOrElse("")}\"")
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID",
+            "\"${providers.gradleProperty("NIYAM_GOOGLE_WEB_CLIENT_ID").getOrElse("")}\"")
     }
 
     signingConfigs {
@@ -86,6 +97,12 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.play.services.ads)
     implementation(libs.androidx.work.runtime)
+
+    // Supabase backend (SP-P2): Auth + Postgrest on a Ktor/OkHttp engine.
+    implementation(platform(libs.supabase.bom))
+    implementation(libs.supabase.auth)
+    implementation(libs.supabase.postgrest)
+    implementation(libs.ktor.client.okhttp)
 
     debugImplementation(libs.androidx.ui.tooling)
 
