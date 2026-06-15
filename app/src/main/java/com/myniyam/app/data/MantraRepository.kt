@@ -75,12 +75,23 @@ object MantraRepository {
         }
     }
 
-    /** Android entry point: loads the bundled asset once. Safe to call repeatedly. */
+    /**
+     * Android entry point: loads the catalog once. Prefers the OTA-cached remote
+     * file in filesDir (written by ContentSync); falls back to the bundled asset
+     * if there's no cache or the cache fails to parse. Safe to call repeatedly.
+     */
     fun ensureLoaded(context: Context) {
         if (catalog != null || loadAttempted) return
         synchronized(this) {
             if (catalog != null || loadAttempted) return
             loadAttempted = true
+            // 1. OTA cache (offline-first override).
+            val cached = try {
+                val f = java.io.File(context.filesDir, "mantras.json")
+                if (f.exists()) f.readText() else null
+            } catch (e: Exception) { null }
+            if (cached != null && initFromJson(cached)) return
+            // 2. Bundled asset (the always-present baseline).
             val text = try {
                 context.assets.open(ASSET_PATH).bufferedReader().use { it.readText() }
             } catch (e: Exception) {

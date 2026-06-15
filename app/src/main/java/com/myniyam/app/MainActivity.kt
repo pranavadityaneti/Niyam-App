@@ -10,6 +10,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import com.myniyam.app.backend.PracticeSync
+import com.myniyam.app.backend.RemoteConfig
 import com.myniyam.app.data.ThemePref
 import com.myniyam.app.data.UserPrefs
 import kotlinx.coroutines.launch
@@ -35,12 +36,18 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.auto(android.graphics.Color.TRANSPARENT, android.graphics.Color.TRANSPARENT)
         )
         UserPrefs.ensureLoaded(this)
+        RemoteConfig.ensureLoaded(this)
+        lifecycleScope.launch { RemoteConfig.refresh(this@MainActivity) }
         val s = UserPrefs.snapshot()
         if (s.onboardingComplete && s.trialStartEpochDay == 0L) {
             runBlocking { UserPrefs.startTrial(this@MainActivity, java.time.LocalDate.now().toEpochDay()) }
         }
         ThemeState.set(UserPrefs.snapshot().themePref)
         val start = if (UserPrefs.snapshot().onboardingComplete) NiyamRoutes.HOME else NiyamRoutes.WELCOME
+        // OTA force-update gate: if this build is below the server minimum, block.
+        val forceUpdate = BuildConfig.VERSION_CODE < RemoteConfig.minSupportedVersionCode()
+        val updateMsg = RemoteConfig.updateMessage()
+            ?: "A new version of Niyam is available. Please update to keep practising."
         setContent {
             NiyamTheme {
                 val dark = when (ThemeState.pref) {
@@ -52,7 +59,11 @@ class MainActivity : ComponentActivity() {
                     WindowCompat.getInsetsController(window, window.decorView)
                         .isAppearanceLightStatusBars = !dark
                 }
-                AppNavHost(startDestination = start)
+                if (forceUpdate) {
+                    com.myniyam.app.ui.screens.ForceUpdateScreen(updateMsg)
+                } else {
+                    AppNavHost(startDestination = start)
+                }
             }
         }
     }

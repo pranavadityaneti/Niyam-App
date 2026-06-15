@@ -227,9 +227,10 @@ fun PaywallScreen(onUnlocked: () -> Unit, onClose: () -> Unit) {
 
                 Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Text(
-                        text = stringResource(
-                            if (BuildConfig.DEBUG) R.string.paywall_trust_sandbox else R.string.paywall_trust
-                        ),
+                        text = com.myniyam.app.backend.RemoteConfig.paywallTrust()
+                            ?: stringResource(
+                                if (BuildConfig.DEBUG) R.string.paywall_trust_sandbox else R.string.paywall_trust
+                            ),
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier

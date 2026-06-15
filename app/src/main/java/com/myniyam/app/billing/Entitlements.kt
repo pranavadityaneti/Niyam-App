@@ -11,7 +11,7 @@ enum class PremiumState { PREMIUM, TRIAL, FREE }
  */
 object Entitlements {
 
-    /** First-priority mantra per intention, free forever (spec §1). */
+    /** First-priority mantra per intention, free forever (spec §1). Build default. */
     val FREE_MANTRA_IDS: Set<String> = setOf(
         "gita-2-47",
         "mahamrityunjaya",
@@ -19,6 +19,14 @@ object Entitlements {
         "gita-4-7-8",
         "hanuman-chalisa-opening"
     )
+
+    /**
+     * The free set actually in effect. Defaults to the build's [FREE_MANTRA_IDS];
+     * RemoteConfig overwrites it on launch so the free tier can change without a
+     * build (OTA). Pure value — no android, always non-empty.
+     */
+    @Volatile
+    var activeFreeMantraIds: Set<String> = FREE_MANTRA_IDS
 
     /** Display languages available without premium (spec §1). */
     val FREE_LANGUAGES: Set<DisplayLanguage> = setOf(
@@ -45,7 +53,7 @@ object Entitlements {
 
     /** Grandfather rule: the current sadhana mantra always stays usable (spec §2). */
     fun canUseMantra(state: PremiumState, mantraId: String, currentMantraId: String): Boolean =
-        isPremiumExperience(state) || mantraId in FREE_MANTRA_IDS || mantraId == currentMantraId
+        isPremiumExperience(state) || mantraId in activeFreeMantraIds || mantraId == currentMantraId
 
     /** Grandfather rule: the current display language always stays usable (spec §2). */
     fun canUseLanguage(state: PremiumState, lang: DisplayLanguage, currentLang: DisplayLanguage): Boolean =

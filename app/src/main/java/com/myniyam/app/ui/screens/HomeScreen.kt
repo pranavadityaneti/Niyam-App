@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -31,9 +32,11 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import com.myniyam.app.backend.RemoteConfig
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
@@ -128,6 +131,36 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
                             contentDescription = stringResource(R.string.settings_content_desc),
                             tint = MaterialTheme.colorScheme.onSurface
                         )
+                    }
+                }
+
+                // OTA announcement banner (remote, dismissible).
+                var announcement by remember { mutableStateOf(RemoteConfig.activeAnnouncement(ctx)) }
+                announcement?.let { ann ->
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(NiyamTheme.colors.orangeTint, RoundedCornerShape(16.dp))
+                            .padding(start = 16.dp, top = 12.dp, bottom = 12.dp, end = 4.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Column(Modifier.weight(1f)) {
+                            if (ann.title.isNotBlank()) {
+                                Text(ann.title, style = MaterialTheme.typography.titleSmall,
+                                    color = MaterialTheme.colorScheme.onSurface)
+                            }
+                            if (ann.body.isNotBlank()) {
+                                Text(ann.body, style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant)
+                            }
+                        }
+                        IconButton(onClick = {
+                            RemoteConfig.dismissAnnouncement(ctx, ann.title); announcement = null
+                        }) {
+                            Icon(Icons.Default.Close, contentDescription = "Dismiss",
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant)
+                        }
                     }
                 }
 

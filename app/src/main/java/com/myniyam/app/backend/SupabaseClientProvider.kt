@@ -8,6 +8,7 @@ import io.github.jan.supabase.compose.auth.googleNativeLogin
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.functions.Functions
 import io.github.jan.supabase.postgrest.Postgrest
+import io.github.jan.supabase.storage.Storage
 
 /**
  * Lazy Supabase client singleton (SP-P2 foundation). Auth + Postgrest only.
@@ -29,6 +30,7 @@ object SupabaseClientProvider {
             install(Auth)
             install(Postgrest)
             install(Functions)
+            install(Storage)
             install(ComposeAuth) {
                 googleNativeLogin(serverClientId = BuildConfig.GOOGLE_WEB_CLIENT_ID)
             }

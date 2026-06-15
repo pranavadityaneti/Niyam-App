@@ -9,6 +9,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import com.myniyam.app.backend.RemoteConfig
 
 /**
  * Bottom-of-screen banner shown to FREE-tier users only (spec §3.6).
@@ -24,6 +25,8 @@ private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
 
 @Composable
 fun AdBanner(modifier: Modifier = Modifier) {
+    // OTA kill-switch: ads can be turned off remotely (default on).
+    if (!RemoteConfig.flag("ads_enabled", true)) return
     Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
         AndroidView(
             factory = { ctx ->

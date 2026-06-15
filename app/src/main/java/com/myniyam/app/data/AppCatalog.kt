@@ -17,7 +17,8 @@ data class CatalogApp(
 )
 
 object AppCatalog {
-    val APPS: List<CatalogApp> = listOf(
+    /** Build default. RemoteConfig may replace [APPS] at launch (OTA). */
+    val DEFAULT_APPS: List<CatalogApp> = listOf(
         // Social / video
         CatalogApp("Instagram", "com.instagram.android", "instagram"),
         CatalogApp("YouTube", "com.google.android.youtube", "youtube"),
@@ -32,4 +33,13 @@ object AppCatalog {
         CatalogApp("Candy Crush Saga", "com.king.candycrushsaga", "candycrush"),
         CatalogApp("Ludo King", "com.ludo.king", "ludoking")
     )
+
+    /**
+     * The catalog actually shown in the picker. Defaults to [DEFAULT_APPS];
+     * RemoteConfig overwrites it on launch so you can add a blockable app
+     * without a build. Only changes what's OFFERED — the engine still blocks
+     * any package the user has selected.
+     */
+    @Volatile
+    var APPS: List<CatalogApp> = DEFAULT_APPS
 }
