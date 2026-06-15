@@ -23,7 +23,14 @@
 - **`d553761`** Content-loc **Part A**: 29 filter/category/deity/intention/length labels localized into all 7 languages (one Opus subagent per language; native-review-flagged).
 - **`a932fcb`** Content-loc **Part B**: mantra **names + scripture refs in-script** — new `tools/generate_names.py` (aksharamukha) derives 7 scripts from 26 Devanagari masters; `name`+`sourceLabel` added to model + FALLBACK + 9 display sites (incl. overlay label binding, completion notification); in-script titles drop English scope-notes, roman keeps curated titles; 124/124 tests (added a contract test). Native-review scope expanded in forlater #1.
 - **Content-localization COMPLETE.** Supabase creds received (URL + anon key — anon is client-safe; service_role must never ship). 
-- **Next:** Phase 1 nav bar (Today/Library/Favourites/Settings, orange active pill, + Favourites feature + back arrows) → Phase 2 Supabase (client + RLS schema).
+
+### 2026-06-15 (cont.) — Phase 1 nav bar + Favourites SHIPPED (`98b3c5f`)
+- 4-tab floating bottom bar (Today/Library/Favourites/Settings), **orange** active pill, founder reference followed; overlaid on top-level routes only, insets above system nav, popUpTo(HOME)+saveState tab switching.
+- **Favourites feature**: UserPrefs.favouriteMantraIds + toggleFavourite; FavouritesScreen; heart toggle on MantraDetail.
+- **Back arrows**: SettingTopBar on 3 settings sub-screens + back arrow on MantraDetail.
+- nav/favourites strings English-only for now → folded into localization sweep (forlater #1).
+- 124/124 tests; assembleDebug OK (15MB debug APK).
+- **Next: Phase 2 — Supabase.** Have URL + anon key. Will need from Pranav: Supabase project ready (he created it), **Google OAuth web client ID + Android client + app SHA-1** for required Google Sign-In, and a decision on schema (profiles/streaks/journeys/favourites/entitlements). Engine must stay offline after one-time sign-in.
 
 ---
 
