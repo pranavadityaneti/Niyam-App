@@ -18,7 +18,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -27,11 +26,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.R
 
-private data class NavTab(val route: String, val icon: ImageVector, val labelRes: Int)
+/** One tab: either a vector (core icon) or a drawable resource for the glyph. */
+private data class NavTab(
+    val route: String,
+    val labelRes: Int,
+    val iconVector: ImageVector? = null,
+    val iconRes: Int? = null
+)
 
 /**
  * Floating pill bottom navigation (SP-P1, founder reference). Four tabs; the
@@ -41,16 +47,16 @@ private data class NavTab(val route: String, val icon: ImageVector, val labelRes
 @Composable
 fun NiyamBottomBar(currentRoute: String?, onSelect: (String) -> Unit) {
     val tabs = listOf(
-        NavTab(NiyamRoutes.HOME, Icons.Filled.Home, R.string.nav_today),
-        NavTab(NiyamRoutes.LIBRARY, Icons.AutoMirrored.Filled.List, R.string.nav_library),
-        NavTab(NiyamRoutes.FAVOURITES, Icons.Filled.Favorite, R.string.nav_favourites),
-        NavTab(NiyamRoutes.SETTINGS, Icons.Filled.Settings, R.string.nav_settings)
+        NavTab(NiyamRoutes.HOME, R.string.nav_today, iconVector = Icons.Filled.Home),
+        NavTab(NiyamRoutes.LIBRARY, R.string.nav_library, iconRes = R.drawable.ic_library),
+        NavTab(NiyamRoutes.FAVOURITES, R.string.nav_favourites, iconVector = Icons.Filled.Favorite),
+        NavTab(NiyamRoutes.SETTINGS, R.string.nav_settings, iconVector = Icons.Filled.Settings)
     )
     Box(Modifier.fillMaxWidth().navigationBarsPadding().padding(horizontal = 28.dp, vertical = 14.dp)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(62.dp)
                 .shadow(
                     elevation = 14.dp,
                     shape = RoundedCornerShape(999.dp),
@@ -65,8 +71,7 @@ fun NiyamBottomBar(currentRoute: String?, onSelect: (String) -> Unit) {
             tabs.forEach { tab ->
                 NavItem(
                     selected = currentRoute == tab.route,
-                    icon = tab.icon,
-                    contentDescription = stringResource(tab.labelRes),
+                    tab = tab,
                     onClick = { if (currentRoute != tab.route) onSelect(tab.route) }
                 )
             }
@@ -75,12 +80,8 @@ fun NiyamBottomBar(currentRoute: String?, onSelect: (String) -> Unit) {
 }
 
 @Composable
-private fun RowScope.NavItem(
-    selected: Boolean,
-    icon: ImageVector,
-    contentDescription: String,
-    onClick: () -> Unit
-) {
+private fun RowScope.NavItem(selected: Boolean, tab: NavTab, onClick: () -> Unit) {
+    val tint = if (selected) Color.White else MaterialTheme.colorScheme.onSurfaceVariant
     Box(
         modifier = Modifier
             .weight(1f)
@@ -88,22 +89,21 @@ private fun RowScope.NavItem(
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center
     ) {
+        val glyph: @Composable () -> Unit = {
+            val desc = stringResource(tab.labelRes)
+            if (tab.iconVector != null) {
+                Icon(tab.iconVector, contentDescription = desc, tint = tint, modifier = Modifier.size(26.dp))
+            } else {
+                Icon(painterResource(tab.iconRes!!), contentDescription = desc, tint = tint, modifier = Modifier.size(26.dp))
+            }
+        }
         if (selected) {
             Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .background(MaterialTheme.colorScheme.primary, CircleShape),
+                modifier = Modifier.size(46.dp).background(MaterialTheme.colorScheme.primary, CircleShape),
                 contentAlignment = Alignment.Center
-            ) {
-                Icon(icon, contentDescription = contentDescription, tint = Color.White, modifier = Modifier.size(24.dp))
-            }
+            ) { glyph() }
         } else {
-            Icon(
-                icon,
-                contentDescription = contentDescription,
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.size(24.dp)
-            )
+            glyph()
         }
     }
 }
