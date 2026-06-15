@@ -251,7 +251,12 @@ fun AppNavHost(
                 onOpenLanguage = { navController.navigate(NiyamRoutes.SETTINGS_LANGUAGE) },
                 onOpenApps = { navController.navigate(NiyamRoutes.SETTINGS_APPS) },
                 onOpenIntention = { navController.navigate(NiyamRoutes.SETTINGS_INTENTION) },
-                onOpenPaywall = { navController.navigate(NiyamRoutes.PAYWALL) }
+                onOpenPaywall = { navController.navigate(NiyamRoutes.PAYWALL) },
+                onSignedOut = {
+                    navController.navigate(NiyamRoutes.SIGN_IN) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
             )
         }
         composable(NiyamRoutes.SETTINGS_LANGUAGE) {

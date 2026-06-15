@@ -20,11 +20,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
@@ -48,6 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.myniyam.app.BuildConfig
 import com.myniyam.app.R
+import com.myniyam.app.backend.AuthRepository
 import com.myniyam.app.billing.Entitlements
 import com.myniyam.app.billing.PremiumState
 import com.myniyam.app.data.ThemePref
@@ -66,10 +71,13 @@ fun SettingsScreen(
     onOpenLanguage: () -> Unit,
     onOpenApps: () -> Unit,
     onOpenIntention: () -> Unit,
-    onOpenPaywall: () -> Unit
+    onOpenPaywall: () -> Unit,
+    onSignedOut: () -> Unit
 ) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
+    val email = remember { AuthRepository.currentEmail() }
+    var showSignOutConfirm by remember { mutableStateOf(false) }
     val snap = UserPrefs.snapshot()
     var snapState by remember { mutableStateOf(UserPrefs.snapshot()) }
     LaunchedEffect(Unit) { snapState = UserPrefs.snapshot() }
@@ -97,6 +105,37 @@ fun SettingsScreen(
                 Spacer(Modifier.height(24.dp))
                 Text(stringResource(R.string.settings_title), style = MaterialTheme.typography.headlineMedium)
                 Spacer(Modifier.height(20.dp))
+
+                if (email != null) {
+                    SectionLabel(stringResource(R.string.settings_section_account))
+                    SectionCard {
+                        Row(
+                            Modifier.fillMaxWidth().padding(vertical = 14.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.AccountCircle,
+                                contentDescription = null,
+                                tint = NiyamTheme.colors.overlineWarm,
+                                modifier = Modifier.padding(end = 14.dp)
+                            )
+                            Column(Modifier.weight(1f)) {
+                                Text(
+                                    stringResource(R.string.settings_row_email),
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Text(email, style = MaterialTheme.typography.bodyLarge)
+                            }
+                        }
+                        NavRow(
+                            stringResource(R.string.settings_row_signout),
+                            onClick = { showSignOutConfirm = true },
+                            leading = Icons.AutoMirrored.Filled.ExitToApp
+                        )
+                    }
+                    Spacer(Modifier.height(20.dp))
+                }
 
                 SectionLabel(stringResource(R.string.settings_section_sadhana))
                 SectionCard {
@@ -256,6 +295,28 @@ fun SettingsScreen(
                 Spacer(Modifier.height(24.dp))
             }
         }
+    }
+
+    if (showSignOutConfirm) {
+        AlertDialog(
+            onDismissRequest = { showSignOutConfirm = false },
+            title = { Text(stringResource(R.string.settings_signout_confirm_title)) },
+            text = { Text(stringResource(R.string.settings_signout_confirm_body)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    showSignOutConfirm = false
+                    scope.launch {
+                        AuthRepository.signOut()
+                        onSignedOut()
+                    }
+                }) { Text(stringResource(R.string.settings_signout_confirm_cta)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSignOutConfirm = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            }
+        )
     }
 }
 

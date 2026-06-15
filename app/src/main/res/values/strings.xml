@@ -144,6 +144,13 @@
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
+    <string name="settings_section_account">Account</string>
+    <string name="settings_row_email">Signed in as</string>
+    <string name="settings_row_signout">Sign out</string>
+    <string name="settings_signout_confirm_title">Sign out?</string>
+    <string name="settings_signout_confirm_body">Your practice stays on this device. You can sign back in anytime to sync it.</string>
+    <string name="settings_signout_confirm_cta">Sign out</string>
+    <string name="action_cancel">Cancel</string>
     <string name="settings_section_sadhana">Your practice</string>
     <string name="settings_row_current_sadhana">Current sadhana</string>
     <string name="settings_row_language">Display language</string>
