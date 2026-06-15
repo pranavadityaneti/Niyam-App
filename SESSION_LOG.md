@@ -36,7 +36,14 @@
 - Debug SHA-1: `D3:96:A6:07:3B:71:91:09:AE:97:63:AF:96:2B:A0:2E:7C:E6:7A:61` (release SHA-1 TBD from upload keystore).
 - **Web OAuth client ID** (serverClientId for the app, NOT secret — ships in client): `253678460582-6aivjl4mj3cuhpghrcu2r9gqfp2c8d5j.apps.googleusercontent.com`
 - Google provider enabled in Supabase with Web client ID + secret (secret stays in Supabase only). Web client redirect URI = `https://hvyhhxzzqqexfzlgmtjd.supabase.co/auth/v1/callback`.
-- TODO confirm: Android OAuth client (pkg com.myniyam.app + debug SHA-1) created in Google Cloud.
+- TODO confirm: Android OAuth client (pkg com.myniyam.app + debug SHA-1) created in Google Cloud. → DONE (Pranav created Android client + saved Supabase Google provider).
+
+### 2026-06-16 — Phase 2 + Phase 3 (sign-in) SHIPPED
+- **Spec:** docs/superpowers/specs/2026-06-16-supabase-backend-design.html (approved; decisions: sign-in after Welcome; push-local-then-sync; delete-account yes; no-internet-first-run blocked OK; entitlements table now/written-later).
+- **P2 foundation (`3b26cc1`):** supabase-kt Auth+Postgrest+ktor; SupabaseClientProvider; BuildConfig (NIYAM_* in ~/.gradle/gradle.properties — client-safe). Schema migration `supabase/migrations/0001_init.sql` — **Pranav ran it in Supabase: success.**
+- **P3 sign-in (`e43961d`):** compose-auth + Credential Manager + googleid; ComposeAuth googleNativeLogin(Web client ID); AuthRepository; SignInScreen (Continue with Google); nav gate Welcome→SignIn→onboarding. **compileSdk 34→36** (credentials/activity need ≥35; gradle auto-installed platform 36; targetSdk still 34; suppressUnsupportedCompileSdk=36 in gradle.properties).
+- **BLOCKED ON DEVICE TEST:** sign-in must be tested on a real device (Play services + consent-screen test user). New install → Welcome → Continue with Google.
+- **Still in P3 (after sign-in confirmed):** gate enforcement for returning/signed-out users; Settings Account section (email + Sign out + Delete account via Edge Function); onboarding/privacy copy. Then P4 favourites sync, P5 state sync + entitlements Edge Function.
 
 ---
 
