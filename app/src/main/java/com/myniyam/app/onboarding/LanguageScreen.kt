@@ -22,7 +22,7 @@ private val LANGUAGE_LABELS: List<Triple<DisplayLanguage, String, String>> = lis
 fun LanguageScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
     val ctx = LocalContext.current
     OnboardingScaffold(
-        step = 3,
+        step = 1,
         title = stringResource(R.string.onb_language_title),
         ctaEnabled = true,
         onContinue = {

@@ -61,7 +61,7 @@ object UserPrefs {
             val DEFAULTS = Snapshot(
                 onboardingComplete = false,
                 currentMantraId = "gayatri",
-                displayLanguage = DisplayLanguage.DEVANAGARI_SANSKRIT,
+                displayLanguage = DisplayLanguage.ENGLISH,
                 blockedPackages = BlockList.DEFAULT_PACKAGES,
                 selectedIntention = Intention.SADHANA,
                 sadhanaStartEpochDay = 0L,

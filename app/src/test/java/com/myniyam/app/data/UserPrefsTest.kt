@@ -12,7 +12,7 @@ class UserPrefsTest {
         val s = UserPrefs.Snapshot.DEFAULTS
         assertFalse(s.onboardingComplete)
         assertEquals("gayatri", s.currentMantraId)
-        assertEquals(DisplayLanguage.DEVANAGARI_SANSKRIT, s.displayLanguage)
+        assertEquals(DisplayLanguage.ENGLISH, s.displayLanguage)
         assertEquals(
             setOf("com.instagram.android", "com.facebook.katana", "com.google.android.youtube"),
             s.blockedPackages

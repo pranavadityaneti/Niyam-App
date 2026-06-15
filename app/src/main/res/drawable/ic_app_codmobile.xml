@@ -1,0 +1,32 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Dark olive circle background -->
+    <path
+        android:pathData="M24,0C37.25,0 48,10.75 48,24C48,37.25 37.25,48 24,48C10.75,48 0,37.25 0,24C0,10.75 10.75,0 24,0Z"
+        android:fillColor="#2D2D2D"/>
+    <!-- Crosshair outer ring -->
+    <path
+        android:pathData="M24,13A11,11 0,1 1,24,35A11,11 0,1 1,24,13Z"
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"/>
+    <!-- Crosshair horizontal line -->
+    <path
+        android:pathData="M10,24L21,24M27,24L38,24"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"/>
+    <!-- Crosshair vertical line -->
+    <path
+        android:pathData="M24,10L24,21M24,27L24,38"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"/>
+    <!-- Center dot -->
+    <path
+        android:pathData="M24,22.5A1.5,1.5 0,1 1,24,25.5A1.5,1.5 0,1 1,24,22.5Z"
+        android:fillColor="#FF0000"/>
+</vector>

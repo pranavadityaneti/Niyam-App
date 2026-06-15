@@ -17,11 +17,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -51,6 +53,7 @@ fun OnboardingScaffold(
     title: String,
     ctaEnabled: Boolean,
     onContinue: () -> Unit,
+    onBack: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
     NiyamBackground {
@@ -61,7 +64,18 @@ fun OnboardingScaffold(
                     .padding(innerPadding)
                     .padding(horizontal = 24.dp)
             ) {
-                Spacer(Modifier.height(24.dp))
+                if (onBack != null) {
+                    Spacer(Modifier.height(8.dp))
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.back),
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                } else {
+                    Spacer(Modifier.height(24.dp))
+                }
                 Text(
                     text = stringResource(R.string.onb_step_fmt, step).uppercase(),
                     style = MaterialTheme.typography.labelSmall,

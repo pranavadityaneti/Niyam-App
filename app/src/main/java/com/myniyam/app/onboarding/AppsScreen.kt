@@ -7,7 +7,7 @@ import com.myniyam.app.R
 import com.myniyam.app.data.AppCatalog
 
 @Composable
-fun AppsScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
+fun AppsScreen(vm: OnboardingViewModel, onContinue: () -> Unit, onBack: (() -> Unit)? = null) {
     val ctx = LocalContext.current
     OnboardingScaffold(
         step = 4,
@@ -16,7 +16,8 @@ fun AppsScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
         onContinue = {
             vm.persistApps(ctx)
             onContinue()
-        }
+        },
+        onBack = onBack
     ) {
         AppCatalog.APPS.forEach { app ->
             SelectableCard(

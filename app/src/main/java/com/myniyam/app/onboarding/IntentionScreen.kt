@@ -7,7 +7,7 @@ import com.myniyam.app.R
 import com.myniyam.app.data.Intention
 
 @Composable
-fun IntentionScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
+fun IntentionScreen(vm: OnboardingViewModel, onContinue: () -> Unit, onBack: (() -> Unit)? = null) {
     val ctx = LocalContext.current
     val options = listOf(
         Intention.FOCUS to stringResource(R.string.onb_intention_focus),
@@ -17,13 +17,14 @@ fun IntentionScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
         Intention.DEVOTION to stringResource(R.string.onb_intention_devotion)
     )
     OnboardingScaffold(
-        step = 1,
+        step = 2,
         title = stringResource(R.string.onb_intention_title),
         ctaEnabled = vm.canContinueFromIntention(),
         onContinue = {
             vm.persistIntention(ctx)
             onContinue()
-        }
+        },
+        onBack = onBack
     ) {
         options.forEach { (intention, label) ->
             SelectableCard(

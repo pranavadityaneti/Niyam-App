@@ -1,0 +1,46 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Orange circle background -->
+    <path
+        android:pathData="M24,0C37.25,0 48,10.75 48,24C48,37.25 37.25,48 24,48C10.75,48 0,37.25 0,24C0,10.75 10.75,0 24,0Z"
+        android:fillColor="#FF4500"/>
+    <!-- White Snoo head (oval) -->
+    <path
+        android:pathData="M24,18C30,18 35,22 35,27.5C35,33 30,37 24,37C18,37 13,33 13,27.5C13,22 18,18 24,18Z"
+        android:fillColor="#FFFFFF"/>
+    <!-- Left ear -->
+    <path
+        android:pathData="M15,20A3,3 0,1 1,15,26A3,3 0,1 1,15,20Z"
+        android:fillColor="#FFFFFF"/>
+    <!-- Right ear -->
+    <path
+        android:pathData="M33,20A3,3 0,1 1,33,26A3,3 0,1 1,33,20Z"
+        android:fillColor="#FFFFFF"/>
+    <!-- Antenna stalk -->
+    <path
+        android:pathData="M24,18L28,11"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"/>
+    <!-- Antenna ball -->
+    <path
+        android:pathData="M28,9A2.5,2.5 0,1 1,28,14A2.5,2.5 0,1 1,28,9Z"
+        android:fillColor="#FFFFFF"/>
+    <!-- Left eye -->
+    <path
+        android:pathData="M20,25.5A2,2 0,1 1,20,29.5A2,2 0,1 1,20,25.5Z"
+        android:fillColor="#FF4500"/>
+    <!-- Right eye -->
+    <path
+        android:pathData="M28,25.5A2,2 0,1 1,28,29.5A2,2 0,1 1,28,25.5Z"
+        android:fillColor="#FF4500"/>
+    <!-- Smile -->
+    <path
+        android:pathData="M19,32Q24,36 29,32"
+        android:strokeColor="#FF4500"
+        android:strokeWidth="1.5"
+        android:fillColor="#00000000"/>
+</vector>

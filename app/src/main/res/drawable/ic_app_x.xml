@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Black circle background -->
+    <path
+        android:pathData="M24,0C37.25,0 48,10.75 48,24C48,37.25 37.25,48 24,48C10.75,48 0,37.25 0,24C0,10.75 10.75,0 24,0Z"
+        android:fillColor="#000000"/>
+    <!-- White X mark (the official X/Twitter logo geometry) -->
+    <path
+        android:pathData="M13.5,12L20.85,22.25L13.15,36L16.25,36L22.3,24.75L27.25,36L35.5,36L27.6,25.05L34.65,12L31.65,12L26.15,22.55L21.75,12Z"
+        android:fillColor="#FFFFFF"/>
+</vector>

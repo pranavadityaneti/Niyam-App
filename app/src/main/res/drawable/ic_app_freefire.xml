@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Orange circle background -->
+    <path
+        android:pathData="M24,0C37.25,0 48,10.75 48,24C48,37.25 37.25,48 24,48C10.75,48 0,37.25 0,24C0,10.75 10.75,0 24,0Z"
+        android:fillColor="#FF6B00"/>
+    <!-- "F" left -->
+    <path
+        android:pathData="M12,14L22,14L22,18L16,18L16,22L21,22L21,26L16,26L16,34L12,34Z"
+        android:fillColor="#FFFFFF"/>
+    <!-- "F" right -->
+    <path
+        android:pathData="M25,14L35,14L35,18L29,18L29,22L34,22L34,26L29,26L29,34L25,34Z"
+        android:fillColor="#FFFFFF"/>
+</vector>

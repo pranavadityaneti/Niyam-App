@@ -96,23 +96,32 @@ fun AppNavHost(
 
         composable(NiyamRoutes.SIGN_IN) {
             SignInScreen(onSignedIn = {
-                navController.navigate(NiyamRoutes.ONB_INTENTION) {
+                navController.navigate(NiyamRoutes.ONB_LANGUAGE) {
                     popUpTo(NiyamRoutes.SIGN_IN) { inclusive = true }
                 }
             })
         }
 
+        composable(NiyamRoutes.ONB_LANGUAGE) {
+            LanguageScreen(onboardingVm) { navController.navigate(NiyamRoutes.ONB_INTENTION) }
+        }
         composable(NiyamRoutes.ONB_INTENTION) {
-            IntentionScreen(onboardingVm) { navController.navigate(NiyamRoutes.ONB_MANTRA) }
+            IntentionScreen(onboardingVm,
+                onContinue = { navController.navigate(NiyamRoutes.ONB_MANTRA) },
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(NiyamRoutes.ONB_MANTRA) {
-            MantraPickerScreen(onboardingVm) { navController.navigate(NiyamRoutes.ONB_LANGUAGE) }
-        }
-        composable(NiyamRoutes.ONB_LANGUAGE) {
-            LanguageScreen(onboardingVm) { navController.navigate(NiyamRoutes.ONB_APPS) }
+            MantraPickerScreen(onboardingVm,
+                onContinue = { navController.navigate(NiyamRoutes.ONB_APPS) },
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(NiyamRoutes.ONB_APPS) {
-            AppsScreen(onboardingVm) { navController.navigate(NiyamRoutes.PERMISSION_USAGE) }
+            AppsScreen(onboardingVm,
+                onContinue = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) },
+                onBack = { navController.popBackStack() }
+            )
         }
 
         composable(NiyamRoutes.PERMISSION_USAGE) {
@@ -174,10 +183,12 @@ fun AppNavHost(
 
         composable(NiyamRoutes.PERMISSION_OEM) {
             val ctx = LocalContext.current
+            val scope = rememberCoroutineScope()
             OemAutostartScreen(onDone = {
-                onboardingVm.persistOnboardingComplete(ctx)
-                navController.navigate(NiyamRoutes.HOME) {
-                    popUpTo(NiyamRoutes.WELCOME) { inclusive = true }
+                scope.launch {
+                    UserPrefs.setOnboardingComplete(ctx)
+                    UserPrefs.startTrial(ctx, java.time.LocalDate.now().toEpochDay())
+                    (ctx as? android.app.Activity)?.recreate()
                 }
             })
         }

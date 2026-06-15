@@ -23,20 +23,21 @@ internal fun mantraGist(meaningEn: String): String {
 }
 
 @Composable
-fun MantraPickerScreen(vm: OnboardingViewModel, onContinue: () -> Unit) {
+fun MantraPickerScreen(vm: OnboardingViewModel, onContinue: () -> Unit, onBack: (() -> Unit)? = null) {
     val ctx = LocalContext.current
     MantraRepository.ensureLoaded(ctx)
     val intention = vm.selectedIntention ?: Intention.SADHANA
     val options = StarterMantras.forIntention(intention)
 
     OnboardingScaffold(
-        step = 2,
+        step = 3,
         title = stringResource(R.string.onb_mantra_title),
         ctaEnabled = vm.canContinueFromMantra(),
         onContinue = {
             vm.persistMantra(ctx)
             onContinue()
-        }
+        },
+        onBack = onBack
     ) {
         options.forEach { mantra ->
             SelectableCard(
