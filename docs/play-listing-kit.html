@@ -46,8 +46,8 @@ THE LIBRARY
 • 9 languages, completely: Hindi, Sanskrit, Marathi, Telugu, Tamil, Kannada, Bengali, Gujarati, English — the mantra in its native script, its meaning, and the entire app interface
 
 PRIVACY AS PRINCIPLE
-• No account. No sign-up. No personal data collected — ever
-• Everything stays on your device; we have no servers
+• Sign in with Google so your practice syncs across your devices — and delete your account and everything we hold, any time, from inside the app
+• We never see your payment details, and we never read or collect your activity in any other app
 • The accessibility service detects only the launch of apps you chose to block — it cannot and does not read your screen, messages, or anything else
 
 FAIR AND FREE
@@ -77,13 +77,16 @@ Niyam (नियम) is the yogic practice of chosen discipline — not imposed 
 <h3>4a. Privacy & security → Data safety</h3>
 <table>
 <tr><th>Question</th><th>Answer</th></tr>
-<tr><td>Does your app collect or share any of the required user data types?</td><td><b>Yes</b> (forced by the AdMob SDK on the free tier — even though Niyam itself collects nothing)</td></tr>
-<tr><td>Data types</td><td><b>Device or other IDs → Device or other IDs</b>: Collected — Yes · Shared — Yes (with Google AdMob) · Processed ephemerally — No · Required — No (only free tier) · Purpose: <b>Advertising or marketing</b></td></tr>
-<tr><td>Everything else (location, personal info, messages, photos, app activity, browsing…)</td><td><b>Not collected</b></td></tr>
+<tr><td>Does your app collect or share any of the required user data types?</td><td><b>Yes</b></td></tr>
+<tr><td><b>Personal info → Email address</b></td><td>Collected — Yes · Shared — No · Processed ephemerally — No · Required — Yes (sign-in is required) · Purpose: <b>Account management, App functionality</b> · Linked to identity — Yes</td></tr>
+<tr><td><b>App activity → Other user-generated content</b> (your mantras, sadhana progress, favourites)</td><td>Collected — Yes · Shared — No · Processed ephemerally — No · Required — Yes · Purpose: <b>App functionality</b> (sync across devices) · Linked to identity — Yes</td></tr>
+<tr><td><b>Financial info → Purchase history</b> (subscription status)</td><td>Collected — Yes · Shared — No · Processed ephemerally — No · Required — No · Purpose: <b>App functionality</b> · Linked to identity — Yes</td></tr>
+<tr><td><b>Device or other IDs → Device or other IDs</b> (AdMob)</td><td>Collected — Yes · Shared — Yes (with Google AdMob) · Processed ephemerally — No · Required — No (only free tier) · Purpose: <b>Advertising or marketing</b> · Linked to identity — No</td></tr>
+<tr><td>Everything else (location, messages, photos, contacts, browsing…)</td><td><b>Not collected</b></td></tr>
 <tr><td>Is all user data encrypted in transit?</td><td>Yes</td></tr>
-<tr><td>Do you provide a way to request deletion?</td><td>Yes — contact email (and nothing is collected by us to begin with)</td></tr>
+<tr><td>Do you provide a way to request deletion?</td><td>Yes — <b>in-app Settings → Delete account</b> erases the account and all synced data; grievance email also available</td></tr>
 </table>
-<p class="note">If review questions this: the answer is "the only data leaving the device is what Google's own AdMob SDK processes to serve banner ads to free-tier users; the app itself has no accounts, no analytics, no data collection."</p>
+<p class="note">Payment card details are handled by Google Play and are <b>not</b> declared as collected by us. We sign in with Google (email + account id), store practice/favourites and entitlement status in Supabase tied to the account, and verify purchases server-side. The accessibility service still reads no screen content and collects nothing. Account email + synced practice are linked to identity but never sold or shared for advertising; only the AdMob device id (free tier) is shared, and only with Google AdMob.</p>
 
 <h3>4b. Ads</h3>
 <pre>Yes, my app contains ads. (AdMob banners on Home and Library screens, free tier only.)</pre>
