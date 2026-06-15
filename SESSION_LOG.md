@@ -492,3 +492,22 @@ Gave Pranav the Edge Function deploy steps (Supabase CLI: install → login → 
 **Note:** launch-time entitlement reconciliation (auto-restore on app start / new device) intentionally deferred to **5c** (server-verified entitlements), the agreed next step.
 
 **Next: Phase 5c** — Edge Function to verify Play purchase tokens → write the `entitlements` table (server-trusted); client trusts server entitlement + reconciles on launch. Needs Pranav infra (Google Play service account / RTDN Pub/Sub) — checkpoint before building.
+
+### 2026-06-16 (cont.) — Phase 5c server-verified entitlements — CODE-COMPLETE (spec + 4 tasks pushed)
+
+Pranav chose **verify-on-demand** (RTDN queued as forlater #12). Spec: docs/superpowers/specs/2026-06-16-5c-server-entitlements-design.html. Flag (b) resolved to the function-path (entitlements stays service-role-write-only). Built 4 tasks, commit + build-verified each:
+
+- **5c-1 (pushed):** `verify-entitlement` Edge Function — resolves caller from JWT, mints a Google service-account access token (Web Crypto RS256 JWT → token exchange, key in Supabase secret `GOOGLE_PLAY_SA_KEY`, never in app), reads `purchases.subscriptionsv2`, upserts trusted `entitlements` row (service role). Entitled = ACTIVE / IN_GRACE_PERIOD / CANCELED-with-future-expiry.
+- **5c-2 (pushed):** client `EntitlementSync.verifyPurchase()` (functions-kt invoke + body); `PlayBillingGateway` calls it post-purchase to populate the server row; failure never undoes the local grant.
+- **5c-3 (pushed):** `EntitlementSync.reconcileOnLaunch()` reads the row on the Authenticated transition (AppNavHost LaunchedEffect, once) → mirrors into local via new `UserPrefs.setPremiumActive` (premium flag + plan, trial untouched). Restores premium on a new device; revokes on definitive server "inactive"; offline = no change (never locks out a payer).
+- **5c-4 (pushed):** `sync-trial` Edge Function + `EntitlementSync.syncTrial()`; launch reconcile syncs trial both directions, **earliest-start-wins** → closes the trial-reinstall loophole. Trial reaches server by the next signed-in launch after it starts.
+
+Debug + release compile; 124/124 tests; engine files untouched (all work in `backend/` + billing glue + UserPrefs prefs layer). **Not testable here** — needs the deploys + a real purchase.
+
+**ACTIONS FOR PRANAV (server side, can wait for the closed-test build):**
+1. Create a GCP service account, enable Google Play Android Developer API, grant it subscription/financial access in Play Console, download its JSON key.
+2. `supabase secrets set GOOGLE_PLAY_SA_KEY="$(cat key.json)"`
+3. Deploy all three functions: `supabase functions deploy delete-account`, `verify-entitlement`, `sync-trial`.
+4. (Phase 7) Create + activate the 3 subscription products and a closed-test track.
+
+**Next: Phase 5 — practice/favourites sync** (push-local-then-sync per the P2 spec; no external infra). Then Phase 6 — compliance refresh.
