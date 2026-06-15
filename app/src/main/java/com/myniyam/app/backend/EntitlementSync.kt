@@ -31,7 +31,32 @@ object EntitlementSync {
     private data class EntitlementRow(
         @SerialName("premium_active") val premiumActive: Boolean = false,
         @SerialName("premium_plan") val premiumPlan: String? = null,
+        @SerialName("trial_start_epoch_day") val trialStartEpochDay: Long? = null,
     )
+
+    @Serializable
+    private data class TrialRequest(val trialStartEpochDay: Long)
+
+    @Serializable
+    private data class TrialResponse(
+        @SerialName("trial_start_epoch_day") val trialStartEpochDay: Long = 0L,
+    )
+
+    /**
+     * Report this device's trial start to the server (P5c-4). The server keeps
+     * the earliest start, so a reinstall can't push the trial later. Returns the
+     * effective server start, or null on failure. Best-effort.
+     */
+    suspend fun syncTrial(trialStartEpochDay: Long): Long? {
+        return try {
+            val response = SupabaseClientProvider.client.functions.invoke("sync-trial") {
+                setBody(TrialRequest(trialStartEpochDay))
+            }
+            response.body<TrialResponse>().trialStartEpochDay
+        } catch (e: Exception) {
+            null
+        }
+    }
 
     /**
      * Read the server-trusted entitlements row on app launch and mirror it into
@@ -48,9 +73,26 @@ object EntitlementSync {
                 .from("entitlements")
                 .select()
                 .decodeList<EntitlementRow>()
-                .firstOrNull() ?: return
-            val planName = row.premiumPlan?.let { Plan.fromProductId(it)?.name ?: it }
-            UserPrefs.setPremiumActive(context, row.premiumActive, planName)
+                .firstOrNull()
+
+            // Premium: server is authoritative.
+            if (row != null) {
+                val planName = row.premiumPlan?.let { Plan.fromProductId(it)?.name ?: it }
+                UserPrefs.setPremiumActive(context, row.premiumActive, planName)
+            }
+
+            // Trial: earliest-start-wins, kept in sync both directions.
+            val serverTrial = row?.trialStartEpochDay ?: 0L
+            val localTrial = UserPrefs.snapshot().trialStartEpochDay
+            when {
+                // Server has an earlier (or the only) start → adopt it locally so a
+                // reinstall can't restart the trial.
+                serverTrial > 0L && (localTrial == 0L || serverTrial < localTrial) ->
+                    UserPrefs.startTrial(context, serverTrial)
+                // Server doesn't know about our trial yet → report it.
+                localTrial > 0L && serverTrial == 0L ->
+                    syncTrial(localTrial)
+            }
         } catch (e: Exception) {
             // Keep current local state.
         }
