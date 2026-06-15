@@ -111,6 +111,7 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
                     .fillMaxSize()
                     .padding(padding)
                     .padding(horizontal = 24.dp)
+                    .padding(bottom = 96.dp)
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
 

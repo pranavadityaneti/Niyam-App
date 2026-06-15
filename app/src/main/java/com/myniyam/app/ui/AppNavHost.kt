@@ -3,19 +3,26 @@ package com.myniyam.app.ui
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.myniyam.app.R
 import com.myniyam.app.billing.PaywallScreen
+import com.myniyam.app.library.FavouritesScreen
 import com.myniyam.app.library.LibraryScreen
 import com.myniyam.app.library.MantraDetailScreen
 import com.myniyam.app.data.UserPrefs
@@ -52,6 +59,7 @@ object NiyamRoutes {
     const val CELEBRATION = "celebration"
     const val NEXT_SADHANA = "next_sadhana"
     const val LIBRARY = "library"
+    const val FAVOURITES = "favourites"
     const val MANTRA_DETAIL = "mantra_detail/{mantraId}"
     const val SETTINGS = "settings"
     const val SETTINGS_LANGUAGE = "settings_language"
@@ -66,7 +74,11 @@ fun AppNavHost(
     navController: NavHostController = rememberNavController()
 ) {
     val onboardingVm: OnboardingViewModel = viewModel()
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = backStackEntry?.destination?.route
+    val topLevel = setOf(NiyamRoutes.HOME, NiyamRoutes.LIBRARY, NiyamRoutes.FAVOURITES, NiyamRoutes.SETTINGS)
 
+    Box(Modifier.fillMaxSize()) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -195,6 +207,10 @@ fun AppNavHost(
             LibraryScreen(onOpenDetail = { id -> navController.navigate("mantra_detail/$id") })
         }
 
+        composable(NiyamRoutes.FAVOURITES) {
+            FavouritesScreen(onOpenDetail = { id -> navController.navigate("mantra_detail/$id") })
+        }
+
         composable(
             NiyamRoutes.MANTRA_DETAIL,
             arguments = listOf(navArgument("mantraId") { type = NavType.StringType })
@@ -203,7 +219,8 @@ fun AppNavHost(
                 mantraId = backStackEntry.arguments?.getString("mantraId") ?: "",
                 onSwitched = { navController.popBackStack(NiyamRoutes.HOME, inclusive = false) },
                 onMissing = { navController.popBackStack() },
-                onPaywall = { navController.navigate(NiyamRoutes.PAYWALL) }
+                onPaywall = { navController.navigate(NiyamRoutes.PAYWALL) },
+                onBack = { navController.popBackStack() }
             )
         }
 
@@ -224,20 +241,43 @@ fun AppNavHost(
                     // Chrome locale lives in attachBaseContext — recreate to re-wrap (SP-11).
                     activity?.recreate()
                 },
-                onPaywall = { navController.navigate(NiyamRoutes.PAYWALL) }
+                onPaywall = { navController.navigate(NiyamRoutes.PAYWALL) },
+                onBack = { navController.popBackStack() }
             )
         }
         composable(NiyamRoutes.SETTINGS_APPS) {
-            BlockedAppsSettingScreen(onSaved = { navController.popBackStack() })
+            BlockedAppsSettingScreen(
+                onSaved = { navController.popBackStack() },
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(NiyamRoutes.SETTINGS_INTENTION) {
-            IntentionSettingScreen(onSaved = { navController.popBackStack() })
+            IntentionSettingScreen(
+                onSaved = { navController.popBackStack() },
+                onBack = { navController.popBackStack() }
+            )
         }
         composable(NiyamRoutes.PAYWALL) {
             PaywallScreen(
                 onUnlocked = { navController.popBackStack() },
                 onClose = { navController.popBackStack() }
             )
+        }
+    }
+
+        if (currentRoute in topLevel) {
+            Box(Modifier.align(Alignment.BottomCenter)) {
+                NiyamBottomBar(
+                    currentRoute = currentRoute,
+                    onSelect = { route ->
+                        navController.navigate(route) {
+                            popUpTo(NiyamRoutes.HOME) { saveState = true }
+                            launchSingleTop = true
+                            restoreState = true
+                        }
+                    }
+                )
+            }
         }
     }
 }

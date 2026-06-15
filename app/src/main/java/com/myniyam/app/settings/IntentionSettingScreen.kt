@@ -32,7 +32,7 @@ import com.myniyam.app.ui.theme.NiyamBackground
 import kotlinx.coroutines.launch
 
 @Composable
-fun IntentionSettingScreen(onSaved: () -> Unit) {
+fun IntentionSettingScreen(onSaved: () -> Unit, onBack: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var selected by remember { mutableStateOf(UserPrefs.snapshot().selectedIntention) }
@@ -53,8 +53,8 @@ fun IntentionSettingScreen(onSaved: () -> Unit) {
                     .padding(padding)
                     .padding(horizontal = 24.dp)
             ) {
-                Spacer(Modifier.height(24.dp))
-                Text(stringResource(R.string.settings_intention_title), style = MaterialTheme.typography.headlineMedium)
+                Spacer(Modifier.height(8.dp))
+                SettingTopBar(stringResource(R.string.settings_intention_title), onBack)
                 Spacer(Modifier.height(20.dp))
                 Column(
                     Modifier

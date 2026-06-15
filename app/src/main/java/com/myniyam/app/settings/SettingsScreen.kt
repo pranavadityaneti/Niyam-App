@@ -91,6 +91,7 @@ fun SettingsScreen(
                     .fillMaxSize()
                     .padding(padding)
                     .padding(horizontal = 24.dp)
+                    .padding(bottom = 96.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 Spacer(Modifier.height(24.dp))

@@ -6,14 +6,21 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -36,7 +43,7 @@ import com.myniyam.app.ui.theme.SaladGreen
 import kotlinx.coroutines.launch
 
 @Composable
-fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -> Unit, onPaywall: () -> Unit) {
+fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -> Unit, onPaywall: () -> Unit, onBack: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     MantraRepository.ensureLoaded(ctx)
@@ -55,6 +62,7 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
 
     var showDialog by remember { mutableStateOf(false) }
     var currentDayN by remember { mutableStateOf<Int?>(null) }
+    var isFavourite by remember(mantra.id) { mutableStateOf(mantra.id in snap.favouriteMantraIds) }
 
     fun performSwitch() {
         scope.launch {
@@ -71,7 +79,23 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
                     .padding(padding)
                     .padding(horizontal = 24.dp)
             ) {
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(8.dp))
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = onBack) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
+                    }
+                    Spacer(Modifier.weight(1f))
+                    IconButton(onClick = { scope.launch { isFavourite = UserPrefs.toggleFavourite(ctx, mantra.id) } }) {
+                        Icon(
+                            imageVector = if (isFavourite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,
+                            contentDescription = stringResource(
+                                if (isFavourite) R.string.detail_favourite_remove else R.string.detail_favourite_add
+                            ),
+                            tint = if (isFavourite) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                    }
+                }
+                Spacer(Modifier.height(8.dp))
                 Text(
                     "${stringResource(mantra.sourceCategory.labelRes()).uppercase()} · ${mantra.sourceLabel.forScript(lang.script).uppercase()}",
                     style = MaterialTheme.typography.labelSmall,

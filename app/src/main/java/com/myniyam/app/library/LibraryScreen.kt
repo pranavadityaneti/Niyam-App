@@ -85,6 +85,7 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
                     .fillMaxSize()
                     .padding(padding)
                     .padding(horizontal = 24.dp)
+                    .padding(bottom = 96.dp)
             ) {
                 Spacer(Modifier.height(24.dp))
                 Text(

@@ -45,7 +45,7 @@ private val LANGUAGE_LABELS: List<Triple<DisplayLanguage, String, String>> = lis
 )
 
 @Composable
-fun LanguageSettingScreen(onSaved: () -> Unit, onPaywall: () -> Unit) {
+fun LanguageSettingScreen(onSaved: () -> Unit, onPaywall: () -> Unit, onBack: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     val snap = UserPrefs.snapshot()
@@ -60,8 +60,8 @@ fun LanguageSettingScreen(onSaved: () -> Unit, onPaywall: () -> Unit) {
                     .padding(padding)
                     .padding(horizontal = 24.dp)
             ) {
-                Spacer(Modifier.height(24.dp))
-                Text(stringResource(R.string.settings_language_title), style = MaterialTheme.typography.headlineMedium)
+                Spacer(Modifier.height(8.dp))
+                SettingTopBar(stringResource(R.string.settings_language_title), onBack)
                 Spacer(Modifier.height(20.dp))
                 Column(
                     Modifier

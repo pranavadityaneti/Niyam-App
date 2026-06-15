@@ -37,6 +37,7 @@ object UserPrefs {
     private val KEY_PREMIUM_PLAN = stringPreferencesKey("premium_plan")
     private val KEY_TRIAL_REMINDER_SHOWN = booleanPreferencesKey("trial_reminder_shown")
     private val KEY_ACCESSIBILITY_CONSENT_AT = longPreferencesKey("accessibility_consent_at")
+    private val KEY_FAVOURITE_MANTRAS = stringSetPreferencesKey("favourite_mantra_ids")
 
     data class Snapshot(
         val onboardingComplete: Boolean,
@@ -53,7 +54,8 @@ object UserPrefs {
         val premiumActive: Boolean,
         val premiumPlan: String?,
         val trialReminderShown: Boolean,
-        val accessibilityConsentAt: Long
+        val accessibilityConsentAt: Long,
+        val favouriteMantraIds: Set<String>
     ) {
         companion object {
             val DEFAULTS = Snapshot(
@@ -71,7 +73,8 @@ object UserPrefs {
                 premiumActive = false,
                 premiumPlan = null,
                 trialReminderShown = false,
-                accessibilityConsentAt = 0L
+                accessibilityConsentAt = 0L,
+                favouriteMantraIds = emptySet()
             )
 
             fun fromRaw(
@@ -89,7 +92,8 @@ object UserPrefs {
                 premiumActive: Boolean? = null,
                 premiumPlan: String? = null,
                 trialReminderShown: Boolean? = null,
-                accessibilityConsentAt: Long? = null
+                accessibilityConsentAt: Long? = null,
+                favourites: Set<String>? = null
             ): Snapshot = Snapshot(
                 onboardingComplete = onboardingComplete ?: DEFAULTS.onboardingComplete,
                 currentMantraId = mantraId?.takeIf { it.isNotBlank() } ?: DEFAULTS.currentMantraId,
@@ -111,7 +115,8 @@ object UserPrefs {
                 premiumActive = premiumActive ?: DEFAULTS.premiumActive,
                 premiumPlan = premiumPlan ?: DEFAULTS.premiumPlan,
                 trialReminderShown = trialReminderShown ?: DEFAULTS.trialReminderShown,
-                accessibilityConsentAt = accessibilityConsentAt ?: DEFAULTS.accessibilityConsentAt
+                accessibilityConsentAt = accessibilityConsentAt ?: DEFAULTS.accessibilityConsentAt,
+                favouriteMantraIds = favourites ?: DEFAULTS.favouriteMantraIds
             )
         }
     }
@@ -144,7 +149,8 @@ object UserPrefs {
                     premiumActive = p[KEY_PREMIUM_ACTIVE],
                     premiumPlan = p[KEY_PREMIUM_PLAN],
                     trialReminderShown = p[KEY_TRIAL_REMINDER_SHOWN],
-                    accessibilityConsentAt = p[KEY_ACCESSIBILITY_CONSENT_AT]
+                    accessibilityConsentAt = p[KEY_ACCESSIBILITY_CONSENT_AT],
+                    favourites = p[KEY_FAVOURITE_MANTRAS]
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load prefs; using defaults", e)
@@ -241,6 +247,16 @@ object UserPrefs {
     suspend fun setTrialReminderShown(context: Context) {
         context.niyamDataStore.edit { it[KEY_TRIAL_REMINDER_SHOWN] = true }
         current = current.copy(trialReminderShown = true)
+    }
+
+    /** Toggle a mantra's favourite status (SP-P1). Returns the new state. */
+    suspend fun toggleFavourite(context: Context, mantraId: String): Boolean {
+        val nowFav = mantraId !in current.favouriteMantraIds
+        val newSet = if (nowFav) current.favouriteMantraIds + mantraId
+                     else current.favouriteMantraIds - mantraId
+        context.niyamDataStore.edit { it[KEY_FAVOURITE_MANTRAS] = newSet }
+        current = current.copy(favouriteMantraIds = newSet)
+        return nowFav
     }
 
     fun setSnapshotForTest(snapshot: Snapshot) { current = snapshot }

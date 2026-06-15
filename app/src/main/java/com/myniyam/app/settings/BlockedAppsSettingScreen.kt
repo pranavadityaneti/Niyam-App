@@ -42,7 +42,7 @@ private val APP_CATALOG: List<Pair<String, String>> = listOf(
 )
 
 @Composable
-fun BlockedAppsSettingScreen(onSaved: () -> Unit) {
+fun BlockedAppsSettingScreen(onSaved: () -> Unit, onBack: () -> Unit) {
     val ctx = LocalContext.current
     val scope = rememberCoroutineScope()
     var selected by remember { mutableStateOf(UserPrefs.snapshot().blockedPackages) }
@@ -55,8 +55,8 @@ fun BlockedAppsSettingScreen(onSaved: () -> Unit) {
                     .padding(padding)
                     .padding(horizontal = 24.dp)
             ) {
-                Spacer(Modifier.height(24.dp))
-                Text(stringResource(R.string.settings_apps_title), style = MaterialTheme.typography.headlineMedium)
+                Spacer(Modifier.height(8.dp))
+                SettingTopBar(stringResource(R.string.settings_apps_title), onBack)
                 Spacer(Modifier.height(8.dp))
                 Text(
                     stringResource(R.string.settings_apps_empty_hint),
