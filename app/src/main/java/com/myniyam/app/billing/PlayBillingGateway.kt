@@ -16,6 +16,7 @@ import com.android.billingclient.api.QueryPurchasesParams
 import com.android.billingclient.api.acknowledgePurchase
 import com.android.billingclient.api.queryProductDetails
 import com.android.billingclient.api.queryPurchasesAsync
+import com.myniyam.app.backend.EntitlementSync
 import com.myniyam.app.data.UserPrefs
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -159,6 +160,13 @@ object PlayBillingGateway : BillingGateway {
                     .setPurchaseToken(p.purchaseToken)
                     .build()
             )
+        }
+        // Record the trusted entitlement server-side (P5c). Best-effort: a failure
+        // here does not undo the local grant above — launch reconcile (5c-3) is
+        // where the server's verdict becomes authoritative.
+        val productId = p.products.firstOrNull()
+        if (productId != null) {
+            EntitlementSync.verifyPurchase(productId, p.purchaseToken)
         }
     }
 }
