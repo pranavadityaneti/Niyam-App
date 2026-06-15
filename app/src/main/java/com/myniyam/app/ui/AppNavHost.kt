@@ -9,8 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -24,6 +26,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.myniyam.app.R
 import com.myniyam.app.backend.AuthRepository
+import com.myniyam.app.backend.EntitlementSync
 import com.myniyam.app.billing.PaywallScreen
 import io.github.jan.supabase.auth.status.SessionStatus
 import com.myniyam.app.library.FavouritesScreen
@@ -101,6 +104,19 @@ fun AppNavHost(
             navController.navigate(NiyamRoutes.SIGN_IN) {
                 popUpTo(0) { inclusive = true }
             }
+        }
+    }
+
+    // Entitlement reconcile (P5c-3): once the session resolves to Authenticated,
+    // mirror the server-trusted entitlements row into local UserPrefs (restores
+    // premium on a new device; revokes when the server says inactive). Runs once
+    // per Authenticated transition; idempotent and best-effort.
+    val reconcileCtx = LocalContext.current
+    var reconciled by remember { mutableStateOf(false) }
+    LaunchedEffect(sessionStatus) {
+        if (sessionStatus is SessionStatus.Authenticated && !reconciled) {
+            reconciled = true
+            EntitlementSync.reconcileOnLaunch(reconcileCtx)
         }
     }
 

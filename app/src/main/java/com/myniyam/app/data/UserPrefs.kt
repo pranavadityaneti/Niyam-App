@@ -221,6 +221,20 @@ object UserPrefs {
         current = current.copy(premiumActive = true, premiumPlan = plan)
     }
 
+    /**
+     * Mirror the server-trusted entitlement (P5c launch reconcile). Sets premium
+     * active/inactive + plan WITHOUT touching the trial — unlike the sandbox
+     * clear lever. Server is authoritative for the premium flag; the trial is
+     * reconciled separately (5c-4).
+     */
+    suspend fun setPremiumActive(context: Context, active: Boolean, plan: String?) {
+        context.niyamDataStore.edit {
+            it[KEY_PREMIUM_ACTIVE] = active
+            if (active && plan != null) it[KEY_PREMIUM_PLAN] = plan else it.remove(KEY_PREMIUM_PLAN)
+        }
+        current = current.copy(premiumActive = active, premiumPlan = if (active) plan else null)
+    }
+
     /** Debug "show me the free tier" lever: drops premium AND resets the trial. */
     suspend fun clearPremiumForSandbox(context: Context) {
         context.niyamDataStore.edit {
