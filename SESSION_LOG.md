@@ -524,3 +524,18 @@ Debug + release compile; 124/124 tests; engine untouched (work in `backend/` + U
 **Model:** device is the working copy; server is backup + fresh-device seed. Push-on-stop, seed-at-sign-in. Two established devices used simultaneously won't cross-update mid-session (no live merge) — acceptable; matches push-local-then-sync.
 
 **ALL APP-SIDE BACKEND PHASES (3/7/5c/5) NOW CODE-COMPLETE.** Remaining: Phase 6 compliance refresh (privacy/website/Data Safety — now that we collect email + synced practice; gates the next signed release) + the deferred locale sweep for new English strings (account/delete/paywall) + Pranav's deploys/Play Console/device testing.
+
+### 2026-06-16 (cont.) — Phase 6 compliance refresh SHIPPED (spec + P6 commit pushed → Vercel)
+
+Spec: docs/superpowers/specs/2026-06-16-6-compliance-refresh-design.html (Pranav approved wording + Data Safety answers; "go ahead"). Edited per spec, one commit:
+- **privacy.html:** honest short version (sign-in + sync, delete anytime); new sections "Your account & synced practice", "Deleting your data", "Who we rely on" (Supabase + Google processors); on-device list trimmed to genuinely-local (blocked-apps/theme/streak/accessibility); Children + DPDP corrected (rights now exercisable via in-app Delete account); effective date 16 Jun 2026; meta description updated.
+- **terms.html:** §1 gains Google-sign-in/account clause + privacy link; date bump.
+- **play-listing-kit.html:** Data Safety flipped from "nothing collected" → declares Email (account mgmt/app function, linked), App activity = Other user-generated content (practice/favourites, linked), Financial = Purchase history (linked), Device IDs (AdMob, shared/ads); encrypted-in-transit Yes; deletion via in-app Delete account. Marketing "privacy as principle" blurb made truthful. Pranav had no issue with the Data Safety wording.
+- No app/engine code change. Pushed → Vercel auto-deploy of privacy + terms (verify live on myniyam.com/privacy + /terms).
+
+**BACKEND-PHASE ARC 3 → 7 → 5c → 5 → 6 COMPLETE (all code/docs).**
+
+**Remaining before a clean signed release (no new feature work):**
+1. **Locale sweep** — new English-only strings (settings_section_account, signout/delete confirms, action_cancel, paywall_restore_none, paywall_trust) need the 7-language treatment in values-*/strings.xml. Last app-code remnant.
+2. **Pranav infra:** deploy the 3 Edge Functions (delete-account, verify-entitlement, sync-trial); `GOOGLE_PLAY_SA_KEY` secret already set; create + activate the 3 Play subscription products + closed-test track.
+3. **Device testing:** sign-in, delete-account, real purchase + restore, cross-device sync seed, trial-reinstall loophole — none testable on emulator/local.
