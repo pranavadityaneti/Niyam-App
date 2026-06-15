@@ -29,23 +29,23 @@
     <string name="onb_apps_title">What pulls you in?</string>
 
     <!-- Permission screens (placeholder copy — refined when UI references arrive) -->
-    <string name="perm_usage_title">See when you open blocked apps</string>
-    <string name="perm_usage_body">To see when you open Instagram, Facebook, or YouTube — so we can show your mantra first.</string>
-    <string name="perm_overlay_title">Draw on top of other apps</string>
-    <string name="perm_overlay_body">To show your mantra on top of the blocked app.</string>
-    <string name="perm_accessibility_title">Detect app launches instantly</string>
-    <string name="perm_accessibility_body">To detect the exact moment Instagram, Facebook, or YouTube opens — instantly, with no delay.</string>
+    <string name="perm_usage_title">Let Niyam see which app is open</string>
+    <string name="perm_usage_body">Niyam needs to know the moment you open one of your blocked apps, so your mantra can appear first. It only sees which app is in front — never what you do inside it.</string>
+    <string name="perm_overlay_title">Let Niyam show your mantra</string>
+    <string name="perm_overlay_body">This lets Niyam place your mantra gently over the app you opened, so you can pause and read before you scroll.</string>
+    <string name="perm_accessibility_title">React the instant an app opens</string>
+    <string name="perm_accessibility_body">This is what lets Niyam respond the very moment a blocked app opens — with no delay — so your mantra is always there first.</string>
     <string name="perm_accessibility_disclosure">Niyam uses Android\'s AccessibilityService API for one purpose only: to detect when an app you chose to block is opened, so your mantra can appear first. Niyam does not collect, read, store, or transmit screen content, messages, or any personal data through this service. Detection runs entirely on your device. You can turn it off anytime in your phone\'s Accessibility settings.</string>
     <string name="perm_accessibility_agree">I agree — turn on</string>
-    <string name="perm_battery_title">Don\'t shut us off in the background</string>
-    <string name="perm_battery_body">So your phone doesn\'t kill Niyam while you\'re using it elsewhere.</string>
+    <string name="perm_battery_title">Keep Niyam awake</string>
+    <string name="perm_battery_body">Phones often shut down background apps to save power. Allowing this keeps Niyam running, so it never misses the moment you open a blocked app.</string>
     <string name="perm_oem_title">Allow background activity</string>
     <string name="perm_oem_body_miui">Xiaomi, Redmi and POCO phones aggressively close background apps. Tap Grant, find Niyam in the list, and switch Autostart on.</string>
     <string name="perm_oem_body_color_os">OPPO and realme phones close background apps to save battery. Tap Grant and allow Niyam to start automatically.</string>
     <string name="perm_oem_body_funtouch_os">vivo and iQOO phones close background apps to save battery. Tap Grant and allow Niyam to start in the background.</string>
     <string name="perm_oem_body_oxygen_os">OnePlus phones optimise battery aggressively. Tap Grant, then set Niyam\'s battery usage to "Don\'t optimise".</string>
     <string name="perm_oem_body_one_ui">Samsung phones put unused apps to sleep. Tap Grant, then make sure Niyam is never added to "Sleeping apps".</string>
-    <string name="perm_oem_body_generic">Some phones quietly stop background apps to save battery. If your phone shows an Autostart or background-activity option for Niyam, switch it on. If you don\'t see one, you\'re all set — tap Done.</string>
+    <string name="perm_oem_body_generic">Most phones need nothing here. If yours has an \"Autostart\" or \"background-activity\" setting, you can switch it on for Niyam in Settings anytime. Tap Done to finish.</string>
 
     <string name="grant">Grant</string>
     <string name="done">Done</string>

@@ -60,24 +60,40 @@ fun OemAutostartScreen(onDone: () -> Unit) {
                 Spacer(Modifier.weight(1f))
                 PermissionDashes(stepIndex = 4, stepCount = 5)
                 Spacer(Modifier.height(20.dp))
-                Button(
-                    onClick = { OemAutostartHelper.openAutostartSettings(ctx) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                    shape = RoundedCornerShape(999.dp)
-                ) {
-                    Text(stringResource(R.string.grant), style = MaterialTheme.typography.labelLarge)
-                }
-                Spacer(Modifier.height(10.dp))
-                OutlinedButton(
-                    onClick = onDone,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(52.dp),
-                    shape = RoundedCornerShape(999.dp)
-                ) {
-                    Text(stringResource(R.string.done), style = MaterialTheme.typography.labelLarge)
+                if (flow == OemAutostartHelper.OemFlow.GENERIC) {
+                    // Stock Android has no OEM autostart setting to open — a Grant
+                    // button would silently no-op, so Done is the single primary CTA.
+                    Button(
+                        onClick = onDone,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        shape = RoundedCornerShape(999.dp)
+                    ) {
+                        Text(stringResource(R.string.done), style = MaterialTheme.typography.labelLarge)
+                    }
+                } else {
+                    // Known OEM: Grant opens the real autostart setting (primary);
+                    // Done lets the user proceed once they've handled it (secondary).
+                    Button(
+                        onClick = { OemAutostartHelper.openAutostartSettings(ctx) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        shape = RoundedCornerShape(999.dp)
+                    ) {
+                        Text(stringResource(R.string.grant), style = MaterialTheme.typography.labelLarge)
+                    }
+                    Spacer(Modifier.height(10.dp))
+                    OutlinedButton(
+                        onClick = onDone,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(52.dp),
+                        shape = RoundedCornerShape(999.dp)
+                    ) {
+                        Text(stringResource(R.string.done), style = MaterialTheme.typography.labelLarge)
+                    }
                 }
                 Spacer(Modifier.height(28.dp))
             }
