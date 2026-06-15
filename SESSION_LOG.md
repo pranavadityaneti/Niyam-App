@@ -418,3 +418,28 @@ Free-tier app surface is complete (SP 1-5, 7). Next: **SP-6 paywall/trial in san
 - **Release signing:** upload keystore at ~/keystores/niyam-upload.keystore (4096 RSA, 25y), single-password PKCS12 (first attempt had split store/key passwords → "block not properly padded" → regenerated); credentials in ~/.gradle/gradle.properties; build.gradle.kts signs release only when props present (CI-safe). v1.0.0 (code 2). **Signed AAB built + jar-verified:** app/build/outputs/bundle/release/app-release.aab (11.1MB, includes disclosure + all locales).
 - **Listing kit:** docs/play-listing-kit.html — complete console session (app name/short/full descriptions, category, graphics incl. generated 512 icon + 1024×500 feature graphic, data-safety matrix incl. the AdMob honesty note, IARC answers, target audience 18+, THE AccessibilityService declaration text + screen-recording readiness, 3 subscription products spec'd niyam.premium.weekly/monthly/yearly, closed-test track plan w/ release notes). Suite 123/123 throughout.
 - **Next:** Pranav runs the console session from the kit → AAB up → closed test starts → I build real Play Billing during the 14-day window.
+
+---
+
+## 2026-06-16 — Onboarding-feedback revamp (post device-test)
+
+Pranav tested onboarding on a Hindi device and gave 6 points. Investigated each against code; locked decisions via Q&A; sequenced as T1–T6 (one change at a time, build-verified, commit per task).
+
+**Decisions locked:**
+1. **Language:** English from launch through sign-in; move language picker to RIGHT AFTER sign-in; rest of onboarding + whole app in chosen language. Root cause confirmed: NO per-app locale exists — chrome follows device system locale (Hindi); `displayLanguage` pref only drives mantra CONTENT, not chrome. Needs real per-app locale (T6, architectural).
+2. **Step-2 mantras:** show the chosen intention's **5** (was `.take(3)`). Found the data: each intention's brief-sourced priority list is 5, and brief's freemium = "5 starter mantras". Free tier becomes the chosen intention's 5, **locked to the onboarding intention** (changing intention later won't swap the free set) — billing change in `Entitlements.FREE_MANTRA_IDS` (currently a static one-per-intention set). T4 then T5.
+3. **Apps:** bundle brand logos; "X (formerly Twitter)"; add 5 games. ✅ T2.
+4. **Permission copy:** plainer + explain why. ✅ T3.
+5. **OEM Grant/Done trap:** Done-primary on generic devices. ✅ T1.
+6. **Other-app blocking:** ✅ verified already wired (engine blocks ANY selected pkg via BlockList.matches); no change.
+
+**Shipped this session (pushed to main):**
+- **T1 (4de09c2):** OemAutostartScreen — generic devices show single primary Done (Grant no-ops on stock Android); known OEMs keep Grant+Done. perm_oem_body_generic reworded.
+- **T2 (fdec549):** Extracted shared `data/AppCatalog.kt` (was duplicated in onboarding AppsScreen + settings BlockedAppsSettingScreen — settings touched, flagged). Added 5 games (BGMI/Free Fire/COD Mobile/Candy Crush/Ludo King), "X (formerly Twitter)". AppIcon resolves `ic_app_<slug>` → installed icon → letter. 7 social brand vector logos authored (games fall back to installed icon). Live-verified on emulator: all 7 logos render clean + recognizable.
+- **T3 (4de09c2, same commit as T1):** Rewrote usage/overlay/accessibility/battery permission titles+bodies (plainer + why); genericized hardcoded app names to "your blocked apps". Play accessibility disclosure + consent CTA UNCHANGED.
+
+**Verified on emulator-5554:** fresh install → Welcome(hi) → SignIn(en via fallback) → Google sign-in works → onboarding. Confirmed step-3 English pick does NOT change chrome (still Hindi) — validates the T6 problem exactly. adb note: device 1080x2424; bottom CTA center ≈ y2235.
+
+**Pending:** T4 (freemium dynamic free-5 locked to onboarding intention — billing, has tests) → T5 (step-2 shows 5, depends on T4) → T6 (per-app locale + reorder picker after sign-in + force-English-until-pick — architectural; then localize new T1/T3/signin/nav strings into 7 locales). After this batch: Phase-3 remainder (sign-in gate for returning users, Settings → Account: email + Sign out + Delete account via Edge Function).
+
+**Observation (mention, not touched):** usage-stats + accessibility permission screens feel redundant to users. Possibly the engine no longer needs usage-stats given AccessibilityService — worth checking whether one permission screen can be dropped. Not actioned.
