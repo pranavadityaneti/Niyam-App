@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Niyam — Phase 6: Compliance Refresh (Design Spec)</title>
+<style>
+  :root { --orange:#FF6400; --green:#1f4d3a; --ink:#23201c; --muted:#6b6359; --bg:#fbf7f1; --card:#fff; --line:#e7ddd0; }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.55;}
+  .wrap{max-width:880px;margin:0 auto;padding:40px 24px 80px;}
+  h1{color:var(--green);font-size:30px;margin:0 0 4px;}
+  .sub{color:var(--muted);margin:0 0 28px;font-size:15px;}
+  h2{color:var(--green);font-size:21px;margin:34px 0 10px;border-bottom:2px solid var(--line);padding-bottom:6px;}
+  h3{font-size:16px;margin:18px 0 6px;}
+  p,li{font-size:15px;}
+  code{background:#f0e8dc;padding:1px 5px;border-radius:4px;font-family:ui-monospace,Menlo,monospace;font-size:13px;}
+  .toc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 22px;margin:0 0 24px;}
+  .toc a{color:var(--green);text-decoration:none;} .toc a:hover{text-decoration:underline;}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:18px 22px;margin:14px 0;}
+  .new{border-left:4px solid var(--orange);background:#fff6ef;}
+  .warn{border-left:4px solid #c0392b;background:#fdf0ee;}
+  .old{border-left:4px solid #9a8f80;background:#f4efe8;}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13.5px;}
+  th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+  th{color:var(--muted);font-weight:600;}
+  .en{color:var(--muted);font-style:italic;}
+  blockquote{margin:8px 0;padding:10px 16px;border-left:3px solid var(--orange);background:#fff;border-radius:0 8px 8px 0;font-size:14.5px;}
+  @media print{body{background:#fff;}.wrap{max-width:100%;}a{color:#000;text-decoration:none;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Phase 6 — Compliance Refresh</h1>
+  <p class="sub">Niyam backend phase · design spec · 2026-06-16 · gates the next signed release</p>
+
+  <div class="toc">
+    <b>Contents</b>
+    <ol>
+      <li><a href="#why">Why this is mandatory now</a></li>
+      <li><a href="#inventory">What data Niyam actually collects now</a></li>
+      <li><a href="#privacy">Privacy policy — proposed new wording</a></li>
+      <li><a href="#datasafety">Play Data Safety — the new answers</a></li>
+      <li><a href="#terms">Terms &amp; in-app copy checks</a></li>
+      <li><a href="#tasks">Task breakdown</a></li>
+      <li><a href="#nongoals">Non-goals</a></li>
+    </ol>
+  </div>
+
+  <h2 id="why">1. Why this is mandatory now</h2>
+  <p>The live privacy policy and the Play Data Safety form both say Niyam collects <b>no personal data</b> and has <b>no accounts / no servers</b>. The backend phase made that false: we now require <b>Google Sign-In</b> and store practice + entitlement data in <b>Supabase</b>. Shipping the next signed AAB with a "we collect nothing" policy + Data Safety form would be a <b>false declaration</b> — a common Play rejection/suspension cause and a DPDP-Act problem. This phase makes both documents truthful before the next release.</p>
+  <p class="en">In plain English: we told users and Google "we keep nothing about you." That stopped being true the moment we added sign-in and sync. We have to fix the wording before we upload the next build, or Google can pull the app.</p>
+
+  <h2 id="inventory">2. What data Niyam actually collects now</h2>
+  <table>
+    <tr><th>Data</th><th>Where</th><th>Why</th><th>Collected?</th></tr>
+    <tr><td>Google account email + user id</td><td>Supabase Auth (<code>profiles</code>)</td><td>Required sign-in; identifies your synced data</td><td><b>NEW — yes</b></td></tr>
+    <tr><td>Practice state (current mantra, sadhana progress, completed mantras, intention, display language)</td><td>Supabase <code>practice_state</code></td><td>Sync across your devices</td><td><b>NEW — yes</b></td></tr>
+    <tr><td>Favourites</td><td>Supabase <code>favourites</code></td><td>Sync across your devices</td><td><b>NEW — yes</b></td></tr>
+    <tr><td>Entitlement (premium status, plan, trial start)</td><td>Supabase <code>entitlements</code></td><td>Server-trusted premium; close trial-reinstall loophole</td><td><b>NEW — yes</b></td></tr>
+    <tr><td>Play purchase token</td><td>Sent to our Edge Function → Google; not stored beyond derived status</td><td>Verify the subscription is real</td><td>Transient</td></tr>
+    <tr><td>Blocked-app list, theme, read-events/streak history, accessibility detection</td><td>Device only</td><td>App function</td><td>On-device, not collected</td></tr>
+    <tr><td>Waitlist email; grievance email</td><td>Form service / email</td><td>Launch notice; grievances</td><td>Yes (already disclosed)</td></tr>
+    <tr><td>AdMob device identifiers (free tier)</td><td>Google AdMob</td><td>Serve banner ads</td><td>Yes (already disclosed)</td></tr>
+    <tr><td>Screen content, other-app activity, payment card details</td><td>—</td><td>—</td><td><b>Never</b></td></tr>
+  </table>
+  <p>Supabase is our <b>data processor</b> (hosting, auth, Postgres). Google is a processor for sign-in, Play billing, and AdMob.</p>
+
+  <h2 id="privacy">3. Privacy policy — proposed new wording</h2>
+  <p>Changes to <code>website/privacy.html</code> (effective date bumped; meta description updated). Old → new for each affected section:</p>
+
+  <h3>"The short version"</h3>
+  <div class="old"><b>Now:</b> "Niyam has no accounts and no sign-up. We do not collect, store, or transmit your personal data. Your mantras, journeys, streaks and settings live only on your device."</div>
+  <div class="new"><b>New:</b>
+  <blockquote>Niyam asks you to sign in with Google so your practice can sync across your devices. We store your email and your practice — your mantras, journeys, intention and favourites — on our secure servers (Supabase), tied to your account. We never see your payment details, and we never read or collect your activity in any other app. You can delete your account and everything we hold, any time, from inside the app.</blockquote></div>
+
+  <h3>New section — "Your account &amp; synced practice"</h3>
+  <div class="new"><b>Add:</b>
+  <blockquote>When you sign in with Google, we receive your email address and a Google account identifier. We use them only to create your Niyam account and to attach your synced practice to it. We store your current mantra, sadhana progress, completed mantras, chosen intention, display language and favourites so they follow you to a new phone. This data is hosted on our behalf by Supabase and protected so that only your signed-in account can read it. We do not sell it, share it for advertising, or use it to track you across other apps or services.</blockquote></div>
+
+  <h3>"What stays on your device" (trim to what's genuinely local)</h3>
+  <div class="new"><b>New list:</b> blocked-app list · theme preference · reading-history/streak counters · the accessibility detection itself. <span class="en">(Mantra/progress/intention/language/favourites move to the synced section above.)</span></div>
+
+  <h3>Replace the false "no servers" line</h3>
+  <div class="old"><b>Now:</b> "Uninstalling the app deletes all of it. We have no servers and keep no copy."</div>
+  <div class="new"><b>New:</b>
+  <blockquote>Uninstalling removes everything stored on your device. Your account and synced practice remain on our servers until you delete them — use <b>Settings → Delete account</b> in the app to erase your account and all synced data immediately, or write to our grievance contact below.</blockquote></div>
+
+  <h3>Data deletion &amp; retention (new short section)</h3>
+  <div class="new"><b>Add:</b>
+  <blockquote>Deleting your account from the app permanently removes your profile, synced practice, favourites and entitlement records from our servers; this cannot be undone. We keep your synced data only while your account exists.</blockquote></div>
+
+  <h3>Children &amp; DPDP — correct the "collects no personal data" claim</h3>
+  <div class="old"><b>Now:</b> DPDP section says "Because the app collects no personal data, most processing simply never occurs."</div>
+  <div class="new"><b>New:</b> we now hold your email + synced practice, so we state the DPDP rights as actually exercisable — access, correction, <b>erasure (the in-app Delete account)</b>, grievance to our contact (7-day ack / 90-day resolve), and recourse to the Data Protection Board. Children section keeps the 18+ intent but drops the "no personal data is processed" sentence.</div>
+
+  <h3>Sub-processors (new one-liner)</h3>
+  <div class="new"><b>Add:</b> "We rely on Supabase (account, database, hosting) and Google (sign-in, Play billing, AdMob) to operate Niyam. Each processes data only to provide its service."</div>
+
+  <p>Unchanged: Accessibility Service section (still on-device-only, accurate), Purchases (Google Play), Advertising (AdMob free tier), Google Play AccessibilityService disclosure, website waitlist.</p>
+
+  <h2 id="datasafety">4. Play Data Safety — the new answers</h2>
+  <p>For <code>docs/play-listing-kit.html</code> (your Console reference). The form flips from "No data collected" to:</p>
+  <table>
+    <tr><th>Data type</th><th>Collected</th><th>Linked to identity</th><th>Purpose</th><th>Shared</th></tr>
+    <tr><td>Personal info → <b>Email address</b></td><td>Yes</td><td>Yes</td><td>Account management, App functionality</td><td>No</td></tr>
+    <tr><td>App activity → <b>Other user-generated content</b> (mantras, progress, favourites)</td><td>Yes</td><td>Yes</td><td>App functionality (sync)</td><td>No</td></tr>
+    <tr><td>Financial → <b>Purchase history</b> (subscription status)</td><td>Yes</td><td>Yes</td><td>App functionality</td><td>No</td></tr>
+    <tr><td><b>Device or other IDs</b> (AdMob)</td><td>Yes</td><td>No</td><td>Advertising</td><td>Yes (AdMob)</td></tr>
+  </table>
+  <p><b>Security answers:</b> data <b>encrypted in transit</b> = Yes (HTTPS/Supabase). Users <b>can request deletion</b> = Yes (in-app Delete account). No data sold. Payment card details are handled by Google Play and not declared as collected by us.</p>
+  <div class="warn"><b>Decision flag:</b> "Purchase history" is borderline — Google Play already reports billing. We declare the <em>entitlement status we store</em> to be safe (over-declaring is fine; under-declaring is the rejection risk). Tell me if you'd rather omit it.</div>
+
+  <h2 id="terms">5. Terms &amp; in-app copy checks</h2>
+  <ul>
+    <li><b>terms.html:</b> review for any "no data / no account" language and align; the DPDP grievance contact + governing-law clauses already there stay. (Likely minor or no change.)</li>
+    <li><b>In-app Sign-In copy</b> ("We store only your practice — never your activity in other apps") — still accurate; keep.</li>
+    <li><b>Effective date</b> on privacy + terms bumped to the edit date.</li>
+  </ul>
+
+  <h2 id="tasks">6. Task breakdown</h2>
+  <table>
+    <tr><th>Task</th><th>Change</th></tr>
+    <tr><td><b>6-1</b></td><td>Rewrite <code>website/privacy.html</code> per §3 (+ meta + effective date). Deploys to myniyam.com via the usual git push → Vercel.</td></tr>
+    <tr><td><b>6-2</b></td><td>Review/align <code>website/terms.html</code> (§5).</td></tr>
+    <tr><td><b>6-3</b></td><td>Update the Data Safety matrix in <code>docs/play-listing-kit.html</code> per §4 (your Console reference — you transcribe it into Play Console).</td></tr>
+  </table>
+  <p class="en">Note: 6-1 changes a <b>live, public, legally-binding</b> page on myniyam.com. I'll show you the rendered result before it's the final word, and it ships through your normal Vercel auto-deploy.</p>
+
+  <h2 id="nongoals">7. Non-goals</h2>
+  <ul>
+    <li>No engine/app code change — this phase is documents + the Console form only.</li>
+    <li>No new analytics or tracking is introduced (and the policy keeps saying so).</li>
+    <li>Not a lawyer's review — this is an honest, plain-English policy aligned to Play + DPDP; a formal legal review remains your call before scale.</li>
+  </ul>
+
+  <div class="warn"><b>For your approval:</b> the wording in §3 and the Data Safety answers in §4. Once you're good with both (and the §4 "Purchase history" flag), I'll make the edits one task at a time and you'll see each diff before it deploys.</div>
+</div>
+</body>
+</html>
