@@ -39,6 +39,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -92,13 +93,14 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
     val mantra = MantraRepository.displayMantra(CurrentSadhana.MANTRA_ID)
     val firstLine = mantra.text.forScript(CurrentSadhana.LANGUAGE.script).lineSequence().first()
 
-    // Progress fill animates 0 → dayN/dayM exactly once, when stats first resolve.
+    // Progress fill animates up to dayN/dayM, and re-animates whenever the day
+    // count changes (e.g. after a read is recorded and Home resumes).
     val progressTarget = if (stats.dayM == 0) 0f else stats.dayN.toFloat() / stats.dayM
     val animatedFraction = remember { Animatable(0f) }
     LaunchedEffect(progressTarget) {
         animatedFraction.animateTo(
             targetValue = progressTarget,
-            animationSpec = tween(durationMillis = 500, easing = FastOutSlowInEasing)
+            animationSpec = tween(durationMillis = 700, easing = FastOutSlowInEasing)
         )
     }
 
@@ -188,13 +190,15 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
                 Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                     StatChip(
                         text = stringResource(R.string.home_streak_fmt, stats.streak),
-                        highlight = stats.streak >= 2
+                        highlight = stats.streak >= 2,
+                        iconRes = R.drawable.ic_streak
                     )
                     StatChip(
                         text = pluralStringResource(
                             R.plurals.home_today_plural, stats.todayReads, stats.todayReads
                         ),
-                        highlight = false
+                        highlight = false,
+                        iconRes = R.drawable.ic_reads
                     )
                 }
 
@@ -258,15 +262,14 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
 }
 
 @Composable
-private fun StatChip(text: String, highlight: Boolean) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelLarge,
-        color = if (highlight) {
-            MaterialTheme.colorScheme.onSecondary
-        } else {
-            MaterialTheme.colorScheme.onSurfaceVariant
-        },
+private fun StatChip(text: String, highlight: Boolean, iconRes: Int) {
+    val fg = if (highlight) {
+        MaterialTheme.colorScheme.onSecondary
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .background(
                 color = if (highlight) {
@@ -277,5 +280,14 @@ private fun StatChip(text: String, highlight: Boolean) {
                 shape = RoundedCornerShape(999.dp)
             )
             .padding(horizontal = 14.dp, vertical = 8.dp)
-    )
+    ) {
+        Icon(
+            painter = painterResource(iconRes),
+            contentDescription = null,
+            tint = fg,
+            modifier = Modifier.size(15.dp)
+        )
+        Spacer(Modifier.size(6.dp))
+        Text(text = text, style = MaterialTheme.typography.labelLarge, color = fg)
+    }
 }

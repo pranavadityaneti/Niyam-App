@@ -87,6 +87,42 @@
     <string name="library_empty">Nothing matches — clear a filter.</string>
     <string name="library_current_marker">Current</string>
     <string name="library_completed_marker">Completed</string>
+
+    <!-- Library filter sheet (SP-P1) -->
+    <string name="filter_heading">Filters</string>
+    <string name="filter_clear_all">Clear all</string>
+    <string name="filter_show_count">Show %1$d</string>
+    <string name="filter_section_source">Source</string>
+    <string name="filter_section_length">Length</string>
+    <string name="filter_section_intention">Intention</string>
+    <string name="filter_section_deity">Deity</string>
+    <!-- Source categories -->
+    <string name="cat_vedic">Vedic</string>
+    <string name="cat_upanishad">Upanishads</string>
+    <string name="cat_gita">Bhagavad Gita</string>
+    <string name="cat_stotra">Stotras</string>
+    <!-- Length buckets -->
+    <string name="len_under30">Under 30s</string>
+    <string name="len_30to60">30–60s</string>
+    <string name="len_over60">Over 1 min</string>
+    <!-- Intentions -->
+    <string name="intent_focus">Focus</string>
+    <string name="intent_calm">Calm</string>
+    <string name="intent_sadhana">Sadhana</string>
+    <string name="intent_dharma">Dharma</string>
+    <string name="intent_devotion">Devotion</string>
+    <!-- Deities -->
+    <string name="deity_shiva">Shiva</string>
+    <string name="deity_vishnu">Vishnu</string>
+    <string name="deity_devi">Devi</string>
+    <string name="deity_ganesha">Ganesha</string>
+    <string name="deity_hanuman">Hanuman</string>
+    <string name="deity_krishna">Krishna</string>
+    <string name="deity_rama">Rama</string>
+    <string name="deity_saraswati">Saraswati</string>
+    <string name="deity_lakshmi">Lakshmi</string>
+    <string name="deity_universal">Universal</string>
+
     <string name="detail_make_current">Make this my sadhana</string>
     <string name="detail_is_current">Your current sadhana</string>
     <string name="detail_practice_again">Practice again</string>

@@ -1,9 +1,12 @@
 package com.myniyam.app.library
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,9 +18,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -25,8 +31,11 @@ import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -64,6 +73,10 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
 
     var selection by remember { mutableStateOf(LibraryFilters.Selection()) }
     val results = remember(selection, all) { LibraryFilters.apply(all, selection) }
+    val activeCount = remember(selection) {
+        listOf(selection.category, selection.length, selection.intention, selection.deity).count { it != null }
+    }
+    var showFilters by remember { mutableStateOf(false) }
 
     NiyamBackground {
         Scaffold(containerColor = Color.Transparent, contentColor = MaterialTheme.colorScheme.onBackground) { padding ->
@@ -83,28 +96,19 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
                 Text(stringResource(R.string.library_title), style = MaterialTheme.typography.headlineMedium)
                 Spacer(Modifier.height(14.dp))
 
-                FilterRow(
-                    options = SourceCategory.entries.map { it to it.label() },
-                    selected = selection.category,
-                    onSelect = { selection = selection.copy(category = it) }
-                )
-                FilterRow(
-                    options = LengthBucket.entries.map { it to it.label() },
-                    selected = selection.length,
-                    onSelect = { selection = selection.copy(length = it) }
-                )
-                FilterRow(
-                    options = Intention.entries.map { it to it.label() },
-                    selected = selection.intention,
-                    onSelect = { selection = selection.copy(intention = it) }
-                )
-                FilterRow(
-                    options = Deity.entries.map { it to it.label() },
-                    selected = selection.deity,
-                    onSelect = { selection = selection.copy(deity = it) }
-                )
+                // Single, tidy filter trigger (SP-P1): the four scrolling rows now
+                // live behind a bottom sheet. Active dimensions shown as a count badge.
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    FilterTriggerPill(activeCount = activeCount, onClick = { showFilters = true })
+                    Spacer(Modifier.weight(1f))
+                    if (activeCount > 0) {
+                        TextButton(onClick = { selection = LibraryFilters.Selection() }) {
+                            Text(stringResource(R.string.filter_clear_all))
+                        }
+                    }
+                }
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(10.dp))
 
                 if (results.isEmpty()) {
                     Text(
@@ -171,7 +175,7 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
                                     )
                                     Spacer(Modifier.height(6.dp))
                                     Text(
-                                        "${mantra.sourceCategory.label()} · ~${mantra.estimatedReadSeconds}s",
+                                        "${stringResource(mantra.sourceCategory.labelRes())} · ~${mantra.estimatedReadSeconds}s",
                                         style = MaterialTheme.typography.labelSmall,
                                         color = MaterialTheme.colorScheme.onSurfaceVariant
                                     )
@@ -187,17 +191,147 @@ fun LibraryScreen(onOpenDetail: (String) -> Unit) {
             }
         }
     }
+
+    if (showFilters) {
+        FilterSheet(
+            selection = selection,
+            resultCount = results.size,
+            onChange = { selection = it },
+            onClearAll = { selection = LibraryFilters.Selection() },
+            onDismiss = { showFilters = false }
+        )
+    }
+}
+
+/** Pill that opens the filter sheet, with a count badge for active dimensions (SP-P1). */
+@Composable
+private fun FilterTriggerPill(activeCount: Int, onClick: () -> Unit) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .shadow(
+                elevation = 4.dp,
+                shape = RoundedCornerShape(999.dp),
+                ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
+                spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
+            )
+            .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(999.dp))
+            .clickable { onClick() }
+            .padding(horizontal = 18.dp, vertical = 10.dp)
+    ) {
+        Text(stringResource(R.string.filter_heading), style = MaterialTheme.typography.labelLarge)
+        if (activeCount > 0) {
+            Spacer(Modifier.size(8.dp))
+            Box(
+                modifier = Modifier
+                    .size(20.dp)
+                    .background(MaterialTheme.colorScheme.primary, CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    activeCount.toString(),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun <T> FilterRow(options: List<Pair<T, String>>, selected: T?, onSelect: (T?) -> Unit) {
-    Row(
-        Modifier
-            .horizontalScroll(rememberScrollState())
-            .padding(bottom = 6.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+private fun FilterSheet(
+    selection: LibraryFilters.Selection,
+    resultCount: Int,
+    onChange: (LibraryFilters.Selection) -> Unit,
+    onClearAll: () -> Unit,
+    onDismiss: () -> Unit
+) {
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        sheetState = sheetState,
+        containerColor = MaterialTheme.colorScheme.surface
     ) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp)
+                .padding(bottom = 28.dp)
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    stringResource(R.string.filter_heading),
+                    style = MaterialTheme.typography.headlineSmall,
+                    modifier = Modifier.weight(1f)
+                )
+                val anyActive = listOf(selection.category, selection.length, selection.intention, selection.deity)
+                    .any { it != null }
+                if (anyActive) {
+                    TextButton(onClick = onClearAll) { Text(stringResource(R.string.filter_clear_all)) }
+                }
+            }
+            Spacer(Modifier.height(8.dp))
+
+            FilterSection(
+                title = stringResource(R.string.filter_section_source),
+                options = SourceCategory.entries.map { it to it.labelRes() },
+                selected = selection.category,
+                onSelect = { onChange(selection.copy(category = it)) }
+            )
+            FilterSection(
+                title = stringResource(R.string.filter_section_length),
+                options = LengthBucket.entries.map { it to it.labelRes() },
+                selected = selection.length,
+                onSelect = { onChange(selection.copy(length = it)) }
+            )
+            FilterSection(
+                title = stringResource(R.string.filter_section_intention),
+                options = Intention.entries.map { it to it.labelRes() },
+                selected = selection.intention,
+                onSelect = { onChange(selection.copy(intention = it)) }
+            )
+            FilterSection(
+                title = stringResource(R.string.filter_section_deity),
+                options = Deity.entries.map { it to it.labelRes() },
+                selected = selection.deity,
+                onSelect = { onChange(selection.copy(deity = it)) }
+            )
+
+            Spacer(Modifier.height(16.dp))
+            Button(
+                onClick = onDismiss,
+                shape = RoundedCornerShape(999.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+            ) {
+                Text(
+                    stringResource(R.string.filter_show_count, resultCount),
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@Composable
+private fun <T> FilterSection(
+    title: String,
+    options: List<Pair<T, Int>>,
+    selected: T?,
+    onSelect: (T?) -> Unit
+) {
+    Spacer(Modifier.height(12.dp))
+    Text(
+        title.uppercase(),
+        style = MaterialTheme.typography.labelSmall,
+        color = NiyamTheme.colors.overlineWarm
+    )
+    Spacer(Modifier.height(6.dp))
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         FilterChip(
             selected = selected == null,
             onClick = { onSelect(null) },
@@ -205,28 +339,16 @@ private fun <T> FilterRow(options: List<Pair<T, String>>, selected: T?, onSelect
             colors = FilterChipDefaults.filterChipColors(
                 selectedContainerColor = NiyamTheme.colors.orangeTint,
                 selectedLabelColor = NiyamTheme.colors.onTint
-            ),
-            modifier = Modifier.shadow(
-                elevation = 3.dp,
-                shape = RoundedCornerShape(8.dp),
-                ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
-                spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
             )
         )
-        options.forEach { (value, label) ->
+        options.forEach { (value, labelRes) ->
             FilterChip(
                 selected = selected == value,
                 onClick = { onSelect(if (selected == value) null else value) },
-                label = { Text(label) },
+                label = { Text(stringResource(labelRes)) },
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = NiyamTheme.colors.orangeTint,
                     selectedLabelColor = NiyamTheme.colors.onTint
-                ),
-                modifier = Modifier.shadow(
-                    elevation = 3.dp,
-                    shape = RoundedCornerShape(8.dp),
-                    ambientColor = Color(0xFF7A3D12).copy(alpha = 0.10f),
-                    spotColor = Color(0xFF7A3D12).copy(alpha = 0.10f)
                 )
             )
         }
@@ -245,36 +367,36 @@ internal fun MarkerChip(label: String, color: Color) {
     )
 }
 
-internal fun SourceCategory.label(): String = when (this) {
-    SourceCategory.VEDIC -> "Vedic"
-    SourceCategory.UPANISHAD -> "Upanishads"
-    SourceCategory.GITA -> "Bhagavad Gita"
-    SourceCategory.STOTRA -> "Stotras"
+internal fun SourceCategory.labelRes(): Int = when (this) {
+    SourceCategory.VEDIC -> R.string.cat_vedic
+    SourceCategory.UPANISHAD -> R.string.cat_upanishad
+    SourceCategory.GITA -> R.string.cat_gita
+    SourceCategory.STOTRA -> R.string.cat_stotra
 }
 
-internal fun LengthBucket.label(): String = when (this) {
-    LengthBucket.UNDER_30S -> "Under 30s"
-    LengthBucket.S30_TO_60 -> "30–60s"
-    LengthBucket.OVER_60S -> "Over 1 min"
+internal fun LengthBucket.labelRes(): Int = when (this) {
+    LengthBucket.UNDER_30S -> R.string.len_under30
+    LengthBucket.S30_TO_60 -> R.string.len_30to60
+    LengthBucket.OVER_60S -> R.string.len_over60
 }
 
-internal fun Intention.label(): String = when (this) {
-    Intention.FOCUS -> "Focus"
-    Intention.CALM -> "Calm"
-    Intention.SADHANA -> "Sadhana"
-    Intention.DHARMA -> "Dharma"
-    Intention.DEVOTION -> "Devotion"
+internal fun Intention.labelRes(): Int = when (this) {
+    Intention.FOCUS -> R.string.intent_focus
+    Intention.CALM -> R.string.intent_calm
+    Intention.SADHANA -> R.string.intent_sadhana
+    Intention.DHARMA -> R.string.intent_dharma
+    Intention.DEVOTION -> R.string.intent_devotion
 }
 
-internal fun Deity.label(): String = when (this) {
-    Deity.SHIVA -> "Shiva"
-    Deity.VISHNU -> "Vishnu"
-    Deity.DEVI -> "Devi"
-    Deity.GANESHA -> "Ganesha"
-    Deity.HANUMAN -> "Hanuman"
-    Deity.KRISHNA -> "Krishna"
-    Deity.RAMA -> "Rama"
-    Deity.SARASWATI -> "Saraswati"
-    Deity.LAKSHMI -> "Lakshmi"
-    Deity.UNIVERSAL -> "Universal"
+internal fun Deity.labelRes(): Int = when (this) {
+    Deity.SHIVA -> R.string.deity_shiva
+    Deity.VISHNU -> R.string.deity_vishnu
+    Deity.DEVI -> R.string.deity_devi
+    Deity.GANESHA -> R.string.deity_ganesha
+    Deity.HANUMAN -> R.string.deity_hanuman
+    Deity.KRISHNA -> R.string.deity_krishna
+    Deity.RAMA -> R.string.deity_rama
+    Deity.SARASWATI -> R.string.deity_saraswati
+    Deity.LAKSHMI -> R.string.deity_lakshmi
+    Deity.UNIVERSAL -> R.string.deity_universal
 }

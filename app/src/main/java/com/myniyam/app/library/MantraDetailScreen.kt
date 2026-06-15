@@ -73,7 +73,7 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
             ) {
                 Spacer(Modifier.height(24.dp))
                 Text(
-                    "${mantra.sourceCategory.label().uppercase()} · ${mantra.source.uppercase()}",
+                    "${stringResource(mantra.sourceCategory.labelRes()).uppercase()} · ${mantra.source.uppercase()}",
                     style = MaterialTheme.typography.labelSmall,
                     color = NiyamTheme.colors.overlineWarm
                 )
@@ -84,10 +84,10 @@ fun MantraDetailScreen(mantraId: String, onSwitched: () -> Unit, onMissing: () -
                     Modifier.horizontalScroll(rememberScrollState()),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    InfoChip(mantra.sourceCategory.label())
+                    InfoChip(stringResource(mantra.sourceCategory.labelRes()))
                     InfoChip("~${mantra.estimatedReadSeconds}s")
                     if (mantra.deity != Deity.UNIVERSAL) {
-                        InfoChip(mantra.deity.label())
+                        InfoChip(stringResource(mantra.deity.labelRes()))
                     }
                     if (isCompleted) {
                         MarkerChip(stringResource(R.string.library_completed_marker), SaladGreen)
