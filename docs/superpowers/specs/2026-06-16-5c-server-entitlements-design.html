@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Niyam — Phase 5c: Server-Verified Entitlements (Design Spec)</title>
+<style>
+  :root { --orange:#FF6400; --green:#1f4d3a; --ink:#23201c; --muted:#6b6359; --bg:#fbf7f1; --card:#fff; --line:#e7ddd0; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.55; }
+  .wrap { max-width:860px; margin:0 auto; padding:40px 24px 80px; }
+  h1 { color:var(--green); font-size:30px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 28px; font-size:15px; }
+  h2 { color:var(--green); font-size:21px; margin:34px 0 10px; border-bottom:2px solid var(--line); padding-bottom:6px; }
+  h3 { font-size:16px; margin:20px 0 6px; color:var(--ink); }
+  p, li { font-size:15px; }
+  code { background:#f0e8dc; padding:1px 5px; border-radius:4px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13px; }
+  pre { background:#2b2620; color:#f3ece0; padding:16px; border-radius:10px; overflow:auto; font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:12.5px; line-height:1.5; }
+  .toc { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 22px; margin:0 0 24px; }
+  .toc a { color:var(--green); text-decoration:none; }
+  .toc a:hover { text-decoration:underline; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:14px 0; }
+  .rec { border-left:4px solid var(--orange); background:#fff6ef; }
+  .warn { border-left:4px solid #c0392b; background:#fdf0ee; }
+  .you { border-left:4px solid var(--green); background:#eef5f1; }
+  table { width:100%; border-collapse:collapse; margin:12px 0; font-size:14px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; }
+  .tag { display:inline-block; font-size:11px; font-weight:700; padding:2px 8px; border-radius:99px; color:#fff; }
+  .t-rec { background:var(--orange); } .t-you { background:var(--green); } .t-later { background:#9a8f80; }
+  .en { color:var(--muted); font-style:italic; }
+  @media print { body{background:#fff;} .wrap{max-width:100%;} pre{white-space:pre-wrap;} a{color:#000;text-decoration:none;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Phase 5c — Server-Verified Entitlements</h1>
+  <p class="sub">Niyam backend phase · design spec · 2026-06-16 · sequence position 3 → 7 → <b>5c</b> → 5 → 6</p>
+
+  <div class="toc">
+    <b>Contents</b>
+    <ol>
+      <li><a href="#goal">Goal &amp; why now</a></li>
+      <li><a href="#decision">The one decision for you</a></li>
+      <li><a href="#arch">Architecture</a></li>
+      <li><a href="#fn">The <code>verify-entitlement</code> Edge Function</a></li>
+      <li><a href="#client">Client behaviour (purchase, launch, trial)</a></li>
+      <li><a href="#trust">Trust model &amp; failure handling</a></li>
+      <li><a href="#setup">Setup you'll need to do</a></li>
+      <li><a href="#tasks">Task breakdown (how I'll build it)</a></li>
+      <li><a href="#nongoals">Non-goals</a></li>
+    </ol>
+  </div>
+
+  <h2 id="goal">1. Goal &amp; why now</h2>
+  <p>Today premium is decided <b>only on the device</b>: <code>UserPrefs.premiumActive</code> and the 7-day trial start live in local DataStore. Phase 7 made the purchase real, but the device is still the source of truth — which means two holes:</p>
+  <ul>
+    <li><b>Trial-reinstall loophole:</b> uninstall + reinstall resets the local trial start → unlimited free 7-day trials.</li>
+    <li><b>No cross-device premium:</b> a paid user on a new phone has to tap "Restore" and Play must still have the purchase locally; nothing carries their entitlement by account.</li>
+  </ul>
+  <p>5c makes the <b>server</b> the source of truth. A Supabase Edge Function verifies the Play purchase with Google's API and writes the trusted <code>entitlements</code> row (the table already exists from P2, RLS read-own, service-role write-only). The app trusts that row and reconciles on launch.</p>
+  <p class="en">In plain English: the app stops believing the phone about who paid. After a purchase, our server asks Google "is this real?", records the answer under the user's account, and every device that signs in reads that record. Reinstalling no longer resets the trial, and a paid user gets premium back automatically on any device.</p>
+
+  <h2 id="decision">2. The one decision for you</h2>
+  <p>How does our server learn about subscription changes (renewals, cancellations, refunds)?</p>
+  <table>
+    <tr><th>Option</th><th>What it means</th><th>Infra</th></tr>
+    <tr>
+      <td><b>Verify-on-demand</b> <span class="tag t-rec">RECOMMENDED for now</span></td>
+      <td>The app sends the purchase token to our function after purchase and on each launch; the function asks Google for current status and updates the row. Status can be stale between launches (fine for a blocker app).</td>
+      <td>Just a Google service account. No Pub/Sub.</td>
+    </tr>
+    <tr>
+      <td><b>RTDN (Real-time Developer Notifications)</b> <span class="tag t-later">LATER</span></td>
+      <td>Google pushes renew/cancel/refund events to a Pub/Sub topic; a function consumes them and updates the row within seconds, even if the app never opens.</td>
+      <td>Pub/Sub topic + push endpoint + Play Console wiring.</td>
+    </tr>
+  </table>
+  <div class="card rec"><b>My recommendation:</b> ship <b>verify-on-demand</b> in 5c (closes both holes with the least setup), and keep RTDN as a clearly-scoped follow-up once revenue justifies the extra plumbing. For a launch-stage app where users open it daily, on-launch reconciliation is enough — a cancelled user keeps premium until at most their next app open, which is acceptable.</div>
+
+  <h2 id="arch">3. Architecture</h2>
+<pre>
+  ┌────────── Niyam app ──────────┐        ┌──── Supabase ────┐      ┌──── Google ────┐
+  │ PlayBillingGateway            │        │ Edge Function    │      │ Play Developer │
+  │   purchase() ─ token ─────────┼──POST─▶│ verify-entitlement│─────▶│ API (verify    │
+  │                               │        │  • verify token   │◀─────│ subscription)  │
+  │ EntitlementSync               │        │  • write row      │      └────────────────┘
+  │   onLaunch(): read row ◀──────┼─Postgrest (RLS read own)──┐
+  │   mirror → UserPrefs cache    │        │ entitlements table │
+  └───────────────────────────────┘        │ (service-role write│
+                                            │  only; user reads  │
+                                            │  own row)          │
+                                            └────────────────────┘
+</pre>
+  <ul>
+    <li><b>Server-truth:</b> <code>entitlements</code> row, written only by the function (service role). The app can read its own row but never write it (existing RLS).</li>
+    <li><b>Local cache:</b> <code>UserPrefs.premiumActive</code> / <code>trialStartEpochDay</code> become a cache of the server row so the engine and paywall keep working offline.</li>
+  </ul>
+
+  <h2 id="fn">4. The <code>verify-entitlement</code> Edge Function</h2>
+  <p>Deno function at <code>supabase/functions/verify-entitlement/index.ts</code>. Same JWT pattern as <code>delete-account</code>: identify the caller from their token, never trust a user id sent in the body.</p>
+  <p><b>Input</b> (POST, JSON): <code>{ productId, purchaseToken }</code> — the values from the Play <code>Purchase</code>.</p>
+  <p><b>Steps:</b></p>
+  <ol>
+    <li>Resolve caller's <code>user.id</code> from the Authorization JWT (anon client).</li>
+    <li>Authenticate to Google with the service-account key (stored as a Supabase secret) → get an access token for the Android Publisher API.</li>
+    <li>Call <code>purchases.subscriptionsv2.get</code> with <code>packageName=com.myniyam.app</code> + <code>purchaseToken</code>.</li>
+    <li>Read the subscription state: <code>SUBSCRIPTION_STATE_ACTIVE</code> / <code>_IN_GRACE_PERIOD</code> → entitled; <code>_CANCELED</code> but still within paid term → entitled until expiry; <code>_EXPIRED</code>/<code>_ON_HOLD</code> → not entitled.</li>
+    <li>Map the line-item product id → plan name (<code>niyam.premium.*</code>).</li>
+    <li><code>upsert</code> the <code>entitlements</code> row with service role: <code>premium_active</code>, <code>premium_plan</code>, <code>source='play'</code>, <code>updated_at=now()</code>.</li>
+    <li>Return <code>{ premium_active, premium_plan }</code> so the client can mirror immediately.</li>
+  </ol>
+  <p>The service-account JSON key is set once via <code>supabase secrets set GOOGLE_PLAY_SA_KEY=...</code> (or a file) — it is <b>not</b> the Supabase service_role key and never ships in the app.</p>
+
+  <h2 id="client">5. Client behaviour</h2>
+  <p>New <code>backend/EntitlementSync.kt</code> (a thin object, never on the engine path):</p>
+  <h3>After a successful purchase</h3>
+  <p><code>PlayBillingGateway.persistAndAcknowledge()</code> additionally calls the function with the purchase's <code>productId</code> + <code>purchaseToken</code>; the returned trusted state is mirrored to <code>UserPrefs</code>. (If the call fails, the local grant from Phase 7 still stands — see failure handling.)</p>
+  <h3>On launch (signed in)</h3>
+  <ol>
+    <li>Read the user's <code>entitlements</code> row via Postgrest.</li>
+    <li>If <code>premium_active</code> → ensure local premium is set (restores paid users on a new device with no Play action).</li>
+    <li>If the row says not active but local thinks premium → clear local premium (server wins).</li>
+    <li>Re-verify any locally-owned Play purchase (from <code>queryPurchasesAsync</code>) to refresh the row.</li>
+  </ol>
+  <h3>Trial moves to the server</h3>
+  <p>When the trial starts (onboarding completion), write <code>trial_start_epoch_day</code> + <code>source='trial'</code> to the user's <code>entitlements</code> row (this write is the one exception — done client-side under RLS write-own? No: entitlements is service-role-write-only, so the trial start is written by a tiny function call too, or we relax the RLS to allow the user to set their <em>own</em> trial_start once). <b>Decision in spec review:</b> simplest is a <code>start-trial</code> path in the same function; I'll fold it in. On launch the client adopts the server's <code>trial_start</code> if present, so a reinstall can't reset it.</p>
+
+  <h2 id="trust">6. Trust model &amp; failure handling</h2>
+  <ul>
+    <li><b>Server wins, but never harshly offline.</b> Entitlement is only <em>downgraded</em> on a definitive server "not active" response — not on a network error. A failed verify/launch call leaves the existing local state untouched (a paying user on a flaky connection is never locked out mid-session).</li>
+    <li><b>Engine untouched.</b> The blocking engine reads local <code>UserPrefs</code> only; all of 5c is in <code>backend/</code> + billing glue. Zero service-file edits.</li>
+    <li><b>Idempotent.</b> Re-verifying the same token just rewrites the same row.</li>
+  </ul>
+
+  <h2 id="setup">7. Setup you'll need to do</h2>
+  <div class="card you">
+    <span class="tag t-you">YOUR SETUP</span>
+    <ol>
+      <li><b>Google Cloud service account</b> in the project linked to Play Console; enable the <b>Google Play Android Developer API</b>.</li>
+      <li>In <b>Play Console → Users &amp; permissions</b>, grant that service account access to <b>view financial data / manage orders &amp; subscriptions</b> (the scope needed to read subscription status).</li>
+      <li>Download the service-account <b>JSON key</b> and hand it to me to set as a Supabase secret (I'll run <code>supabase secrets set</code> — or you do, I'll give the exact line). The key never enters the app or the repo.</li>
+      <li>Deploy the function: <code>supabase functions deploy verify-entitlement</code> (same flow as delete-account).</li>
+    </ol>
+    <p style="margin:8px 0 0">All of this can wait until the closed-test build from Phase 7 exists, since 5c can only be tested with a real purchase.</p>
+  </div>
+
+  <h2 id="tasks">8. Task breakdown (how I'll build it)</h2>
+  <table>
+    <tr><th>Task</th><th>Change</th><th>Verifiable here?</th></tr>
+    <tr><td><b>5c-1</b></td><td><code>verify-entitlement</code> Edge Function (verify + upsert + trial path)</td><td>Reviewed by reading; runs only after your setup</td></tr>
+    <tr><td><b>5c-2</b></td><td><code>EntitlementSync</code> + post-purchase verify call in <code>PlayBillingGateway</code></td><td>Compiles + unit-testable mapping logic</td></tr>
+    <tr><td><b>5c-3</b></td><td>Launch reconcile (read row → mirror/clear local) wired into app start</td><td>Compiles; behaviour needs a signed-in device</td></tr>
+    <tr><td><b>5c-4</b></td><td>Trial-start → server; client adopts server trial_start (closes reinstall loophole)</td><td>Logic unit-testable</td></tr>
+  </table>
+  <p>One commit per task, build-verified, as in Phase 3 / 7.</p>
+
+  <h2 id="nongoals">9. Non-goals (this phase)</h2>
+  <ul>
+    <li>RTDN / Pub/Sub real-time updates — deferred (see §2).</li>
+    <li>Refund / chargeback automation beyond what an on-launch verify naturally reflects.</li>
+    <li>Proration, plan upgrades/downgrades UI — Play handles the billing; we only read entitlement.</li>
+    <li>Practice-state &amp; favourites sync — that's <b>Phase 5</b>, the next step after 5c.</li>
+  </ul>
+
+  <div class="card warn"><b>Decisions flagged for your review:</b> (a) verify-on-demand now vs RTDN — I recommend on-demand; (b) trial-start written via the same function vs relaxing RLS — I recommend the function path (keeps entitlements service-role-write-only). Tell me if either should change and I'll revise before building.</div>
+</div>
+</body>
+</html>
