@@ -59,6 +59,20 @@
 - **Originated from:** Pranav's Play Console fill-out session.
 - **Trigger to revisit:** After launch + first user feedback.
 
+### 14. Duration-based "check-in" overlay (v1.1 candidate)
+- **What:** Pranav (2026-06-16): "After half an hour or 40 minutes of continuous usage, we will pop in a mantra for a quick 10-15 seconds…" A SECOND trigger mechanism: while the user is INSIDE a blocked app, after N minutes of foreground time, show a softer mantra overlay. Today's engine is launch-triggered only (mantra appears the moment a blocked app opens; 5-min UnlockGrace per package after Continue). There is no duration tracker.
+- **My recommendation (recorded for the future-me reading this):**
+  - **DEFAULT OFF** to preserve the brand premise "A pause before the scroll." (launch-time = moment of intention; duration-time = moment of sunk cost — different stories).
+  - **Setting:** per-app OR global threshold — off / 15 / 30 / 45 / 60 min.
+  - **Softer copy** than the launch overlay ("Still here?" not "A pause before the scroll").
+  - **Engine work** (non-trivial): track foreground-time per app via TYPE_WINDOW_STATE_CHANGED + a timer; pause on backgrounding/multitask; reset on a new launch; fire one-shot overlay at threshold; respect the existing UnlockGrace so we don't fight ourselves.
+  - **Battery:** prefer a coroutine that fires only when a blocked app is foreground (vs a wall-clock service); accessibility events already give us the start/stop signals.
+- **Why deferred:** brand integrity for v1.0.1 launch + real engine surface area + value should be validated by use (let users tell us "I got past the mantra and lost an hour anyway").
+- **Status:** Deferred — v1.1 candidate.
+- **Date added:** 2026-06-16
+- **Originated from:** Pranav's pre-AAB review question about user-configurable trigger timing.
+- **Trigger to revisit:** After v1.0.1 ships, when usage data / feedback shows launch-only isn't enough.
+
 ## In progress
 
 _(empty)_
