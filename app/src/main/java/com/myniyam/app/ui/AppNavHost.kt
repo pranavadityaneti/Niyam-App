@@ -177,20 +177,8 @@ fun AppNavHost(
         }
         composable(NiyamRoutes.ONB_APPS) {
             AppsScreen(onboardingVm,
-                onContinue = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) },
+                onContinue = { navController.navigate(NiyamRoutes.PERMISSION_OVERLAY) },
                 onBack = { navController.popBackStack() }
-            )
-        }
-
-        composable(NiyamRoutes.PERMISSION_USAGE) {
-            val ctx = LocalContext.current
-            PermissionScreen(
-                titleResId = R.string.perm_usage_title,
-                bodyResId = R.string.perm_usage_body,
-                isGranted = { PermissionChecker.hasUsageStatsAccess(ctx) },
-                launchSettings = { PermissionChecker.openUsageAccessSettings(ctx) },
-                onGranted = { navController.navigate(NiyamRoutes.PERMISSION_OVERLAY) },
-                stepIndex = 0
             )
         }
 
@@ -258,7 +246,7 @@ fun AppNavHost(
                 }
             }
             HomeScreen(
-                onFixProtection = { navController.navigate(NiyamRoutes.PERMISSION_USAGE) },
+                onFixProtection = { navController.navigate(NiyamRoutes.PERMISSION_OVERLAY) },
                 onBrowseLibrary = { navController.navigate(NiyamRoutes.LIBRARY) },
                 onOpenSettings = { navController.navigate(NiyamRoutes.SETTINGS) }
             )

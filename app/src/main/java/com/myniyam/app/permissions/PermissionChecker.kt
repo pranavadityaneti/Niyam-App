@@ -89,7 +89,6 @@ object PermissionChecker {
     // ---- All-permissions roll-up ----
 
     fun allPermissionsGranted(ctx: Context): Boolean =
-        hasUsageStatsAccess(ctx) &&
         hasOverlayPermission(ctx) &&
         isAccessibilityServiceEnabled(ctx) &&
         isIgnoringBatteryOptimizations(ctx)
