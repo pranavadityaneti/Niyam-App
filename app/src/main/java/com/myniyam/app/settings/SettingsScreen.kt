@@ -72,6 +72,7 @@ fun SettingsScreen(
     onOpenLanguage: () -> Unit,
     onOpenApps: () -> Unit,
     onOpenIntention: () -> Unit,
+    onOpenPause: () -> Unit,
     onOpenPaywall: () -> Unit,
     onSignedOut: () -> Unit,
     onAccountDeleted: () -> Unit
@@ -178,6 +179,11 @@ fun SettingsScreen(
                         stringResource(R.string.settings_row_intention),
                         onOpenIntention,
                         leading = Icons.Default.Edit
+                    )
+                    NavRow(
+                        stringResource(R.string.settings_row_pause),
+                        onOpenPause,
+                        leading = Icons.Default.Notifications
                     )
                 }
 

@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
@@ -38,6 +39,9 @@ object UserPrefs {
     private val KEY_TRIAL_REMINDER_SHOWN = booleanPreferencesKey("trial_reminder_shown")
     private val KEY_ACCESSIBILITY_CONSENT_AT = longPreferencesKey("accessibility_consent_at")
     private val KEY_FAVOURITE_MANTRAS = stringSetPreferencesKey("favourite_mantra_ids")
+    private val KEY_INTERVAL_ENABLED = booleanPreferencesKey("interval_checkin_enabled")
+    private val KEY_INTERVAL_MINUTES = intPreferencesKey("interval_checkin_minutes")
+    private val KEY_PAUSE_LENGTH_SECONDS = intPreferencesKey("pause_length_seconds")
 
     data class Snapshot(
         val onboardingComplete: Boolean,
@@ -55,7 +59,10 @@ object UserPrefs {
         val premiumPlan: String?,
         val trialReminderShown: Boolean,
         val accessibilityConsentAt: Long,
-        val favouriteMantraIds: Set<String>
+        val favouriteMantraIds: Set<String>,
+        val intervalCheckInEnabled: Boolean,
+        val intervalMinutes: Int,
+        val pauseLengthSeconds: Int
     ) {
         companion object {
             val DEFAULTS = Snapshot(
@@ -74,7 +81,10 @@ object UserPrefs {
                 premiumPlan = null,
                 trialReminderShown = false,
                 accessibilityConsentAt = 0L,
-                favouriteMantraIds = emptySet()
+                favouriteMantraIds = emptySet(),
+                intervalCheckInEnabled = false,
+                intervalMinutes = 60,
+                pauseLengthSeconds = 20
             )
 
             fun fromRaw(
@@ -93,7 +103,10 @@ object UserPrefs {
                 premiumPlan: String? = null,
                 trialReminderShown: Boolean? = null,
                 accessibilityConsentAt: Long? = null,
-                favourites: Set<String>? = null
+                favourites: Set<String>? = null,
+                intervalCheckIn: Boolean? = null,
+                intervalMinutes: Int? = null,
+                pauseLengthSeconds: Int? = null
             ): Snapshot = Snapshot(
                 onboardingComplete = onboardingComplete ?: DEFAULTS.onboardingComplete,
                 currentMantraId = mantraId?.takeIf { it.isNotBlank() } ?: DEFAULTS.currentMantraId,
@@ -116,7 +129,10 @@ object UserPrefs {
                 premiumPlan = premiumPlan ?: DEFAULTS.premiumPlan,
                 trialReminderShown = trialReminderShown ?: DEFAULTS.trialReminderShown,
                 accessibilityConsentAt = accessibilityConsentAt ?: DEFAULTS.accessibilityConsentAt,
-                favouriteMantraIds = favourites ?: DEFAULTS.favouriteMantraIds
+                favouriteMantraIds = favourites ?: DEFAULTS.favouriteMantraIds,
+                intervalCheckInEnabled = intervalCheckIn ?: DEFAULTS.intervalCheckInEnabled,
+                intervalMinutes = intervalMinutes ?: DEFAULTS.intervalMinutes,
+                pauseLengthSeconds = pauseLengthSeconds ?: DEFAULTS.pauseLengthSeconds
             )
         }
     }
@@ -150,7 +166,10 @@ object UserPrefs {
                     premiumPlan = p[KEY_PREMIUM_PLAN],
                     trialReminderShown = p[KEY_TRIAL_REMINDER_SHOWN],
                     accessibilityConsentAt = p[KEY_ACCESSIBILITY_CONSENT_AT],
-                    favourites = p[KEY_FAVOURITE_MANTRAS]
+                    favourites = p[KEY_FAVOURITE_MANTRAS],
+                    intervalCheckIn = p[KEY_INTERVAL_ENABLED],
+                    intervalMinutes = p[KEY_INTERVAL_MINUTES],
+                    pauseLengthSeconds = p[KEY_PAUSE_LENGTH_SECONDS]
                 )
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load prefs; using defaults", e)
@@ -177,6 +196,32 @@ object UserPrefs {
         context.niyamDataStore.edit { it[KEY_THEME_PREF] = pref.name }
         current = current.copy(themePref = pref)
         com.myniyam.app.ui.theme.ThemeState.set(pref)
+    }
+
+    /**
+     * Pause behaviour (SP-P-PAUSE): how long each mantra pause shows
+     * (read duration, clamped 15..60s) and the opt-in interval check-in while
+     * inside a blocked app (enabled + minutes from {30,60,120}). Pure prefs —
+     * the engine reads these from the snapshot.
+     */
+    suspend fun setPauseBehaviour(
+        context: Context,
+        intervalEnabled: Boolean,
+        intervalMinutes: Int,
+        pauseLengthSeconds: Int
+    ) {
+        val mins = com.myniyam.app.service.PauseConfig.sanitizeMinutes(intervalMinutes)
+        val secs = com.myniyam.app.service.PauseConfig.clampPauseSeconds(pauseLengthSeconds)
+        context.niyamDataStore.edit {
+            it[KEY_INTERVAL_ENABLED] = intervalEnabled
+            it[KEY_INTERVAL_MINUTES] = mins
+            it[KEY_PAUSE_LENGTH_SECONDS] = secs
+        }
+        current = current.copy(
+            intervalCheckInEnabled = intervalEnabled,
+            intervalMinutes = mins,
+            pauseLengthSeconds = secs
+        )
     }
 
     suspend fun setNotifyOnCompletion(context: Context, enabled: Boolean) {

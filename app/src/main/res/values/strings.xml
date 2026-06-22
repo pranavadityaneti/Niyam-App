@@ -177,6 +177,16 @@
     <string name="settings_apps_title">Blocked apps</string>
     <string name="settings_apps_empty_hint">Keep at least one app blocked.</string>
     <string name="settings_intention_title">Intention</string>
+    <string name="settings_row_pause">Pause behaviour</string>
+    <string name="settings_pause_title">Pause behaviour</string>
+    <!-- Pause behaviour (onboarding step 5 + settings) -->
+    <string name="onb_pause_title">How Niyam pauses you</string>
+    <string name="pause_length_label">How long is each pause?</string>
+    <string name="pause_secs_fmt">%1$d seconds</string>
+    <string name="pause_interval_toggle">Check in while I\'m scrolling</string>
+    <string name="pause_interval_caption">Niyam will gently reappear after a while inside a blocked app — not just when you open it.</string>
+    <string name="pause_freq_label">How often?</string>
+    <string name="pause_mins_fmt">Every %1$d minutes</string>
     <!-- Settings entry -->
     <string name="settings_content_desc">Settings</string>
 

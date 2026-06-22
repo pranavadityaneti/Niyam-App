@@ -60,6 +60,7 @@ object NiyamRoutes {
     const val ONB_MANTRA = "onboarding_mantra"
     const val ONB_LANGUAGE = "onboarding_language"
     const val ONB_APPS = "onboarding_apps"
+    const val ONB_PAUSE = "onboarding_pause"
     const val PERMISSION_USAGE = "permission_usage_stats"
     const val PERMISSION_OVERLAY = "permission_overlay"
     const val PERMISSION_ACCESSIBILITY = "permission_accessibility"
@@ -75,6 +76,7 @@ object NiyamRoutes {
     const val SETTINGS_LANGUAGE = "settings_language"
     const val SETTINGS_APPS = "settings_apps"
     const val SETTINGS_INTENTION = "settings_intention"
+    const val SETTINGS_PAUSE = "settings_pause"
     const val PAYWALL = "paywall"
 }
 
@@ -177,6 +179,12 @@ fun AppNavHost(
         }
         composable(NiyamRoutes.ONB_APPS) {
             AppsScreen(onboardingVm,
+                onContinue = { navController.navigate(NiyamRoutes.ONB_PAUSE) },
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(NiyamRoutes.ONB_PAUSE) {
+            com.myniyam.app.onboarding.PauseStepScreen(
                 onContinue = { navController.navigate(NiyamRoutes.PERMISSION_OVERLAY) },
                 onBack = { navController.popBackStack() }
             )
@@ -297,6 +305,7 @@ fun AppNavHost(
                 onOpenLanguage = { navController.navigate(NiyamRoutes.SETTINGS_LANGUAGE) },
                 onOpenApps = { navController.navigate(NiyamRoutes.SETTINGS_APPS) },
                 onOpenIntention = { navController.navigate(NiyamRoutes.SETTINGS_INTENTION) },
+                onOpenPause = { navController.navigate(NiyamRoutes.SETTINGS_PAUSE) },
                 onOpenPaywall = { navController.navigate(NiyamRoutes.PAYWALL) },
                 onSignedOut = {
                     navController.navigate(NiyamRoutes.SIGN_IN) {
@@ -330,6 +339,12 @@ fun AppNavHost(
         }
         composable(NiyamRoutes.SETTINGS_INTENTION) {
             IntentionSettingScreen(
+                onSaved = { navController.popBackStack() },
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(NiyamRoutes.SETTINGS_PAUSE) {
+            com.myniyam.app.settings.PauseSettingScreen(
                 onSaved = { navController.popBackStack() },
                 onBack = { navController.popBackStack() }
             )

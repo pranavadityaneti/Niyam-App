@@ -24,8 +24,8 @@ import com.myniyam.app.service.UnlockGrace
 
 object OverlayManager {
 
-    // The timer is the engine's rule, not the content's — spec keeps it fixed at 15s.
-    private const val UNLOCK_TIMER_SECONDS = 15
+    // Read duration (pause length) is user-configurable 15..60s (SP-P-PAUSE):
+    // read from UserPrefs at show() time and clamped via PauseConfig.
 
     private var overlayView: View? = null
     private var attachedPkg: String? = null
@@ -61,7 +61,9 @@ object OverlayManager {
         val ring = view.findViewById<RingCountdownView>(R.id.overlay_ring)
         val continueBtn = view.findViewById<Button>(R.id.overlay_continue)
 
-        ring.setProgress(UNLOCK_TIMER_SECONDS, UNLOCK_TIMER_SECONDS)
+        val totalSeconds = com.myniyam.app.service.PauseConfig
+            .clampPauseSeconds(UserPrefs.snapshot().pauseLengthSeconds)
+        ring.setProgress(totalSeconds, totalSeconds)
         continueBtn.isEnabled = false
         continueBtn.setOnClickListener {
             ProgressRepository.recordRead(ctx, mantra.id)
@@ -88,7 +90,7 @@ object OverlayManager {
             wm.addView(view, params)
             overlayView = view
             attachedPkg = pkg
-            startTimer(ring, continueBtn)
+            startTimer(ring, continueBtn, totalSeconds)
         } catch (e: Exception) {
             android.util.Log.e("OverlayManager", "Failed to attach overlay", e)
         }
@@ -141,16 +143,16 @@ object OverlayManager {
         if (pkg != null) AppLockAccessibilityService.get()?.markDismissed(pkg)
     }
 
-    private fun startTimer(ring: RingCountdownView, continueBtn: Button) {
-        val totalMs = UNLOCK_TIMER_SECONDS * 1000L
+    private fun startTimer(ring: RingCountdownView, continueBtn: Button, totalSeconds: Int) {
+        val totalMs = totalSeconds * 1000L
         timer = object : CountDownTimer(totalMs, 1000L) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsLeft = (millisUntilFinished / 1000L).toInt().coerceAtLeast(0)
-                ring.setProgress(secondsLeft, UNLOCK_TIMER_SECONDS)
+                ring.setProgress(secondsLeft, totalSeconds)
             }
 
             override fun onFinish() {
-                ring.setProgress(0, UNLOCK_TIMER_SECONDS)
+                ring.setProgress(0, totalSeconds)
                 continueBtn.isEnabled = true
             }
         }.start()

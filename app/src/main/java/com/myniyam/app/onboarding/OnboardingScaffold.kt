@@ -54,6 +54,7 @@ fun OnboardingScaffold(
     ctaEnabled: Boolean,
     onContinue: () -> Unit,
     onBack: (() -> Unit)? = null,
+    stepCount: Int = 5,
     content: @Composable ColumnScope.() -> Unit
 ) {
     NiyamBackground {
@@ -87,7 +88,7 @@ fun OnboardingScaffold(
                     style = MaterialTheme.typography.headlineMedium
                 )
                 Spacer(Modifier.height(14.dp))
-                ProgressDashes(stepIndex = step - 1, stepCount = 4)
+                ProgressDashes(stepIndex = step - 1, stepCount = stepCount)
                 Spacer(Modifier.height(20.dp))
                 Column(
                     modifier = Modifier
