@@ -74,10 +74,10 @@
   - **Pause-length range — OPEN:** Pranav floated 20s→2min; I recommend capping ~15s–60s (default ~20s) because a repeated 2-min forced pause reads as punishment (the exact thing our positioning rejects). Confirm before building.
   - **Engine specifics for the spec:** interval timer counts foreground-time per blocked app; resets on a fresh launch and on Continue; interval pause shares the same Continue + 5-min UnlockGrace so the two triggers don't fight; pause-length applies to BOTH open-time and interval overlays (one global read-duration setting).
   - **Also needs:** UserPrefs fields (intervalEnabled, intervalMinutes, pauseLengthSeconds), Settings editors mirroring the onboarding step, locale strings ×8 for the new step, tests for the timer/threshold logic.
-- **Status:** Design locked; BUILD after closed-test AAB is accepted. Needs a short spec first (like 5c/6).
+- **Status:** ✅ DONE 2026-06-23 — shipped in v1.0.4 (code 6). Pranav chose to build immediately (not after closed test). Pause length 15–60s default 20; opt-in interval 30/60/120 min; dedicated onboarding step 5 + Settings → Pause behaviour. Engine: isolated `IntervalCheckIn` armed in `AppLockAccessibilityService` (independent of UnlockGrace); `OverlayManager` reads pause length from prefs. `PauseConfig` unit-tested. New strings English-only — **locale sweep still pending** (folds into forlater #1 / the standing i18n sweep).
 - **Date added:** 2026-06-16
 - **Originated from:** Pranav's pre-AAB review question about user-configurable trigger timing.
-- **Trigger to revisit:** Right after the v1.0.3 closed test is live.
+- **Completed:** 2026-06-23 (v1.0.4).
 
 ## In progress
 
