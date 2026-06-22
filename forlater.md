@@ -68,10 +68,16 @@
   - **Engine work** (non-trivial): track foreground-time per app via TYPE_WINDOW_STATE_CHANGED + a timer; pause on backgrounding/multitask; reset on a new launch; fire one-shot overlay at threshold; respect the existing UnlockGrace so we don't fight ourselves.
   - **Battery:** prefer a coroutine that fires only when a blocked app is foreground (vs a wall-clock service); accessibility events already give us the start/stop signals.
 - **Why deferred:** brand integrity for v1.0.1 launch + real engine surface area + value should be validated by use (let users tell us "I got past the mantra and lost an hour anyway").
-- **Status:** Deferred — v1.1 candidate.
+- **DESIGN LOCKED 2026-06-16 (Pranav, discussion):** ship it, but AFTER the current closed-test AAB lands (don't churn the in-flight v1.0.3 submission).
+  - **Mechanism = Option C:** keep the open-time mantra (default, brand premise) + add interval check-in as an **opt-in** layer. Not pure-interval, not always-on.
+  - **Two user controls in a DEDICATED onboarding step** ("How should Niyam pause you?"): (1) **pause length** = how long the mantra shows / read duration (today 15s); (2) **interval check-in** toggle (default OFF) + **frequency** every 30 / 60 / 120 min while inside a blocked app.
+  - **Pause-length range — OPEN:** Pranav floated 20s→2min; I recommend capping ~15s–60s (default ~20s) because a repeated 2-min forced pause reads as punishment (the exact thing our positioning rejects). Confirm before building.
+  - **Engine specifics for the spec:** interval timer counts foreground-time per blocked app; resets on a fresh launch and on Continue; interval pause shares the same Continue + 5-min UnlockGrace so the two triggers don't fight; pause-length applies to BOTH open-time and interval overlays (one global read-duration setting).
+  - **Also needs:** UserPrefs fields (intervalEnabled, intervalMinutes, pauseLengthSeconds), Settings editors mirroring the onboarding step, locale strings ×8 for the new step, tests for the timer/threshold logic.
+- **Status:** Design locked; BUILD after closed-test AAB is accepted. Needs a short spec first (like 5c/6).
 - **Date added:** 2026-06-16
 - **Originated from:** Pranav's pre-AAB review question about user-configurable trigger timing.
-- **Trigger to revisit:** After v1.0.1 ships, when usage data / feedback shows launch-only isn't enough.
+- **Trigger to revisit:** Right after the v1.0.3 closed test is live.
 
 ## In progress
 
