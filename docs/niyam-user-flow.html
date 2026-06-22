@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Niyam — Complete User Flow (Technical + Plain English)</title>
+<style>
+  :root { --orange:#FF6400; --green:#0E3B2C; --ink:#23201c; --muted:#6b6359; --bg:#fbf7f1; --card:#fff; --line:#e7ddd0; --code:#f0e8dc; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.6; }
+  .wrap { max-width:920px; margin:0 auto; padding:40px 24px 90px; }
+  h1 { color:var(--green); font-size:30px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 24px; font-size:15px; }
+  h2 { color:var(--green); font-size:22px; margin:38px 0 6px; border-bottom:2px solid var(--line); padding-bottom:6px; }
+  h3 { font-size:16.5px; margin:20px 0 6px; color:var(--ink); }
+  p, li { font-size:15px; }
+  code { background:var(--code); padding:1px 5px; border-radius:4px; font-family:ui-monospace,Menlo,monospace; font-size:13px; }
+  pre { background:#2b2620; color:#f3ece0; padding:16px; border-radius:10px; overflow:auto; font-family:ui-monospace,Menlo,monospace; font-size:12.5px; line-height:1.5; }
+  .toc { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 24px; margin:0 0 26px; }
+  .toc a { color:var(--green); text-decoration:none; }
+  .toc a:hover { text-decoration:underline; }
+  .tech { background:var(--card); border-left:4px solid var(--green); border-radius:0 10px 10px 0; padding:12px 18px; margin:10px 0; }
+  .eng { background:#fff6ef; border-left:4px solid var(--orange); border-radius:0 10px 10px 0; padding:12px 18px; margin:10px 0; }
+  .eng b, .tech b { color:var(--green); }
+  .lbl { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; margin-bottom:4px; }
+  .lbl.t { color:var(--green); } .lbl.e { color:var(--orange); }
+  .note { background:#fdf0ee; border-left:4px solid #c0392b; border-radius:0 10px 10px 0; padding:12px 18px; margin:12px 0; font-size:14.5px; }
+  table { width:100%; border-collapse:collapse; margin:14px 0; font-size:14px; }
+  th, td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { color:var(--muted); font-weight:600; }
+  .pill { display:inline-block; font-size:11px; font-weight:700; padding:2px 9px; border-radius:99px; color:#fff; }
+  .p-free { background:#9a8f80; } .p-trial { background:var(--orange); } .p-prem { background:var(--green); }
+  @media print { body{background:#fff;} .wrap{max-width:100%;} pre{white-space:pre-wrap;} a{color:#000;text-decoration:none;} .tech,.eng,.note{break-inside:avoid;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Niyam — Complete User Flow</h1>
+  <p class="sub">From install to daily use · before, during, and after the trial · technical + plain English · reflects shipped build v1.0.3 (versionCode 5) · 2026-06-16</p>
+
+  <div class="toc">
+    <b>Contents</b>
+    <ol>
+      <li><a href="#map">The whole journey at a glance</a></li>
+      <li><a href="#install">1. Install &amp; first launch</a></li>
+      <li><a href="#signin">2. Sign-in (required)</a></li>
+      <li><a href="#onboard">3. Onboarding (language → intention → mantra → apps)</a></li>
+      <li><a href="#perms">4. Permissions</a></li>
+      <li><a href="#trialstart">5. Trial starts (onboarding complete)</a></li>
+      <li><a href="#coreloop">6. The core daily loop (block → mantra → continue)</a></li>
+      <li><a href="#tiers">7. What you get: Trial vs Free vs Premium</a></li>
+      <li><a href="#duringtrial">8. During the 7-day trial</a></li>
+      <li><a href="#aftertrial">9. After the trial (free tier)</a></li>
+      <li><a href="#subscribe">10. Subscribing to Premium</a></li>
+      <li><a href="#crossdevice">11. Cross-device, sign-out, delete account</a></li>
+      <li><a href="#ota">12. Updates without a new build (OTA)</a></li>
+      <li><a href="#notes">Honest notes &amp; edge cases</a></li>
+    </ol>
+  </div>
+
+  <h2 id="map">The whole journey at a glance</h2>
+<pre>
+INSTALL ─▶ Welcome ─▶ Sign in with Google (required)
+                              │
+                              ▼
+   ┌─────────── ONBOARDING ───────────┐
+   │ 1 Language → 2 Intention →        │
+   │ 3 Mantra  → 4 Apps to block       │
+   └──────────────┬───────────────────┘
+                  ▼
+   ┌─────────── PERMISSIONS ──────────┐
+   │ Overlay → Accessibility (+consent)│
+   │ → Battery → OEM autostart         │
+   └──────────────┬───────────────────┘
+                  ▼
+        TRIAL STARTS (7 days)  ───────▶  HOME
+                  │
+   daily use: open a blocked app → mantra overlay (15s) → Continue
+                  │
+        day 6: "trial ending" reminder
+                  ▼
+        day 7: trial ends ─▶ FREE tier (5 mantras, 2 languages, ads)
+                  │
+        subscribe anytime ─▶ PREMIUM (everything, no ads)
+</pre>
+
+  <!-- 1 -->
+  <h2 id="install">1. Install &amp; first launch</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  User installs the APK/AAB (min SDK 26 / Android 8, target SDK 35). On first launch <code>MainActivity.onCreate</code> runs: <code>UserPrefs.ensureLoaded</code> (DataStore → in-memory snapshot), <code>RemoteConfig.ensureLoaded</code> (cached OTA config, if any) + an async <code>RemoteConfig.refresh</code>, theme applied, and a force-update gate check (this build's <code>versionCode</code> vs server <code>min_supported_version_code</code>). Start destination = <code>WELCOME</code> because <code>onboardingComplete == false</code>. Chrome locale defaults to English (<code>displayLanguage = ENGLISH</code>) via <code>LocaleBridge</code> in <code>attachBaseContext</code>.</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  The user downloads Niyam and opens it. It starts in <b>English</b> and shows a Welcome screen with the brand lockup and the line "A pause before the scroll." Nothing about their phone or other apps has been touched yet. They tap <b>Get started</b>.</div>
+
+  <!-- 2 -->
+  <h2 id="signin">2. Sign-in (required)</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  Welcome → <code>SIGN_IN</code>. <code>SignInScreen</code> uses Google Sign-In via Credential Manager (<code>ComposeAuth.googleNativeLogin</code> with the Web client ID) → Supabase Auth session. A <code>profiles</code> row is auto-created server-side (DB trigger) on first sign-in. On success, <code>PracticeSync.seedFromServerIfPresent</code> runs: if the account already has server practice (returning user on a fresh device) it is pulled into local prefs, onboarding is marked complete, and the app recreates straight to Home; otherwise the new user proceeds to onboarding. Login is <b>required</b> — a reactive gate in <code>AppNavHost</code> bounces any signed-out user on a post-onboarding screen back to Sign-in.</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  The user signs in with their Google account — this is mandatory, so their practice can be saved and synced. We only receive their email; we never see their password. If they're a <b>returning user on a new phone</b>, their mantras, progress and favourites are restored automatically and they land straight on the Home screen. A brand-new user continues to set up the app.</div>
+  <div class="note"><b>Why required:</b> sign-in is what makes cross-device sync, the server-verified subscription, and "delete my data" possible — and it closes the loophole where someone reinstalls to restart the free trial.</div>
+
+  <!-- 3 -->
+  <h2 id="onboard">3. Onboarding</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  Four steps, each persisted to <code>UserPrefs</code> via <code>OnboardingViewModel</code>, with a back arrow on steps 2–4:
+  <ol>
+    <li><b>Language</b> → <code>displayLanguage</code> (English, Hindi, Sanskrit-Devanagari, Telugu, Tamil, Kannada, Bengali, Gujarati). Applied app-wide on completion via activity recreate + <code>LocaleBridge</code>.</li>
+    <li><b>Intention</b> → <code>selectedIntention</code> (Focus / Calm / Sadhana / Dharma / Devotion).</li>
+    <li><b>Mantra</b> → <code>currentMantraId</code> (the starting sadhana mantra).</li>
+    <li><b>Apps</b> → <code>blockedPackages</code> (chosen from <code>AppCatalog.APPS</code>, which is OTA-overridable; the engine will block <em>any</em> chosen package, the catalog is just the shortlist).</li>
+  </ol></div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  The user picks, in order: the <b>language</b> they want the app and mantras in; their <b>intention</b> (why they're here — focus, calm, daily practice, dharma, or devotion); their <b>starting mantra</b>; and the <b>apps they want to block</b> (Instagram, YouTube, etc., plus a few games). After picking the language, the whole app switches to it.</div>
+
+  <!-- 4 -->
+  <h2 id="perms">4. Permissions</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  Four permission screens, in order: <b>Overlay</b> (<code>SYSTEM_ALERT_WINDOW</code>, to draw the mantra over other apps) → <b>Accessibility</b> (<code>BIND_ACCESSIBILITY_SERVICE</code>, the launch-detection engine — gated behind a Play-compliant prominent-disclosure card + explicit "I agree — turn on" consent, timestamp persisted) → <b>Battery</b> (<code>REQUEST_IGNORE_BATTERY_OPTIMIZATIONS</code>, so OEMs don't kill the service) → <b>OEM autostart</b> (per-manufacturer walkthrough; "Done" primary on stock Android). The roll-up <code>PermissionChecker.allPermissionsGranted</code> checks overlay + accessibility + battery.</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  The app asks for the permissions it needs to do its one job — show a mantra the moment a blocked app opens. The most important one (Accessibility) comes with a clear, upfront explanation of exactly what it does and doesn't do (it only notices <em>which</em> app you opened — never reads your screen or messages), and the user must explicitly agree before it's turned on. The battery and autostart steps make sure the phone doesn't silently shut Niyam down.</div>
+
+  <!-- 5 -->
+  <h2 id="trialstart">5. Trial starts (onboarding complete)</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  When the OEM step finishes, <code>UserPrefs.setOnboardingComplete</code> + <code>UserPrefs.startTrial(today)</code> fire, then the activity recreates → Home in the chosen locale. <code>trialStartEpochDay</code> is set; <code>Entitlements.TRIAL_DAYS = 7</code>. The trial start is also pushed to the server (<code>sync-trial</code>, earliest-wins) so a reinstall can't restart it. <code>Entitlements.state(premiumActive, trialStartEpochDay, today)</code> now returns <code>TRIAL</code>.</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  The moment setup is done, a <b>7-day free trial of Premium starts automatically</b> — there's no "before the trial" waiting period. The user lands on the Home screen with full access to everything. The trial's start date is remembered on our servers, so uninstalling and reinstalling won't give them a fresh trial.</div>
+
+  <!-- 6 -->
+  <h2 id="coreloop">6. The core daily loop</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  A foreground service (<code>specialUse</code>) hosts <code>AppLockAccessibilityService</code>. On <code>TYPE_WINDOW_STATE_CHANGED</code>, it reads the foreground <b>package name</b> only; if it's in <code>blockedPackages</code> and not within the 5-minute per-package <code>UnlockGrace</code>, <code>OverlayManager</code> draws the mantra overlay (<code>TYPE_APPLICATION_OVERLAY</code>) within ~200 ms. The overlay shows the current mantra (script + transliteration + meaning in the chosen language) with a 15-second countdown ring. Tapping <b>Continue</b> dismisses it, records a read (Room <code>read_events</code> → streak/day-N math), and grants a 5-minute grace for that package. Opening a non-blocked app hides the overlay (<code>OverlayHideDecision</code>).</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  This is the heart of the app. When the user opens an app they chose to block, Niyam instantly appears <b>first</b> with their mantra and a 15-second timer ring. They read the mantra, tap <b>Continue</b>, and the app opens normally. For the next 5 minutes that app won't interrupt them again — so navigating around inside it isn't annoying. The mantra never blocks them forever; it's a pause, not a wall. Each Continue counts toward their daily streak and their "Day N of 14" sadhana progress.</div>
+
+  <!-- 7 -->
+  <h2 id="tiers">7. What you get: Trial vs Free vs Premium</h2>
+  <table>
+    <tr><th>Capability</th><th><span class="pill p-trial">TRIAL</span> (7 days)</th><th><span class="pill p-free">FREE</span> (after trial)</th><th><span class="pill p-prem">PREMIUM</span></th></tr>
+    <tr><td>Blocking engine + overlay</td><td>✓ full</td><td>✓ full</td><td>✓ full</td></tr>
+    <tr><td>Mantras available</td><td>All 26</td><td><b>5 free mantras</b></td><td>All 26</td></tr>
+    <tr><td>Display languages</td><td>All 9</td><td><b>English &amp; Hindi only</b></td><td>All 9</td></tr>
+    <tr><td>Ads (Home &amp; Library banners)</td><td>None</td><td><b>Shown</b></td><td>None</td></tr>
+    <tr><td>Favourites, streak, sync</td><td>✓</td><td>✓</td><td>✓</td></tr>
+  </table>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  Gating is computed by <code>Entitlements</code>. <code>isPremiumExperience(state)</code> is true for TRIAL and PREMIUM. Free set = <code>Entitlements.activeFreeMantraIds</code> (default 5: <code>gita-2-47, mahamrityunjaya, gayatri, gita-4-7-8, hanuman-chalisa-opening</code> — one per intention; OTA-overridable). Free languages = English + Hindi. <b>Grandfather rules:</b> the user's <em>current</em> sadhana mantra and <em>current</em> language always stay usable even if they'd otherwise be premium-locked, so a trial user is never stranded mid-practice when the trial ends. Ads render only in FREE state and only if the <code>ads_enabled</code> flag is on.</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  During the trial they get everything. After the trial, the free version keeps the core blocking feature fully working — that's never paywalled — but limits them to <b>5 mantras</b> and <b>2 languages</b>, and shows small banner ads on the Home and Library screens. Premium removes the ads and unlocks all 26 mantras and all 9 languages. Importantly, whatever mantra and language they were already using stays available even after the trial — we never yank away their active practice.</div>
+  <div class="note"><b>Honest note:</b> the original brief imagined the free 5 being "your chosen intention's 5 mantras." The shipped build uses a <em>fixed</em> set of 5 (one strong mantra per intention) — the dynamic, intention-locked version is a queued enhancement, not yet built. Functionally the free user still gets 5 good mantras; they're just not auto-tailored to their intention yet.</div>
+
+  <!-- 8 -->
+  <h2 id="duringtrial">8. During the 7-day trial</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  <code>Entitlements.trialDaysLeft</code> drives the Home/Settings status and the paywall timeline. A WorkManager daily job (<code>TrialReminderWorker</code> → <code>TrialReminder</code> logic) posts one notification around <b>day 6</b> ("your trial ends tomorrow"), guarded so it fires at most once (<code>trialReminderShown</code>). Clock-rollback is guarded (a backdated device clock can't extend the trial).</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  Through the week the app quietly shows how many trial days are left. On <b>day 6</b> the user gets a single, gentle notification that the trial ends tomorrow, with a tap-through to subscribe if they want to keep Premium. No nagging, no repeated pop-ups.</div>
+
+  <!-- 9 -->
+  <h2 id="aftertrial">9. After the trial (free tier)</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  On the 8th day, <code>Entitlements.state</code> returns <code>FREE</code> (exclusive 7-day boundary). Library shows lock icons on the 21 premium mantras; tapping a locked mantra routes to the paywall. The language editor locks all but English/Hindi (marked "· Premium"). Ad banners begin rendering on Home + Library. The user keeps their streak, favourites, current mantra, and current language (grandfathered).</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  When the trial ends, the app keeps doing its main job — blocking apps with a mantra — for free, forever. The user now sees small ads, and the extra mantras and languages show a lock. If they tap a locked mantra, they're taken to the subscribe screen. Nothing they were already using disappears.</div>
+
+  <!-- 10 -->
+  <h2 id="subscribe">10. Subscribing to Premium</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  <code>PaywallScreen</code> offers Weekly / Monthly / Yearly plans (display prices ₹15 / ₹49 / ₹399; the <em>real</em> charge comes from Google Play Console). Purchase goes through <code>Billing.gateway</code> → <code>PlayBillingGateway</code> (Play Billing Library 7): connect → query product → launch Play's purchase sheet → on success persist premium locally + acknowledge the purchase → call the <code>verify-entitlement</code> Edge Function, which verifies the token with Google's Play Developer API and writes the server-trusted <code>entitlements</code> row. <b>Restore</b> re-grants from any owned subscription. On every launch, <code>EntitlementSync.reconcileOnLaunch</code> mirrors the server entitlement into local state (so Premium follows the account across devices, and a cancellation eventually revokes locally).</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  The user picks a plan and pays through <b>Google Play</b> — we never handle card details. Once paid, ads vanish and everything unlocks. Their Premium is tied to their account, so it works on any device they sign in to, and "Restore purchase" brings it back if they reinstall. Our server double-checks every purchase with Google so the subscription can't be faked.</div>
+  <div class="note"><b>Setup status:</b> the billing <em>code</em> is complete, but real purchases need the 3 subscription products created &amp; active in Play Console + an active payments profile. Until then, debug builds use a sandbox (fake) purchase for testing.</div>
+
+  <!-- 11 -->
+  <h2 id="crossdevice">11. Cross-device, sign-out, delete account</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  <b>Sync:</b> <code>PracticeSync</code> pushes practice + favourites to Supabase on app stop; on a fresh device, sign-in seeds them back. <b>Sign out</b> (Settings → Account): clears the session, returns to Sign-in (practice stays on device). <b>Delete account</b> (Settings → Account): confirmation → <code>delete-account</code> Edge Function deletes the auth user with the service-role key (DB tables cascade) → local <code>UserPrefs.clearAll</code> → returns to Welcome as a fresh device.</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  Practice syncs automatically, so a new phone picks up where the old one left off. From Settings → Account the user can <b>sign out</b> (their stuff stays on the phone, ready to sync again) or <b>permanently delete their account</b> — which erases everything we hold on our servers and resets the app on the device. There's also a public <code>myniyam.com/delete-account</code> page explaining how, as Google requires.</div>
+
+  <!-- 12 -->
+  <h2 id="ota">12. Updates without a new build (OTA)</h2>
+  <div class="tech"><span class="lbl t">Technical</span><br>
+  <code>RemoteConfig</code> + <code>ContentSync</code> read a public <code>app_config</code> table + a Storage <code>content/mantras.json</code> at launch (offline-first; build values are the fallback). Changeable without a build: the free mantra set, the blockable-app catalog, paywall trust copy, feature flags (e.g. <code>ads_enabled</code>), the force-update minimum version + message, a Home announcement banner, and the entire mantra catalog (edit JSON, bump <code>content_version</code>). <b>Not</b> changeable OTA (Play rule): app code, screens, the engine.</div>
+  <div class="eng"><span class="lbl e">In plain English</span><br>
+  We can change a lot of the app's <em>content and settings</em> without shipping a new version to the Play Store — add or fix a mantra, change which apps are offered, turn ads off, post an announcement, or force everyone onto a new version in an emergency. Anything that's actual app <em>code</em> (new features, the blocking engine) still needs a normal Play update — that's Google's rule, not a choice.</div>
+
+  <h2 id="notes">Honest notes &amp; edge cases</h2>
+  <ul>
+    <li><b>No "before the trial" gap.</b> The trial begins automatically at the end of onboarding — the user never sits in a pre-trial limited state.</li>
+    <li><b>Free tier is a fixed 5 mantras</b>, not yet auto-matched to the user's intention (queued enhancement).</li>
+    <li><b>Offline:</b> the engine, mantras, and overlay all work with no internet after the first sign-in. Sync, entitlement re-checks, and OTA simply resume when a connection returns; nothing blocks the core loop.</li>
+    <li><b>The mantra is never a hard wall</b> — every block can be passed in 15 seconds. Niyam is a mindful pause, not a lock.</li>
+    <li><b>Privacy:</b> the accessibility service reads only the foreground package name, on-device; it never reads screen content, messages, or other apps' data, and that package name never leaves the phone.</li>
+  </ul>
+</div>
+</body>
+</html>
