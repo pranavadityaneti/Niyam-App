@@ -42,6 +42,13 @@ class MainActivity : ComponentActivity() {
         if (s.onboardingComplete && s.trialStartEpochDay == 0L) {
             runBlocking { UserPrefs.startTrial(this@MainActivity, java.time.LocalDate.now().toEpochDay()) }
         }
+        // Event-anchored trial reminder (audit B2): schedule the day-6 reminder for
+        // the actual trial-end window so a batched daily worker can't miss it.
+        UserPrefs.snapshot().let { snap ->
+            if (snap.trialStartEpochDay > 0L && !snap.trialReminderShown) {
+                com.myniyam.app.billing.TrialReminderWorker.scheduleExact(this, snap.trialStartEpochDay)
+            }
+        }
         ThemeState.set(UserPrefs.snapshot().themePref)
         val start = if (UserPrefs.snapshot().onboardingComplete) NiyamRoutes.HOME else NiyamRoutes.WELCOME
         // OTA force-update gate: if this build is below the server minimum, block.

@@ -222,7 +222,11 @@ fun AppNavHost(
                     scope.launch {
                         UserPrefs.recordAccessibilityConsent(ctx, System.currentTimeMillis())
                     }
-                }
+                },
+                // If consent was captured in a prior session, don't force the tap
+                // again; otherwise the disclosure + affirmative tap is required even
+                // when the service is already enabled.
+                consentAlreadyGiven = UserPrefs.snapshot().accessibilityConsentAt != 0L
             )
         }
 

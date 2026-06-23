@@ -2,6 +2,8 @@ package com.myniyam.app.billing
 
 import android.content.Context
 import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.Worker
@@ -39,13 +41,36 @@ class TrialReminderWorker(ctx: Context, params: WorkerParameters) : Worker(ctx, 
 
     companion object {
         private const val WORK_NAME = "niyam_trial_reminder"
+        private const val WORK_NAME_EXACT = "niyam_trial_reminder_exact"
+        private const val DAY_MS = 86_400_000L
 
-        /** Idempotent daily schedule — call at Application start. */
+        /** Idempotent daily backstop — call at Application start. */
         fun schedule(context: Context) {
             val request = PeriodicWorkRequestBuilder<TrialReminderWorker>(1, TimeUnit.DAYS).build()
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                 WORK_NAME,
                 ExistingPeriodicWorkPolicy.KEEP,
+                request
+            )
+        }
+
+        /**
+         * Event-anchored reminder: fire once at the start of the trial's final day
+         * (trialStart + TRIAL_DAYS-1). The daily worker could miss that single
+         * eligible day if its run is batched/deferred past midnight; anchoring to
+         * the actual day-6 instant closes that miss. Idempotent (KEEP) and self-
+         * guarding via shouldRemind, so a late/early run is harmless.
+         */
+        fun scheduleExact(context: Context, trialStartEpochDay: Long) {
+            if (trialStartEpochDay <= 0L) return
+            val targetMs = (trialStartEpochDay + (Entitlements.TRIAL_DAYS - 1)) * DAY_MS
+            val delay = (targetMs - System.currentTimeMillis()).coerceAtLeast(0L)
+            val request = OneTimeWorkRequestBuilder<TrialReminderWorker>()
+                .setInitialDelay(delay, TimeUnit.MILLISECONDS)
+                .build()
+            WorkManager.getInstance(context).enqueueUniqueWork(
+                WORK_NAME_EXACT,
+                ExistingWorkPolicy.KEEP,
                 request
             )
         }

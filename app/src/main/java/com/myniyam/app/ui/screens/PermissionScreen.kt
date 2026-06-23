@@ -58,10 +58,17 @@ fun PermissionScreen(
     // disclosure card renders and the CTA becomes the affirmative consent.
     disclosureResId: Int? = null,
     ctaResId: Int = R.string.grant,
-    onConsent: (() -> Unit)? = null
+    onConsent: (() -> Unit)? = null,
+    // For a consent-bearing step (Play prominent disclosure): whether consent was
+    // already captured in a prior session. When false, the step must NOT auto-
+    // advance just because the permission is already granted — the user must tap
+    // the affirmative CTA (which records consent) first.
+    consentAlreadyGiven: Boolean = false
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     var grantedState by remember { mutableStateOf(isGranted()) }
+    // Consent gate: pre-satisfied when there is no consent step or it was already given.
+    var consentSatisfied by remember { mutableStateOf(onConsent == null || consentAlreadyGiven) }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -73,8 +80,11 @@ fun PermissionScreen(
         onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    LaunchedEffect(grantedState) {
-        if (grantedState) onGranted()
+    // Advance only when granted AND consent is satisfied — guarantees the
+    // prominent-disclosure consent precedes use even if the service was already
+    // enabled when the user reached this step.
+    LaunchedEffect(grantedState, consentSatisfied) {
+        if (grantedState && consentSatisfied) onGranted()
     }
 
     NiyamBackground {
@@ -119,7 +129,7 @@ fun PermissionScreen(
                 PermissionDashes(stepIndex = stepIndex, stepCount = stepCount)
                 Spacer(Modifier.height(20.dp))
                 Button(
-                    onClick = { onConsent?.invoke(); launchSettings() },
+                    onClick = { onConsent?.invoke(); consentSatisfied = true; launchSettings() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),
