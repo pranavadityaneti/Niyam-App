@@ -24,11 +24,29 @@ class OnboardingViewModel : ViewModel() {
     var selectedPackages: Set<String> by mutableStateOf(BlockList.DEFAULT_PACKAGES)
         private set
 
+    // Step 5 (pause behaviour) — held here like every other step so back/forward
+    // within onboarding doesn't lose an unsaved edit. Defaults mirror UserPrefs.
+    var pauseLengthSeconds: Int by mutableStateOf(UserPrefs.snapshot().pauseLengthSeconds)
+        private set
+    var intervalEnabled: Boolean by mutableStateOf(UserPrefs.snapshot().intervalCheckInEnabled)
+        private set
+    var intervalMinutes: Int by mutableStateOf(UserPrefs.snapshot().intervalMinutes)
+        private set
+
     fun selectIntention(intention: Intention) { selectedIntention = intention }
     fun selectMantra(id: String) { selectedMantraId = id }
     fun selectLanguage(language: DisplayLanguage) { selectedLanguage = language }
     fun togglePackage(pkg: String) {
         selectedPackages = if (pkg in selectedPackages) selectedPackages - pkg else selectedPackages + pkg
+    }
+    fun updatePauseLength(seconds: Int) { pauseLengthSeconds = seconds }
+    fun updateIntervalEnabled(enabled: Boolean) { intervalEnabled = enabled }
+    fun updateIntervalMinutes(minutes: Int) { intervalMinutes = minutes }
+
+    fun persistPause(context: Context) {
+        viewModelScope.launch {
+            UserPrefs.setPauseBehaviour(context, intervalEnabled, intervalMinutes, pauseLengthSeconds)
+        }
     }
 
     fun canContinueFromIntention() = selectedIntention != null

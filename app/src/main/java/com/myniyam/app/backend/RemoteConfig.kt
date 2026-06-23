@@ -105,7 +105,7 @@ object RemoteConfig {
 
     fun contentVersion(): Int = (el("content_version") as? JsonPrimitive)?.intOrNull ?: 0
 
-    data class Announcement(val title: String, val body: String)
+    data class Announcement(val title: String, val body: String, val key: String)
     private fun announcement(): Announcement? {
         val o = el("announcement") as? JsonObject ?: return null
         val active = (o["active"] as? JsonPrimitive)?.booleanOrNull ?: false
@@ -113,19 +113,24 @@ object RemoteConfig {
         val title = (o["title"] as? JsonPrimitive)?.contentOrNull ?: ""
         val body = (o["body"] as? JsonPrimitive)?.contentOrNull ?: ""
         if (title.isBlank() && body.isBlank()) return null
-        return Announcement(title, body)
+        // Dismissal key: a stable `id` from config if provided, else a hash of the
+        // content. Never the bare title (which can be blank or reused), so EVERY
+        // announcement is dismissible exactly once.
+        val id = (o["id"] as? JsonPrimitive)?.contentOrNull
+        val key = id?.takeIf { it.isNotBlank() } ?: "$title|$body".hashCode().toString()
+        return Announcement(title, body, key)
     }
 
     private const val DISMISS_FILE = "announcement_dismissed"
 
-    /** The active announcement, unless this device already dismissed this one. */
+    /** The active announcement, unless this device already dismissed this exact one. */
     fun activeAnnouncement(context: Context): Announcement? {
         val a = announcement() ?: return null
         val dismissed = try { File(context.filesDir, DISMISS_FILE).readText() } catch (e: Exception) { "" }
-        return if (a.title.isNotBlank() && a.title == dismissed) null else a
+        return if (a.key == dismissed) null else a
     }
 
-    fun dismissAnnouncement(context: Context, title: String) {
-        try { File(context.filesDir, DISMISS_FILE).writeText(title) } catch (e: Exception) { }
+    fun dismissAnnouncement(context: Context, key: String) {
+        try { File(context.filesDir, DISMISS_FILE).writeText(key) } catch (e: Exception) { }
     }
 }

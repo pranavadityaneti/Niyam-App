@@ -156,7 +156,7 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
                             }
                         }
                         IconButton(onClick = {
-                            RemoteConfig.dismissAnnouncement(ctx, ann.title); announcement = null
+                            RemoteConfig.dismissAnnouncement(ctx, ann.key); announcement = null
                         }) {
                             Icon(Icons.Default.Close, contentDescription = "Dismiss",
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant)

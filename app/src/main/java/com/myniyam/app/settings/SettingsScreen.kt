@@ -84,9 +84,20 @@ fun SettingsScreen(
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var deleting by remember { mutableStateOf(false) }
     var deleteError by remember { mutableStateOf(false) }
-    val snap = UserPrefs.snapshot()
+    // Single source of truth for all displayed prefs, refreshed every time the
+    // screen resumes — popBackStack restores (doesn't recompose) the Settings
+    // entry, so without this the blocked-apps count (etc.) would read stale after
+    // returning from a sub-editor.
+    val lifecycleOwner = androidx.lifecycle.compose.LocalLifecycleOwner.current
     var snapState by remember { mutableStateOf(UserPrefs.snapshot()) }
-    LaunchedEffect(Unit) { snapState = UserPrefs.snapshot() }
+    androidx.compose.runtime.DisposableEffect(lifecycleOwner) {
+        val obs = androidx.lifecycle.LifecycleEventObserver { _, event ->
+            if (event == androidx.lifecycle.Lifecycle.Event.ON_RESUME) snapState = UserPrefs.snapshot()
+        }
+        lifecycleOwner.lifecycle.addObserver(obs)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(obs) }
+    }
+    val snap = snapState
 
     var notifyOn by remember { mutableStateOf(snap.notifyOnCompletion) }
     var permissionGranted by remember { mutableStateOf(CompletionNotifier.hasPostPermission(ctx)) }

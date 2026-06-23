@@ -187,6 +187,7 @@ fun AppNavHost(
         }
         composable(NiyamRoutes.ONB_PAUSE) {
             com.myniyam.app.onboarding.PauseStepScreen(
+                vm = onboardingVm,
                 onContinue = { navController.navigate(NiyamRoutes.PERMISSION_OVERLAY) },
                 onBack = { navController.popBackStack() }
             )

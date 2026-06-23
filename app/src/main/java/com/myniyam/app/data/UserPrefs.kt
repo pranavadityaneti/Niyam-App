@@ -178,23 +178,33 @@ object UserPrefs {
         }
     }
 
+    /**
+     * Atomic in-memory snapshot update. All setters mutate through this so two
+     * concurrent setters touching different fields can't lose one another's write
+     * (a plain `current = current.copy(...)` read-modify-write on the @Volatile
+     * could). Shares the monitor with [ensureLoaded].
+     */
+    private fun mutate(transform: (Snapshot) -> Snapshot) {
+        synchronized(this) { current = transform(current) }
+    }
+
     suspend fun setCurrentMantra(context: Context, mantraId: String, startEpochDay: Long = java.time.LocalDate.now().toEpochDay()) {
         context.niyamDataStore.edit {
             it[KEY_CURRENT_MANTRA_ID] = mantraId
             it[KEY_SADHANA_START] = startEpochDay
             it[KEY_PENDING_CELEBRATION] = false
         }
-        current = current.copy(currentMantraId = mantraId, sadhanaStartEpochDay = startEpochDay, pendingCelebration = false)
+        mutate { it.copy(currentMantraId = mantraId, sadhanaStartEpochDay = startEpochDay, pendingCelebration = false) }
     }
 
     suspend fun setIntention(context: Context, intention: Intention) {
         context.niyamDataStore.edit { it[KEY_SELECTED_INTENTION] = intention.name }
-        current = current.copy(selectedIntention = intention)
+        mutate { it.copy(selectedIntention = intention) }
     }
 
     suspend fun setThemePref(context: Context, pref: ThemePref) {
         context.niyamDataStore.edit { it[KEY_THEME_PREF] = pref.name }
-        current = current.copy(themePref = pref)
+        mutate { it.copy(themePref = pref) }
         com.myniyam.app.ui.theme.ThemeState.set(pref)
     }
 
@@ -217,16 +227,16 @@ object UserPrefs {
             it[KEY_INTERVAL_MINUTES] = mins
             it[KEY_PAUSE_LENGTH_SECONDS] = secs
         }
-        current = current.copy(
+        mutate { it.copy(
             intervalCheckInEnabled = intervalEnabled,
             intervalMinutes = mins,
             pauseLengthSeconds = secs
-        )
+        ) }
     }
 
     suspend fun setNotifyOnCompletion(context: Context, enabled: Boolean) {
         context.niyamDataStore.edit { it[KEY_NOTIFY_ON_COMPLETION] = enabled }
-        current = current.copy(notifyOnCompletion = enabled)
+        mutate { it.copy(notifyOnCompletion = enabled) }
     }
 
     suspend fun markCompleted(context: Context, mantraId: String) {
@@ -235,17 +245,17 @@ object UserPrefs {
             it[KEY_COMPLETED_MANTRAS] = newSet
             it[KEY_PENDING_CELEBRATION] = true
         }
-        current = current.copy(completedMantraIds = newSet, pendingCelebration = true)
+        mutate { it.copy(completedMantraIds = newSet, pendingCelebration = true) }
     }
 
     suspend fun setDisplayLanguage(context: Context, language: DisplayLanguage) {
         context.niyamDataStore.edit { it[KEY_DISPLAY_LANGUAGE] = language.name }
-        current = current.copy(displayLanguage = language)
+        mutate { it.copy(displayLanguage = language) }
     }
 
     suspend fun setBlockedPackages(context: Context, packages: Set<String>) {
         context.niyamDataStore.edit { it[KEY_BLOCKED_PACKAGES] = packages }
-        current = current.copy(blockedPackages = packages)
+        mutate { it.copy(blockedPackages = packages) }
         // Editing the block list resets grace, so a removed-then-re-added app
         // doesn't keep a stale 5-min free pass from a prior session.
         com.myniyam.app.service.UnlockGrace.clear()
@@ -253,12 +263,12 @@ object UserPrefs {
 
     suspend fun setOnboardingComplete(context: Context) {
         context.niyamDataStore.edit { it[KEY_ONBOARDING_COMPLETE] = true }
-        current = current.copy(onboardingComplete = true)
+        mutate { it.copy(onboardingComplete = true) }
     }
 
     suspend fun startTrial(context: Context, epochDay: Long) {
         context.niyamDataStore.edit { it[KEY_TRIAL_START] = epochDay }
-        current = current.copy(trialStartEpochDay = epochDay)
+        mutate { it.copy(trialStartEpochDay = epochDay) }
     }
 
     suspend fun setPremium(context: Context, plan: String) {
@@ -266,7 +276,7 @@ object UserPrefs {
             it[KEY_PREMIUM_ACTIVE] = true
             it[KEY_PREMIUM_PLAN] = plan
         }
-        current = current.copy(premiumActive = true, premiumPlan = plan)
+        mutate { it.copy(premiumActive = true, premiumPlan = plan) }
     }
 
     /**
@@ -280,7 +290,7 @@ object UserPrefs {
             it[KEY_PREMIUM_ACTIVE] = active
             if (active && plan != null) it[KEY_PREMIUM_PLAN] = plan else it.remove(KEY_PREMIUM_PLAN)
         }
-        current = current.copy(premiumActive = active, premiumPlan = if (active) plan else null)
+        mutate { it.copy(premiumActive = active, premiumPlan = if (active) plan else null) }
     }
 
     /** Debug "show me the free tier" lever: drops premium AND resets the trial. */
@@ -290,25 +300,25 @@ object UserPrefs {
             it.remove(KEY_PREMIUM_PLAN)
             it[KEY_TRIAL_START] = 0L
         }
-        current = current.copy(premiumActive = false, premiumPlan = null, trialStartEpochDay = 0L)
+        mutate { it.copy(premiumActive = false, premiumPlan = null, trialStartEpochDay = 0L) }
     }
 
     /** Debug lever: backdate the trial start so state() computes FREE without touching premium. */
     suspend fun expireTrialForSandbox(context: Context, todayEpochDay: Long) {
         val backdated = todayEpochDay - 7
         context.niyamDataStore.edit { it[KEY_TRIAL_START] = backdated }
-        current = current.copy(trialStartEpochDay = backdated)
+        mutate { it.copy(trialStartEpochDay = backdated) }
     }
 
     /** Audit record of the Play-required prominent-disclosure consent (epoch millis). */
     suspend fun recordAccessibilityConsent(context: Context, atMillis: Long) {
         context.niyamDataStore.edit { it[KEY_ACCESSIBILITY_CONSENT_AT] = atMillis }
-        current = current.copy(accessibilityConsentAt = atMillis)
+        mutate { it.copy(accessibilityConsentAt = atMillis) }
     }
 
     suspend fun setTrialReminderShown(context: Context) {
         context.niyamDataStore.edit { it[KEY_TRIAL_REMINDER_SHOWN] = true }
-        current = current.copy(trialReminderShown = true)
+        mutate { it.copy(trialReminderShown = true) }
     }
 
     /** Toggle a mantra's favourite status (SP-P1). Returns the new state. */
@@ -317,7 +327,7 @@ object UserPrefs {
         val newSet = if (nowFav) current.favouriteMantraIds + mantraId
                      else current.favouriteMantraIds - mantraId
         context.niyamDataStore.edit { it[KEY_FAVOURITE_MANTRAS] = newSet }
-        current = current.copy(favouriteMantraIds = newSet)
+        mutate { it.copy(favouriteMantraIds = newSet) }
         return nowFav
     }
 
@@ -330,8 +340,10 @@ object UserPrefs {
      */
     suspend fun clearAll(context: Context) {
         context.niyamDataStore.edit { it.clear() }
-        current = Snapshot.DEFAULTS
-        loadAttempted = false
+        synchronized(this) {
+            current = Snapshot.DEFAULTS
+            loadAttempted = false
+        }
     }
 
     /**
@@ -363,7 +375,7 @@ object UserPrefs {
             it[KEY_DISPLAY_LANGUAGE] = resolvedLang.name
             it[KEY_FAVOURITE_MANTRAS] = favourites
         }
-        current = current.copy(
+        mutate { it.copy(
             onboardingComplete = true,
             currentMantraId = resolvedMantra,
             sadhanaStartEpochDay = sadhanaStartEpochDay,
@@ -371,7 +383,7 @@ object UserPrefs {
             selectedIntention = resolvedIntention,
             displayLanguage = resolvedLang,
             favouriteMantraIds = favourites
-        )
+        ) }
     }
 
     fun setSnapshotForTest(snapshot: Snapshot) { current = snapshot }
