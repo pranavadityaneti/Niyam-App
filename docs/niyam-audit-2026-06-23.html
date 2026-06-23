@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Niyam — Full-App Adversarial Audit (2026-06-23)</title>
+<style>
+  :root { --orange:#FF6400; --green:#0E3B2C; --ink:#23201c; --muted:#6b6359; --bg:#fbf7f1; --card:#fff; --line:#e7ddd0; --code:#f0e8dc;
+          --crit:#b3261e; --high:#c0560f; --med:#a98a00; --ok:#1f7a4d; --grey:#7c7368; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; line-height:1.6; }
+  .wrap { max-width:940px; margin:0 auto; padding:40px 24px 90px; }
+  h1 { color:var(--green); font-size:30px; margin:0 0 4px; }
+  .sub { color:var(--muted); margin:0 0 6px; font-size:15px; }
+  .ver { display:inline-block; background:var(--green); color:#fbf3e7; font-size:12px; font-weight:700; padding:3px 12px; border-radius:99px; margin:6px 0 22px; }
+  h2 { color:var(--green); font-size:21px; margin:34px 0 8px; border-bottom:2px solid var(--line); padding-bottom:6px; }
+  p, li { font-size:15px; }
+  code { background:var(--code); padding:1px 5px; border-radius:4px; font-family:ui-monospace,Menlo,monospace; font-size:12.5px; }
+  .toc { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 22px; margin:0 0 24px; }
+  .toc a { color:var(--green); text-decoration:none; } .toc a:hover { text-decoration:underline; }
+  .summary { display:flex; gap:12px; flex-wrap:wrap; margin:16px 0 8px; }
+  .stat { flex:1; min-width:130px; background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; text-align:center; }
+  .stat .n { font-size:28px; font-weight:700; line-height:1; }
+  .stat .l { font-size:12px; color:var(--muted); margin-top:6px; text-transform:uppercase; letter-spacing:.06em; }
+  .finding { background:var(--card); border:1px solid var(--line); border-left-width:5px; border-radius:0 12px 12px 0; padding:14px 18px; margin:12px 0; }
+  .finding.crit { border-left-color:var(--crit); }
+  .finding.high { border-left-color:var(--high); }
+  .finding.med  { border-left-color:var(--med); }
+  .finding.dismiss { border-left-color:var(--grey); background:#f4efe8; }
+  .finding.defer { border-left-color:var(--orange); background:#fff6ef; }
+  .badge { display:inline-block; font-size:10.5px; font-weight:800; letter-spacing:.06em; padding:2px 8px; border-radius:99px; color:#fff; vertical-align:middle; margin-right:8px; }
+  .b-crit{background:var(--crit);} .b-high{background:var(--high);} .b-med{background:var(--med);} .b-ok{background:var(--ok);} .b-grey{background:var(--grey);} .b-defer{background:var(--orange);}
+  .finding h3 { font-size:15.5px; margin:0 0 5px; display:inline; }
+  .finding .body { margin-top:7px; }
+  .finding .eng { margin-top:7px; color:var(--muted); font-size:13.5px; font-style:italic; }
+  .finding .loc { font-size:12px; color:var(--muted); margin-top:6px; }
+  .note { background:#eef5f1; border-left:4px solid var(--green); border-radius:0 10px 10px 0; padding:12px 18px; margin:14px 0; font-size:14.5px; }
+  .you { background:#fdf0ee; border-left:4px solid var(--crit); border-radius:0 10px 10px 0; padding:12px 18px; margin:14px 0; }
+  @media print { body{background:#fff;} .wrap{max-width:100%;} a{color:#000;text-decoration:none;} .finding{break-inside:avoid;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Niyam — Full-App Adversarial Audit</h1>
+  <p class="sub">Line-by-line review of the entire codebase · five parallel Opus reviewers · every Critical/High verified against the actual code before fixing</p>
+  <span class="ver">2026-06-23 · fixes shipped in v1.0.5 (versionCode 7)</span>
+
+  <div class="summary">
+    <div class="stat"><div class="n" style="color:var(--crit)">4</div><div class="l">Critical · fixed</div></div>
+    <div class="stat"><div class="n" style="color:var(--high)">5</div><div class="l">High · fixed</div></div>
+    <div class="stat"><div class="n" style="color:var(--med)">3+</div><div class="l">Medium · fixed</div></div>
+    <div class="stat"><div class="n" style="color:var(--grey)">2</div><div class="l">Dismissed</div></div>
+    <div class="stat"><div class="n" style="color:var(--orange)">8</div><div class="l">Deferred</div></div>
+  </div>
+
+  <div class="toc">
+    <b>Contents</b>
+    <ol>
+      <li><a href="#method">Method &amp; scope</a></li>
+      <li><a href="#critical">Critical — fixed</a></li>
+      <li><a href="#high">High — fixed</a></li>
+      <li><a href="#medium">Medium — fixed</a></li>
+      <li><a href="#dismissed">Verified &amp; dismissed</a></li>
+      <li><a href="#deferred">Real but deferred</a></li>
+      <li><a href="#result">Result &amp; your actions</a></li>
+    </ol>
+  </div>
+
+  <h2 id="method">1. Method &amp; scope</h2>
+  <p>Five reviewers ran in parallel, each owning one subsystem and reading its files in full:
+  <b>blocking engine + pause/interval</b>, <b>backend / sync / auth / billing</b>, <b>data / prefs / progress</b>,
+  <b>UI / navigation / onboarding / settings</b>, and <b>Supabase Edge Functions + SQL</b>. They were told to hunt only
+  for real defects (crashes, races, logic errors, security holes, leaks, fail-open paths, edge cases) with
+  <code>file:line</code> + severity — no style nits.</p>
+  <p class="note"><b>Verification gate:</b> I did not accept any reviewer claim at face value. Every Critical/High was
+  re-checked against the actual code before fixing — which is how two "criticals" were correctly downgraded to
+  non-issues (§5). All fixes compile, pass 125/125 unit tests, and the engine was touched in exactly one place.</p>
+
+  <h2 id="critical">2. Critical — fixed (4)</h2>
+
+  <div class="finding crit">
+    <span class="badge b-crit">CRITICAL · FIXED</span><h3>Delete-account left all read-history in the device database</h3>
+    <div class="body">"Delete account" wiped preferences but never cleared the Room read-events table. That's a privacy leak,
+    and because a fresh journey starts at day 0, the leftover history was counted — so a brand-new mantra could show an
+    inflated or instantly-"complete" streak.</div>
+    <div class="eng">In plain English: deleting your account didn't actually erase your practice history from the phone,
+    and the next person could inherit a fake streak. Now deletion fully wipes it.</div>
+    <div class="loc">Fix: <code>ReadEventDao.clearAll</code> + <code>ProgressRepository.clearAll</code>, awaited in the delete flow.</div>
+  </div>
+
+  <div class="finding crit">
+    <span class="badge b-crit">CRITICAL · FIXED</span><h3>The new interval check-in barely fired</h3>
+    <div class="body">Showing the mantra overlay emits a window event for Niyam's own package, which was being treated as
+    "user left the blocked app" and cancelled the interval timer — so the every-30/60/120-min check-in was repeatedly
+    torn down instead of counting.</div>
+    <div class="eng">In plain English: the feature you just asked me to build was quietly defeating itself. Fixed — the
+    overlay no longer stops its own timer.</div>
+    <div class="loc">Fix: exclude our own package from the interval-cancel path in <code>AppLockAccessibilityService</code>.</div>
+  </div>
+
+  <div class="finding crit">
+    <span class="badge b-crit">CRITICAL · FIXED</span><h3>Launch reconcile could revoke a paying user's premium</h3>
+    <div class="body">A trial-only entitlements row carries <code>premium_active=false</code> by column default. The launch
+    reconcile read that as "subscription inactive" — so a user who paid but whose purchase-verification hadn't yet
+    reached the server could be downgraded to free on next open.</div>
+    <div class="eng">In plain English: a real subscriber could get bumped back to free by accident. Now premium is only
+    ever revoked on a definitive Google "not active," never off a trial record.</div>
+    <div class="loc">Fix: reconcile grants on <code>true</code>; revokes only on an authoritative <code>source="play"</code> false.</div>
+  </div>
+
+  <div class="finding crit">
+    <span class="badge b-crit">CRITICAL · FIXED (needs deploy)</span><h3>One subscription could unlock unlimited accounts</h3>
+    <div class="body">The Google Play purchase token wasn't bound to a buyer, so a genuine active token could be replayed
+    from other accounts to grant them premium.</div>
+    <div class="eng">In plain English: someone could share or reuse one paid subscription across many accounts. Now the
+    first account to redeem a token owns it; others are rejected.</div>
+    <div class="loc">Fix: <code>verify-entitlement</code> records the token + rejects cross-account reuse; migration <code>0003</code> adds the column + unique index. <b>Requires your redeploy.</b></div>
+  </div>
+
+  <h2 id="high">3. High — fixed (5)</h2>
+
+  <div class="finding high">
+    <span class="badge b-high">HIGH · FIXED</span><h3>Sign-in could clobber an established device's newer data</h3>
+    <div class="body">Seed-from-server overwrote local practice on every sign-in with no "newer wins" check. A sign-out/in
+    cycle on an active device could replace fresh local choices with a staler server copy.</div>
+    <div class="loc">Fix: only seed onto a fresh, un-onboarded device.</div>
+  </div>
+
+  <div class="finding high">
+    <span class="badge b-high">HIGH · FIXED</span><h3>Favourites sync could wipe everything on a partial failure</h3>
+    <div class="body">Push did delete-all-then-insert; a crash or network drop between the two left zero favourites on the
+    server, which a later fresh-device seed would then read back as "no favourites."</div>
+    <div class="loc">Fix: diff-based add/remove — never a zero-rows window.</div>
+  </div>
+
+  <div class="finding high">
+    <span class="badge b-high">HIGH · FIXED</span><h3>Auth gate could wrongly bounce a real user</h3>
+    <div class="body">The gate read a frozen onboarding snapshot (leaving the in-onboarding window unguarded) and didn't
+    confirm there was no live session — so a transient "not authenticated" during a token refresh could kick an
+    authenticated user to sign-in and wipe their back stack.</div>
+    <div class="loc">Fix: read onboarding state reactively + skip the bounce whenever a session still exists.</div>
+  </div>
+
+  <div class="finding high">
+    <span class="badge b-high">HIGH · FIXED (needs deploy)</span><h3>Server could revoke premium on an ambiguous Play state</h3>
+    <div class="body"><code>verify-entitlement</code> wrote <code>premium_active=false</code> for any non-active state,
+    including transient ones (on-hold, paused, pending). And it trusted the client-sent product id for the plan label.</div>
+    <div class="loc">Fix: revoke only on terminal states (expired/revoked/canceled-past-expiry); plan taken strictly from Google. <b>Requires your redeploy.</b></div>
+  </div>
+
+  <div class="finding high">
+    <span class="badge b-high">HIGH · FIXED</span><h3>Billing purchase could resolve the wrong flow or hang forever</h3>
+    <div class="body">A single shared result holder meant two overlapping purchases could cross-resolve, and if Play never
+    called back the caller could hang indefinitely.</div>
+    <div class="loc">Fix: serialize purchases behind a Mutex + a bounded timeout.</div>
+  </div>
+
+  <h2 id="medium">4. Medium — fixed</h2>
+  <div class="finding med">
+    <span class="badge b-med">MEDIUM · FIXED</span><h3>Hardening batch</h3>
+    <ul style="margin:8px 0 0">
+      <li><b>Empty OTA catalog</b> now rejected → falls back to the bundled mantras instead of showing only the <code>om</code> fallback.</li>
+      <li><b>Unlock grace</b> cleared when the block-list changes → no stale 5-minute free pass after unblock/re-add.</li>
+      <li><b>Home first-line</b> guarded against empty mantra text (no crash on malformed remote content).</li>
+      <li><b>RemoteConfig</b> free-set parse uses a safe cast → one bad config element can't abort the whole config apply.</li>
+      <li><b>(Server)</b> Edge-function error responses no longer leak internal Google/Postgres detail; <code>sync-trial</code> stops clobbering the <code>source</code> column and bounds the trial day.</li>
+    </ul>
+  </div>
+
+  <h2 id="dismissed">5. Verified &amp; dismissed (not real)</h2>
+  <div class="finding dismiss">
+    <span class="badge b-grey">DISMISSED</span><h3>"Interval check-in fires during the 5-minute grace"</h3>
+    <div class="body">Can't happen — the interval is at minimum 30 minutes, always well past the 5-minute grace window.</div>
+  </div>
+  <div class="finding dismiss">
+    <span class="badge b-grey">DISMISSED</span><h3>"Continue button can get stuck disabled on a config change"</h3>
+    <div class="body">The overlay is a WindowManager view, not an Activity — it isn't recreated on configuration changes, so
+    the countdown reliably finishes and enables Continue.</div>
+  </div>
+
+  <h2 id="deferred">6. Real but deferred</h2>
+  <div class="finding defer">
+    <span class="badge b-defer">DEFERRED · DO BEFORE REAL BILLING</span><h3>Acknowledge-retry on launch</h3>
+    <div class="body">If a purchase acknowledgement fails, Play auto-refunds after 3 days. The durable fix is to re-acknowledge
+    any owned-but-unacknowledged purchase at app start. Not exercised today (no live products), so safe to do right before
+    enabling real purchases.</div>
+  </div>
+  <div class="finding defer">
+    <span class="badge b-defer">DEFERRED · MINOR</span><h3>Lower-impact polish</h3>
+    <ul style="margin:8px 0 0">
+      <li>Accessibility consent isn't re-recorded if the service was <em>already</em> enabled when the user reaches that step (Play disclosure edge case).</li>
+      <li>Trial reminder can be missed if the daily worker lands exactly on the day-6→7 boundary.</li>
+      <li>Progress layer uses wall-clock dates (clock travel could nudge streak/day-N).</li>
+      <li>In-memory preference snapshot does read-modify-write without a lock (self-heals on restart).</li>
+      <li>Announcement dedupe keys on the title (a blank-title announcement can't be dismissed permanently).</li>
+      <li>Settings "blocked apps" count can read stale after returning from the editor.</li>
+      <li>The pause onboarding step keeps its state outside the onboarding view-model (back-then-forward loses an unsaved edit).</li>
+    </ul>
+  </div>
+
+  <h2 id="result">7. Result &amp; your actions</h2>
+  <p><b>Shipped:</b> 12 verified fixes in <b>v1.0.5 (versionCode 7)</b> — 125/125 unit tests, debug + release both compile,
+  engine touched in exactly one place (the interval-cancel guard). The corrected signed AAB is on your Desktop as
+  <code>niyam-1.0.5-release.aab</code>.</p>
+  <div class="you">
+    <b>Two server actions for you</b> (all app-side fixes are already in the AAB):
+    <ol style="margin:8px 0 0">
+      <li>Run migration <code>supabase/migrations/0003_entitlement_token_binding.sql</code> in Supabase → SQL Editor.</li>
+      <li>Redeploy the two updated functions: <code>supabase functions deploy verify-entitlement</code> and <code>supabase functions deploy sync-trial</code>.</li>
+    </ol>
+    Until then the app behaves exactly as before for entitlements (token-binding + revoke-safety simply aren't active yet — fine, since real billing isn't live).
+  </div>
+</div>
+</body>
+</html>
