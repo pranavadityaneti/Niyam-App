@@ -571,3 +571,13 @@ Mid-Play-submission support + a new feature batch.
 **To change content without a build (after migration 0002 + first AAB):** edit `app_config` rows in Supabase Table editor (free set, blockable apps, paywall trust, flags, announcement, min_supported_version_code), or upload a new `mantras.json` to the `content` Storage bucket and bump `content_version`.
 
 **Pranav's remaining external actions:** run migration 0002; (optional) upload current app/src/main/assets/content/mantras.json to the `content` bucket; create+activate the 3 Play subscription products + closed-test track; build the signed v1.0.1 AAB (`./gradlew :app:bundleRelease`) and upload; on-device test of sign-in/delete/purchase/sync/OTA/force-update.
+
+### 2026-06-23 — Full-app adversarial audit + 12 fixes (v1.0.5)
+
+Five parallel Opus reviewers (engine / backend+billing / data+prefs / UI+nav / server), each line-by-line over its subsystem. Every Critical/High verified against code before fixing (not blindly trusted). Fixed 12 (4 Critical, 5 High, ~3 Medium) — see commit. Headlines: delete-account now wipes Room read-events (privacy); interval timer no longer killed by overlay's own window event; reconcile won't revoke premium off a trial-sourced row; Play token bound to one account (migration 0003); seed won't clobber an established device; favourites diff-sync (no zero-window); auth gate reactive + session-checked; billing serialized+timeout; empty-catalog/grace/firstLine/RemoteConfig hardening; edge-fn error-leak + sync-trial source-clobber fixed.
+
+Dismissed as non-issues after verification: "interval fires during grace" (interval ≥30min >> 5min grace), "Continue stuck-disabled on config change" (overlay is a WindowManager view, not Activity-config-recreated).
+
+Still open (real, lower-impact, deferred): billing acknowledge-retry-on-launch (wire restorePurchases at start for premium users — do before real billing goes live); accessibility-consent not recorded if service already enabled on arrival (Play edge); trial-reminder day6→7 boundary miss; progress-layer clock-rollback; UserPrefs in-memory read-modify-write atomicity; announcement dedupe by title; Settings stale apps-count; pause-step state outside the onboarding VM.
+
+v1.0.5 (code 7), 125/125 tests, debug+release compile. AAB on Desktop. Pranav deploy: migration 0003 + redeploy verify-entitlement & sync-trial.
