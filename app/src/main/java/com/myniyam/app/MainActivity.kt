@@ -38,6 +38,14 @@ class MainActivity : ComponentActivity() {
         UserPrefs.ensureLoaded(this)
         RemoteConfig.ensureLoaded(this)
         lifecycleScope.launch { RemoteConfig.refresh(this@MainActivity) }
+        // Billing self-heal (audit C): re-query owned purchases on every launch and
+        // acknowledge/verify any that slipped through. A purchase whose original
+        // acknowledgement failed (network blip) would otherwise be auto-refunded by
+        // Play after 3 days; this makes acknowledgement durable. No-op in debug
+        // (sandbox gateway) and for free users with nothing to restore.
+        lifecycleScope.launch {
+            try { com.myniyam.app.billing.Billing.gateway.restorePurchases(this@MainActivity) } catch (e: Exception) {}
+        }
         val s = UserPrefs.snapshot()
         if (s.onboardingComplete && s.trialStartEpochDay == 0L) {
             runBlocking { UserPrefs.startTrial(this@MainActivity, java.time.LocalDate.now().toEpochDay()) }

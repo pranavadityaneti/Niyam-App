@@ -581,3 +581,12 @@ Dismissed as non-issues after verification: "interval fires during grace" (inter
 Still open (real, lower-impact, deferred): billing acknowledge-retry-on-launch (wire restorePurchases at start for premium users — do before real billing goes live); accessibility-consent not recorded if service already enabled on arrival (Play edge); trial-reminder day6→7 boundary miss; progress-layer clock-rollback; UserPrefs in-memory read-modify-write atomicity; announcement dedupe by title; Settings stale apps-count; pause-step state outside the onboarding VM.
 
 v1.0.5 (code 7), 125/125 tests, debug+release compile. AAB on Desktop. Pranav deploy: migration 0003 + redeploy verify-entitlement & sync-trial.
+
+### 2026-06-23 (cont.) — Audit fix-plan Phases A/B/C executed (v1.0.6)
+
+Pranav: "propose a plan, no patches" → executed all three phases as solid, class-closing fixes.
+- Phase A (correctness): UserPrefs atomic mutate{} helper for all setters; Settings refresh-on-resume; pause step state hoisted to OnboardingViewModel; announcement dismissal keyed on stable id/hash. A2 (progress clock) deliberately NOT changed (vanity metric, no entitlement, local-day correct; anti-tamper would risk rejecting legit reads).
+- Phase B (compliance/reliability): accessibility step no longer auto-advances without recording prominent-disclosure consent (consentAlreadyGiven gate); trial reminder event-anchored via OneTimeWorkRequest at trialStart+6d (periodic kept as backstop).
+- Phase C (billing): launch-time Billing.gateway.restorePurchases() re-queries owned purchases and acknowledges/verifies any that slipped through → durable acknowledgement (Play won't auto-refund an unacked purchase); no-op in debug/free.
+
+versionCode 7→8, versionName 1.0.5→1.0.6. 125/125 tests, debug+release compile. Unified AAB (audit + A + B + C) on Desktop as niyam-1.0.6-release.aab. Server deploy still pending from the audit: migration 0003 + redeploy verify-entitlement & sync-trial.
