@@ -18,8 +18,11 @@ class AppLockAccessibilityService : AccessibilityService() {
         val pkg = event.packageName?.toString() ?: return
         if (!BlockList.matches(pkg)) {
             // Foreground moved to a non-blocked app — stop the interval timer and
-            // drop the overlay if it's still up.
-            IntervalCheckIn.onLeftBlocked()
+            // drop the overlay if it's still up. EXCLUDE our own package: showing
+            // the mantra overlay can emit a window event for our own package, and
+            // cancelling on that would tear down the interval timer the instant it
+            // fires (the user is still in the blocked app behind the overlay).
+            if (pkg != packageName) IntervalCheckIn.onLeftBlocked()
             if (OverlayHideDecision.shouldHide(
                     overlayShowing = OverlayManager.isShowing(),
                     foregroundPkg = pkg,

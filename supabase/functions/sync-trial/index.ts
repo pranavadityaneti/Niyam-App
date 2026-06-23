@@ -42,8 +42,11 @@ Deno.serve(async (req) => {
 
     const body = await req.json().catch(() => null);
     const incoming = Number(body?.trialStartEpochDay);
-    if (!Number.isFinite(incoming) || incoming <= 0) {
-      return json({ error: "trialStartEpochDay must be a positive number" }, 400);
+    // Sanity-bound: must be a real epoch-day near "now" — not day 1, not far future.
+    const todayEpochDay = Math.floor(Date.now() / 86_400_000);
+    if (!Number.isFinite(incoming) || incoming <= 0 ||
+        incoming < todayEpochDay - 3650 || incoming > todayEpochDay + 1) {
+      return json({ error: "trialStartEpochDay out of range" }, 400);
     }
 
     const admin = createClient(supabaseUrl, serviceRoleKey);
@@ -58,16 +61,19 @@ Deno.serve(async (req) => {
     const existingStart = existing?.trial_start_epoch_day ?? 0;
     const effective = existingStart > 0 ? Math.min(existingStart, incoming) : incoming;
 
+    // NOTE: do NOT write `source` here — this function doesn't own that column.
+    // Writing source="trial" would clobber a "play" provenance set by
+    // verify-entitlement, and the client reconcile keys premium-revocation on
+    // source=="play". Update only the trial start.
     const { error: upErr } = await admin.from("entitlements").upsert(
       {
         user_id: userId,
         trial_start_epoch_day: effective,
-        source: "trial",
         updated_at: new Date().toISOString(),
       },
       { onConflict: "user_id" },
     );
-    if (upErr) return json({ error: upErr.message }, 500);
+    if (upErr) { console.error(upErr.message); return json({ error: "Could not record trial" }, 500); }
 
     return json({ trial_start_epoch_day: effective }, 200);
   } catch (e) {

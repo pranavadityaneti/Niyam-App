@@ -30,6 +30,19 @@ object ProgressRepository {
         }
     }
 
+    /**
+     * Wipe all recorded read-events (account deletion). Without this, read
+     * history — and thus streak / day-N — survives Delete-account and the next
+     * user inherits an inflated journey. Suspends so the delete flow awaits it.
+     */
+    suspend fun clearAll(context: Context) {
+        try {
+            NiyamDatabase.get(context.applicationContext).readEventDao().clearAll()
+        } catch (e: Exception) {
+            Log.e(TAG, "clearAll failed", e)
+        }
+    }
+
     fun recordRead(context: Context, mantraId: String) {
         val app = context.applicationContext
         executor.execute {

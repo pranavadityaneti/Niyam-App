@@ -66,8 +66,8 @@ Deno.serve(async (req) => {
       `${ANDROID_PUBLISHER}/applications/${PACKAGE_NAME}/purchases/subscriptionsv2/tokens/${encodeURIComponent(purchaseToken)}`;
     const gRes = await fetch(url, { headers: { Authorization: `Bearer ${accessToken}` } });
     if (!gRes.ok) {
-      const detail = await gRes.text();
-      return json({ error: "Play verification failed", status: gRes.status, detail }, 502);
+      console.error("Play verification failed", gRes.status, await gRes.text());
+      return json({ error: "Could not verify purchase" }, 502);
     }
     const sub = await gRes.json();
 
@@ -82,27 +82,70 @@ Deno.serve(async (req) => {
       state === "SUBSCRIPTION_STATE_ACTIVE" ||
       state === "SUBSCRIPTION_STATE_IN_GRACE_PERIOD" ||
       (state === "SUBSCRIPTION_STATE_CANCELED" && hasFutureExpiry);
+    // Only these states are a DEFINITIVE "no longer entitled" — safe to revoke.
+    // Ambiguous states (ON_HOLD, PAUSED, PENDING, unknown) must NOT flip a paid
+    // user to false, or a transient Play state would wrongly lock them out.
+    const terminal =
+      state === "SUBSCRIPTION_STATE_EXPIRED" ||
+      state === "SUBSCRIPTION_STATE_REVOKED" ||
+      (state === "SUBSCRIPTION_STATE_CANCELED" && !hasFutureExpiry);
 
-    // Plan = the line item's product id (fall back to the one the client sent).
-    const planProductId = lineItems.find((li) => li.productId)?.productId ?? productId;
+    // Plan strictly from Google's line item — never trust the client-sent productId.
+    const planProductId = lineItems.find((li) => li.productId)?.productId ?? null;
+    if (entitled && !planProductId) {
+      console.error("verify-entitlement: entitled sub has no line-item productId");
+      return json({ error: "Verification incomplete" }, 502);
+    }
 
-    // 5. Write the trusted row (service role; user can only read it).
     const admin = createClient(supabaseUrl, serviceRoleKey);
-    const { error: upErr } = await admin.from("entitlements").upsert(
-      {
-        user_id: userId,
-        premium_active: entitled,
-        premium_plan: entitled ? planProductId : null,
-        source: "play",
-        updated_at: new Date().toISOString(),
-      },
-      { onConflict: "user_id" },
-    );
-    if (upErr) return json({ error: upErr.message }, 500);
 
-    return json({ premium_active: entitled, premium_plan: entitled ? planProductId : null }, 200);
+    // 5. Bind the purchase token to ONE account — stops a single subscription from
+    // unlocking unlimited accounts. First account to redeem a token owns it.
+    const { data: tokenOwner } = await admin
+      .from("entitlements")
+      .select("user_id")
+      .eq("purchase_token", purchaseToken)
+      .maybeSingle();
+    if (tokenOwner && tokenOwner.user_id !== userId) {
+      return json({ error: "This purchase is linked to another account" }, 409);
+    }
+
+    // 6. Write the trusted row (service role; user can only read it).
+    if (entitled) {
+      const { error: upErr } = await admin.from("entitlements").upsert(
+        {
+          user_id: userId,
+          premium_active: true,
+          premium_plan: planProductId,
+          purchase_token: purchaseToken,
+          source: "play",
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" },
+      );
+      if (upErr) { console.error(upErr.message); return json({ error: "Could not record entitlement" }, 500); }
+      return json({ premium_active: true, premium_plan: planProductId }, 200);
+    } else if (terminal) {
+      const { error: upErr } = await admin.from("entitlements").upsert(
+        {
+          user_id: userId,
+          premium_active: false,
+          premium_plan: null,
+          purchase_token: purchaseToken,
+          source: "play",
+          updated_at: new Date().toISOString(),
+        },
+        { onConflict: "user_id" },
+      );
+      if (upErr) { console.error(upErr.message); return json({ error: "Could not record entitlement" }, 500); }
+      return json({ premium_active: false, premium_plan: null }, 200);
+    } else {
+      // Ambiguous Play state — do NOT touch the premium flag.
+      return json({ premium_active: false, premium_plan: null, ambiguous: true }, 200);
+    }
   } catch (e) {
-    return json({ error: String(e) }, 500);
+    console.error("verify-entitlement error", e);
+    return json({ error: "Internal error" }, 500);
   }
 });
 

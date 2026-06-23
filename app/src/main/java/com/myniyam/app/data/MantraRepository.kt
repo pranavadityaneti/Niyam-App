@@ -64,6 +64,12 @@ object MantraRepository {
                 Log.e(TAG, "Unsupported schemaVersion ${parsed.schemaVersion}")
                 catalog = null
                 false
+            } else if (parsed.mantras.isEmpty()) {
+                // An empty catalog (e.g. a bad OTA file) must NOT win over the
+                // bundled asset — treat as a parse failure so ensureLoaded falls back.
+                Log.e(TAG, "Catalog has zero mantras; rejecting")
+                catalog = null
+                false
             } else {
                 catalog = parsed
                 true

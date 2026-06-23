@@ -94,7 +94,7 @@ fun HomeScreen(onFixProtection: () -> Unit, onBrowseLibrary: () -> Unit, onOpenS
         Entitlements.state(snap.premiumActive, snap.trialStartEpochDay, LocalDate.now().toEpochDay())
     }
     val mantra = MantraRepository.displayMantra(CurrentSadhana.MANTRA_ID)
-    val firstLine = mantra.text.forScript(CurrentSadhana.LANGUAGE.script).lineSequence().first()
+    val firstLine = mantra.text.forScript(CurrentSadhana.LANGUAGE.script).lineSequence().firstOrNull().orEmpty()
 
     // Progress fill animates up to dayN/dayM, and re-animates whenever the day
     // count changes (e.g. after a read is recorded and Home resumes).

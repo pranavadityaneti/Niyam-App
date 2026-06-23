@@ -20,6 +20,7 @@ import com.myniyam.app.backend.EntitlementSync
 import com.myniyam.app.data.UserPrefs
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.withLock
 import kotlin.coroutines.resume
 
 /**
@@ -45,11 +46,15 @@ object PlayBillingGateway : BillingGateway {
         }
     }
 
-    override suspend fun purchase(ctx: Context, plan: Plan): Boolean {
-        val activity = ctx as? Activity ?: return false
-        val c = ensureConnected(ctx) ?: return false
-        val details = queryDetails(c, plan.productId) ?: return false
-        val offerToken = details.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: return false
+    private val purchaseMutex = kotlinx.coroutines.sync.Mutex()
+
+    override suspend fun purchase(ctx: Context, plan: Plan): Boolean = purchaseMutex.withLock {
+        // Serialized: only one purchase flow at a time, so the single shared
+        // `pending` can never be resolved by another flow's result.
+        val activity = ctx as? Activity ?: return@withLock false
+        val c = ensureConnected(ctx) ?: return@withLock false
+        val details = queryDetails(c, plan.productId) ?: return@withLock false
+        val offerToken = details.subscriptionOfferDetails?.firstOrNull()?.offerToken ?: return@withLock false
 
         val deferred = CompletableDeferred<List<Purchase>?>()
         pending = deferred
@@ -67,12 +72,17 @@ object PlayBillingGateway : BillingGateway {
         val launch = c.launchBillingFlow(activity, flowParams)
         if (launch.responseCode != BillingClient.BillingResponseCode.OK) {
             pending = null
-            return false
+            return@withLock false
         }
 
-        val purchases = deferred.await()
-        pending = null
-        if (purchases.isNullOrEmpty()) return false
+        // Bounded wait: if Play never calls the listener (process edge cases),
+        // don't hang the caller forever.
+        val purchases = try {
+            kotlinx.coroutines.withTimeoutOrNull(5 * 60_000L) { deferred.await() }
+        } finally {
+            pending = null
+        }
+        if (purchases.isNullOrEmpty()) return@withLock false
 
         var granted = false
         for (p in purchases) {
@@ -81,7 +91,7 @@ object PlayBillingGateway : BillingGateway {
                 granted = true
             }
         }
-        return granted
+        granted
     }
 
     override suspend fun restorePurchases(ctx: Context): Boolean {

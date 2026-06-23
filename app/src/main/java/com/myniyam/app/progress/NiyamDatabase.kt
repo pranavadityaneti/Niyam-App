@@ -35,6 +35,9 @@ interface ReadEventDao {
 
     @Query("SELECT COUNT(*) FROM read_events WHERE epochDay = :epochDay")
     suspend fun countOn(epochDay: Long): Int
+
+    @Query("DELETE FROM read_events")
+    suspend fun clearAll()
 }
 
 @Database(entities = [ReadEventEntity::class], version = 1, exportSchema = false)

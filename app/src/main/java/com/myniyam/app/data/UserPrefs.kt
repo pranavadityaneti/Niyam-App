@@ -246,6 +246,9 @@ object UserPrefs {
     suspend fun setBlockedPackages(context: Context, packages: Set<String>) {
         context.niyamDataStore.edit { it[KEY_BLOCKED_PACKAGES] = packages }
         current = current.copy(blockedPackages = packages)
+        // Editing the block list resets grace, so a removed-then-re-added app
+        // doesn't keep a stale 5-min free pass from a prior session.
+        com.myniyam.app.service.UnlockGrace.clear()
     }
 
     suspend fun setOnboardingComplete(context: Context) {

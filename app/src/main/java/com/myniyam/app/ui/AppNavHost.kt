@@ -92,14 +92,16 @@ fun AppNavHost(
 
     // Sign-in gate (P3c): login is required. A returning user whose session is
     // gone (signed out, or refresh token expired/revoked) must re-authenticate
-    // before reaching any post-onboarding surface. We react to the RESOLVED
-    // NotAuthenticated state (never the Initializing window), so a signed-in
-    // user whose stored session is still loading at cold start is not bounced.
-    val onboardingDone = remember { UserPrefs.snapshot().onboardingComplete }
+    // before reaching any post-onboarding surface. Hardened (audit): onboarding
+    // state is read REACTIVELY at evaluation time (not a frozen snapshot, which
+    // left the in-onboarding window unguarded), and we double-check there is no
+    // live session (isSignedIn) so a transient NotAuthenticated during a token
+    // refresh can't wrongly bounce an authenticated user and wipe their stack.
     val sessionStatus by AuthRepository.sessionStatus.collectAsState()
     LaunchedEffect(sessionStatus, currentRoute) {
         if (sessionStatus is SessionStatus.NotAuthenticated &&
-            onboardingDone &&
+            !AuthRepository.isSignedIn() &&
+            UserPrefs.snapshot().onboardingComplete &&
             currentRoute != null &&
             currentRoute != NiyamRoutes.WELCOME &&
             currentRoute != NiyamRoutes.SIGN_IN

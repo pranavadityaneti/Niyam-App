@@ -76,7 +76,7 @@ object RemoteConfig {
 
     fun freeMantraIds(): Set<String> =
         (el("free_mantra_ids") as? JsonArray)
-            ?.mapNotNull { it.jsonPrimitive.contentOrNull }?.toSet()
+            ?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }?.toSet()
             ?.takeIf { it.isNotEmpty() } ?: Entitlements.FREE_MANTRA_IDS
 
     fun blockableApps(): List<CatalogApp> =

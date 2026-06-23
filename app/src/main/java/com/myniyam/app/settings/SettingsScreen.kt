@@ -358,6 +358,7 @@ fun SettingsScreen(
                             try {
                                 AuthRepository.deleteAccount()
                                 UserPrefs.clearAll(ctx)
+                                com.myniyam.app.progress.ProgressRepository.clearAll(ctx)
                                 showDeleteConfirm = false
                                 onAccountDeleted()
                             } catch (e: Exception) {

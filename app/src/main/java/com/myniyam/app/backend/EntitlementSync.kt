@@ -32,6 +32,7 @@ object EntitlementSync {
         @SerialName("premium_active") val premiumActive: Boolean = false,
         @SerialName("premium_plan") val premiumPlan: String? = null,
         @SerialName("trial_start_epoch_day") val trialStartEpochDay: Long? = null,
+        @SerialName("source") val source: String? = null,
     )
 
     @Serializable
@@ -75,10 +76,18 @@ object EntitlementSync {
                 .decodeList<EntitlementRow>()
                 .firstOrNull()
 
-            // Premium: server is authoritative.
+            // Premium: grant whenever the server says active; only REVOKE on an
+            // authoritative Play-sourced "inactive". A trial-sourced row (written
+            // by sync-trial) carries premium_active=false by column default and
+            // must NOT be read as "subscription inactive" — otherwise a paid user
+            // whose purchase verify hasn't landed yet gets wrongly downgraded.
             if (row != null) {
                 val planName = row.premiumPlan?.let { Plan.fromProductId(it)?.name ?: it }
-                UserPrefs.setPremiumActive(context, row.premiumActive, planName)
+                when {
+                    row.premiumActive -> UserPrefs.setPremiumActive(context, true, planName)
+                    row.source == "play" -> UserPrefs.setPremiumActive(context, false, null)
+                    // non-Play row (trial/unknown) with premium false → leave local premium untouched
+                }
             }
 
             // Trial: earliest-start-wins, kept in sync both directions.

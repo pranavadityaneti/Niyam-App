@@ -53,11 +53,21 @@ object PracticeSync {
                 )
             ) { onConflict = "user_id" }
 
-            // Replace the user's favourites with the current local set (RLS scopes
-            // delete to own rows).
-            client.from("favourites").delete { filter { eq("user_id", uid) } }
-            if (s.favouriteMantraIds.isNotEmpty()) {
-                client.from("favourites").insert(s.favouriteMantraIds.map { FavouriteRow(uid, it) })
+            // Diff-based favourites sync — never a zero-rows window (the old
+            // delete-all-then-insert could lose every favourite on a partial
+            // failure). Add the new ones, remove only the dropped ones.
+            val current = s.favouriteMantraIds
+            val serverFavs = client.from("favourites").select()
+                .decodeList<FavouriteRow>().map { it.mantraId }.toSet()
+            val toAdd = current - serverFavs
+            val toRemove = serverFavs - current
+            if (toAdd.isNotEmpty()) {
+                client.from("favourites").insert(toAdd.map { FavouriteRow(uid, it) })
+            }
+            toRemove.forEach { mid ->
+                client.from("favourites").delete {
+                    filter { eq("user_id", uid); eq("mantra_id", mid) }
+                }
             }
         } catch (e: Exception) {
             // best-effort
@@ -71,6 +81,10 @@ object PracticeSync {
      */
     suspend fun seedFromServerIfPresent(context: Context): Boolean {
         if (!AuthRepository.isSignedIn()) return false
+        // Only seed onto a FRESH device. An already-onboarded device holds the
+        // user's live (possibly newer) practice — never overwrite it with the
+        // server copy on sign-in, or a sign-out/in cycle could clobber local edits.
+        if (UserPrefs.snapshot().onboardingComplete) return false
         return try {
             val client = SupabaseClientProvider.client
             val row = client.from("practice_state").select().decodeList<PracticeRow>().firstOrNull()
